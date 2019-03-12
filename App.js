@@ -1,6 +1,6 @@
 import { Navigation } from 'react-native-navigation';
-import ContentScreen from './src/screen/MainTabs/Content';
-import LearningScreen from './src/screen/MainTabs/Learning';
+import ContentScreen from './src/screen/MainTabs/Content/Content';
+import LearningScreen from './src/screen/MainTabs/Learning/Learning';
 import startMainTabs from './src/screen/MainTabs/startMainTabs';
 
 

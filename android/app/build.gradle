@@ -1,5 +1,11 @@
 apply plugin: "com.android.application"
 
+project.ext.vectoricons = [
+    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 import com.android.build.OutputFile
 
 /**
@@ -142,6 +148,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-navigation')
+    compile project(':react-native-vector-icons')
 }
 
 // Run this once to be able to run the application with BUCK

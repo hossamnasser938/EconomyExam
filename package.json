@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "devmenu": "adb shell input keyevent 82",
+    "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
+
   },
   "dependencies": {
     "react": "16.8.3",
     "react-native": "0.59.0",
-    "react-native-navigation": "^1.1.493"
+    "react-native-navigation": "^1.1.493",
+    "react-native-vector-icons": "^6.4.0"
   },
   "devDependencies": {
     "@babel/core": "7.3.4",

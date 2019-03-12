@@ -3,30 +3,34 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create( {
     container: {
         flex: 1,
-        alighnItems: "stretch"  
+        alignItems: "stretch"  
     },
     questionHeadContainer: {
         margin: 16,
         backgroundColor: "#987"
     },
     questionHeadText: {
-        fontSize: 24
+        fontSize: 24,
+        color: "white"
     },
     answersListContainer: {
         margin: 8
     },
     answerContainer: {
-        backgroundColor: "#654"
+        backgroundColor: "#258",
+        margin: 8
     },
     answerText: {
-        fontSize: 18
+        fontSize: 18,
+        color: "white"
     },
     nextButtonContainer: {
         flexDirection: "row",
-        alighnItems: "flex-end"
+        justifyContent: "flex-end",
+        margin: 16
     },
     nextButton: {
-        margin: 8
+         
     }
 } );
 

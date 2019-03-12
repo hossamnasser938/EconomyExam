@@ -18,8 +18,8 @@ class ContentScreen extends Component {
     render() {
         const chapters = ["chapter 1", "chapter 2", "chapter 3", "chapter 4", "chapter 5"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (
-            <TouchableOpacity>
-                <Chapter key = { index } name = { chapter } />
+            <TouchableOpacity key = { index } onPress = { this.onChapterPress }>
+                <Chapter name = { chapter } />
             </TouchableOpacity> 
         ) );
 

@@ -1,12 +1,13 @@
 import { Navigation } from 'react-native-navigation';
 import ContentScreen from './src/screen/MainTabs/Content';
+import LearningScreen from './src/screen/MainTabs/Learning';
+import startMainTabs from './src/screen/MainTabs/startMainTabs';
+
 
 //register screens
 Navigation.registerComponent( "EconomyExam.ContentScreen", () => ContentScreen );
+Navigation.registerComponent( "EconomyExam.LearningScreen", () => LearningScreen );
 
-Navigation.startSingleScreenApp( {
-    screen: {
-        screen: "EconomyExam.ContentScreen",
-        title: "Content"
-    }
-} )
+
+// start a tab-based app
+startMainTabs();

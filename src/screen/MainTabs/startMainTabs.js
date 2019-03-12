@@ -1,8 +1,7 @@
 import { Navigation } from 'react-native-navigation';
-import { Icon } from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const startMainTabs = () => {
-    console.log( "Start Main Tabs" );
     Promise.all( [
         Icon.getImageSource("md-list", 30),
         Icon.getImageSource("md-book", 30)
@@ -10,13 +9,13 @@ const startMainTabs = () => {
         Navigation.startTabBasedApp( {
             tabs: [
                 {
-                    screen: "EngEconomics.ContentScreen",
+                    screen: "EconomyExam.ContentScreen",
                     title: "Content",
                     label: "Content",
                     icon: sources[0]
                 },
                 {
-                    screen: "EngEconomics.LearningScreen",
+                    screen: "EconomyExam.LearningScreen",
                     title: "Training",
                     label: "Training",
                     icon: sources[1]

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 
-class LearningScreen extends Component {
+class TrainingScreen extends Component {
     onStartTraining = () => {
         this.props.navigator.push( {
             screen: "EconomyExam.TrainQuestionScreen",
@@ -26,4 +26,4 @@ class LearningScreen extends Component {
     }
 }
 
-export default LearningScreen;
+export default TrainingScreen;

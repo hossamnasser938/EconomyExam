@@ -15,7 +15,7 @@ const startMainTabs = () => {
                     icon: sources[0]
                 },
                 {
-                    screen: "EconomyExam.LearningScreen",
+                    screen: "EconomyExam.TrainingScreen",
                     title: "Training",
                     label: "Training",
                     icon: sources[1]

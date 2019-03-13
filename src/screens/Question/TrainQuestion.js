@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Button, TouchableOpacity } from 'react-native';
-import styles from './styles';
+import QuestionBody from '../../components/QuestionBody/QuestionBody';
+import styles from '../../components/QuestionBody/styles';
 
-class Question extends Component {
+class TrainQuestion extends Component {
     constructor( props ) {
         super( props );
         this.state = {
@@ -43,24 +43,12 @@ class Question extends Component {
         } );
 
         return(
-            <View style = { styles.container }>
-                <View style = { styles.questionHeadContainer }>
-                    <Text style = { styles.questionHeadText }>{ this.state.head }</Text>
-                </View>
-
-                <ScrollView style = { styles.answersListContainer }>
-                    { answersComponents }
-                </ScrollView>
-
-                <View style = { styles.nextButtonContainer }>
-                    <Button 
-                        style = { styles.nextButton }
-                        title = "next"
-                    />
-                </View>
-            </View>
+            <QuestionBody 
+                head = { this.state.head }
+                answersComponents = { answersComponents }
+            />
         );
     }
 }
 
-export default Question;
+export default TrainQuestion;

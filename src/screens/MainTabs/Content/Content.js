@@ -6,7 +6,7 @@ import styles from './styles';
 class ContentScreen extends Component {
     onChapterPress = () => {
         this.props.navigator.push( {
-            screen: "EconomyExam.QuestionScreen",
+            screen: "EconomyExam.ContentQuestionScreen",
             title: "Question",
             passProps: {
                 head: "إزي الحال",

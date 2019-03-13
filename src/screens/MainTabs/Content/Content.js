@@ -10,7 +10,8 @@ class ContentScreen extends Component {
             title: "Question",
             passProps: {
                 head: "إزي الحال",
-                answers: ["زي الفل", "زي العسل", "تمام الحمد لله"]
+                answers: ["زي الفل", "زي العسل", "تمام الحمد لله"],
+                correctAnswerIndex: 2
             }
         } );
     };

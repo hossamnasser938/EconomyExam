@@ -17,12 +17,18 @@ const styles = StyleSheet.create( {
         margin: 8
     },
     answerContainer: {
-        backgroundColor: "#258",
+        backgroundColor: "white",
         margin: 8
+    },
+    correctAnswerContainer: {
+        backgroundColor: "green"
+    },
+    wrongAnswerContainer: {
+        backgroundColor: "red"
     },
     answerText: {
         fontSize: 18,
-        color: "white"
+        color: "black"
     },
     nextButtonContainer: {
         flexDirection: "row",

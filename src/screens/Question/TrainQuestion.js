@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import QuestionBody from '../../components/QuestionBody/QuestionBody';
 import styles from '../../components/QuestionBody/styles';
 
@@ -6,9 +7,9 @@ class TrainQuestion extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            answers: this.props.answers,
-            head: this.props.head,
-            correctAnswerIndex: this.props.correctAnswerIndex,
+            answers: props.answers,
+            head: props.head,
+            correctAnswerIndex: props.correctAnswerIndex,
             pressedAnswerIndex: -1
         };
     }

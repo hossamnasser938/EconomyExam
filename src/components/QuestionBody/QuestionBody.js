@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, ScrollView, Button, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Button } from 'react-native';
 import styles from './styles';
 
-const QuestionBody = ( props ) = (
+const QuestionBody = ( props ) => (
     <View style = { styles.container }>
         <View style = { styles.questionHeadContainer }>
             <Text style = { styles.questionHeadText }>{ props.head }</Text>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
+import styles from './style';
 
 class TrainingScreen extends Component {
     onStartTraining = () => {
@@ -16,8 +17,9 @@ class TrainingScreen extends Component {
     
     render() {
         return(
-            <View>
+            <View style = { styles.container }>
                 <Button
+                    style = { styles.startButton }
                     title = "Start Training"
                     onPress = { this.onStartTraining }
                 />

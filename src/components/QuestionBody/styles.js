@@ -34,6 +34,9 @@ const styles = StyleSheet.create( {
         flexDirection: "row",
         justifyContent: "space-between",
         margin: 16
+    },
+    questionNumberText: {
+        fontSize: 22
     }
 } );
 

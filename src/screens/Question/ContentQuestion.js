@@ -70,6 +70,8 @@ class ContentQuestion extends Component {
                 answersComponents = { cQAnswersComponents }
                 nextHandler = { this.nextHandler }
                 previousHandler = { this.previousHandler }
+                currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
+                totalQuestionsCount = { this.props.chapterQuestions.length }
             />
         );
     }

@@ -17,6 +17,11 @@ const QuestionBody = ( props ) => (
                 title = "previous"
                 onPress = { props.previousHandler }
             />
+
+            <Text style = { styles.questionNumberText } >
+                { props.currentQuestionNumber } / { props.totalQuestionsCount }
+            </Text>
+
             <Button 
                 title = "next"
                 onPress = { props.nextHandler }

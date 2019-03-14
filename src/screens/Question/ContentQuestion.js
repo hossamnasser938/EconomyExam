@@ -17,7 +17,7 @@ class ContentQuestion extends Component {
             const newQuestionIndex = prevState.currentQuestionIndex + 1;
             
             if ( newQuestionIndex === this.props.chapterQuestions.length ) {
-                alert( "No more Questions" )
+                alert( "No Next Questions" )
                 return prevState;
             }
             else {
@@ -25,7 +25,23 @@ class ContentQuestion extends Component {
                     currentQuestionIndex: newQuestionIndex
                 };
             }
-        } )
+        } );
+    };
+
+    previousHandler = () => {
+        this.setState( prevState => {
+            const newQuestionIndex = prevState.currentQuestionIndex - 1;
+            
+            if ( newQuestionIndex === -1 ) {
+                alert( "No Previous Questions" )
+                return prevState;
+            }
+            else {
+                return {
+                    currentQuestionIndex: newQuestionIndex
+                };
+            }
+        } );
     };
 
     render() {
@@ -53,6 +69,7 @@ class ContentQuestion extends Component {
                 head = { cQHead }
                 answersComponents = { cQAnswersComponents }
                 nextHandler = { this.nextHandler }
+                previousHandler = { this.previousHandler }
             />
         );
     }

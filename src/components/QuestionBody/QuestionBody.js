@@ -12,9 +12,12 @@ const QuestionBody = ( props ) => (
             { props.answersComponents }
         </ScrollView>
 
-        <View style = { styles.nextButtonContainer }>
+        <View style = { styles.buttonsContainer }>
+            <Button
+                title = "previous"
+                onPress = { props.previousHandler }
+            />
             <Button 
-                style = { styles.nextButton }
                 title = "next"
                 onPress = { props.nextHandler }
             />

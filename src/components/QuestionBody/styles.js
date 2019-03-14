@@ -30,13 +30,10 @@ const styles = StyleSheet.create( {
         fontSize: 18,
         color: "black"
     },
-    nextButtonContainer: {
+    buttonsContainer: {
         flexDirection: "row",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
         margin: 16
-    },
-    nextButton: {
-         
     }
 } );
 

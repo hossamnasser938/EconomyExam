@@ -2,19 +2,48 @@ import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import styles from './style';
 import getAllQuestions from '../../../data/getAllQuestions';
+import preprocessQuestions from '../../../data/preprocessQuestions';
+import Papa from 'papaparse';
+import RNFS from 'react-native-fs';
+
 
 class TrainingScreen extends Component {
     onStartTraining = () => {
         console.log("lets get questions together");
-        getAllQuestions();
-        /*
-        this.props.navigator.push( {
-            screen: "EconomyExam.TrainQuestionScreen",
-            title: "Question",
-            passProps: {
-                questions: ["f", "ff"]
-            }
-        } );*/
+        getAllQuestions()
+        .then(results => {
+            console.log( "result:", results );
+            const files = results.map( result => result.name );
+            const promises = files.map( file => RNFS.readFileAssets('chapters/' + file) );
+            return Promise.all( promises );
+        } )
+        .then(contents => {
+            console.log( "contents:", contents )
+
+            const chaptersQuestions = contents.
+                map( content => Papa.parse( content ).data )
+            console.log( "chaptersQuestions:", chaptersQuestions );
+
+            const filteredChaptersQuestions = chaptersQuestions.
+                map( chaptersQuestions => preprocessQuestions( chaptersQuestions ) )
+            console.log( "filteredChaptersQuestions:", filteredChaptersQuestions );
+
+            const combinedQuestions = filteredChaptersQuestions.
+                reduce( ( accumulator, singleChapterQuestions ) => 
+                    accumulator.concat( singleChapterQuestions ), [] );
+            console.log("combinedQuestions:", combinedQuestions);
+
+            this.props.navigator.push( {
+                screen: "EconomyExam.TrainQuestionScreen",
+                title: "Question",
+                passProps: {
+                    questions: combinedQuestions
+                }
+            } );
+        })
+        .catch( reason => {
+            console.log( "error due to:", reason );  
+        });
     };
     
     render() {

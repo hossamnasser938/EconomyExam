@@ -22,7 +22,8 @@ class TrainQuestion extends Component {
             }
             else {
                 return {
-                    currentQuestionIndex: newQuestionIndex
+                    currentQuestionIndex: newQuestionIndex,
+                    pressedAnswerIndex: -1
                 };
             }
         } );
@@ -38,7 +39,8 @@ class TrainQuestion extends Component {
             }
             else {
                 return {
-                    currentQuestionIndex: newQuestionIndex
+                    currentQuestionIndex: newQuestionIndex,
+                    pressedAnswerIndex: -1
                 };
             }
         } );

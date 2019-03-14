@@ -3,6 +3,7 @@ import { View, Button } from 'react-native';
 import styles from './style';
 import getAllQuestions from '../../../data/getAllQuestions';
 import preprocessQuestions from '../../../data/preprocessQuestions';
+import shuffle from '../../../data/shuffleArray';
 import Papa from 'papaparse';
 import RNFS from 'react-native-fs';
 
@@ -33,11 +34,14 @@ class TrainingScreen extends Component {
                     accumulator.concat( singleChapterQuestions ), [] );
             console.log("combinedQuestions:", combinedQuestions);
 
+            const shuffledQuestions = shuffle( combinedQuestions );
+            console.log( "shuffledQuestions:", shuffledQuestions );
+
             this.props.navigator.push( {
                 screen: "EconomyExam.TrainQuestionScreen",
                 title: "Question",
                 passProps: {
-                    questions: combinedQuestions
+                    questions: shuffledQuestions
                 }
             } );
         })

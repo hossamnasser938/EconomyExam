@@ -9,8 +9,6 @@ import Papa from 'papaparse';
 
 class ContentScreen extends Component {
     onChapterPress = ( chapter ) => {
-        console.log("get " + chapter, "questions");
-
         const chapterQuestionsPromise = getChapterQuestions( chapter );
 
         chapterQuestionsPromise.then( result => {
@@ -25,6 +23,8 @@ class ContentScreen extends Component {
                     chapterQuestions: filteredQuestions
                 }
             } );
+        }).catch( reason => {
+            alert( chapter + " does not exist yet");
         });
     };
 

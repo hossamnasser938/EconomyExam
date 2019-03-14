@@ -16,6 +16,7 @@ const QuestionBody = ( props ) => (
             <Button 
                 style = { styles.nextButton }
                 title = "next"
+                onPress = { props.nextHandler }
             />
         </View>
     </View>

@@ -3,6 +3,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import Chapter from '../../../components/Chapter/Chapter';
 import styles from './styles';
 import getChapterQuestions from '../../../data/getChapterQuestions';
+import preprocessQuestions from '../../../data/preprocessQuestions';
 import Papa from 'papaparse';
 
 
@@ -13,16 +14,15 @@ class ContentScreen extends Component {
         const chapterQuestionsPromise = getChapterQuestions( chapter );
 
         chapterQuestionsPromise.then( result => {
-            console.log( "result: ", result );
+            const questions = Papa.parse( result ).data;
 
-            chapterQuestions = Papa.parse( result ).data;
-            console.log( "content: got questions", chapterQuestions );
+            const filteredQuestions = preprocessQuestions( questions )
 
             this.props.navigator.push( {
                 screen: "EconomyExam.ContentQuestionScreen",
                 title: "Question",
                 passProps: {
-                    chapterQuestions
+                    chapterQuestions: filteredQuestions
                 }
             } );
         });

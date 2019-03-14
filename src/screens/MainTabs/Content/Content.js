@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import Chapter from '../../../components/Chapter/Chapter';
 import styles from './styles';
-// import test from '../../../data/test';
+import test from '../../../data/test';
 
 class ContentScreen extends Component {
     onChapterPress = () => {
@@ -18,7 +18,7 @@ class ContentScreen extends Component {
     };
 
     render() {
-        //test();
+        test();
         
         const chapters = ["chapter 1", "chapter 2", "chapter 3", "chapter 4", "chapter 5"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (

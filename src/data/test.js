@@ -1,16 +1,15 @@
+import RNFS from 'react-native-fs';
 import Papa from 'papaparse';
-import file from './data.csv';
 
 const test = () => {
-    console.log( "start parsing" );
+
+    console.log( "test assets folder" );
     
-    Papa.parse( file, {
-        download: true,
-        delimeter: "\t",
-        complete: result => {
-            console.log( "result:", result.data );
-        }
-    });
+    RNFS.readFileAssets('test.csv').then( result => {
+        data = Papa.parse( result );
+
+        console.log( data );
+    })
 };
 
 export default test;

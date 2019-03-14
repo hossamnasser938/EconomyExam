@@ -5,19 +5,24 @@ import styles from '../../components/QuestionBody/styles';
 
 class ContentQuestion extends Component {
     constructor( props ) {
+        console.log( "new code" );
         super( props );
         this.state = {
-            answers: props.answers,
-            head: props.head,
-            correctAnswerIndex: props.correctAnswerIndex
+            chapterQuestions: props.chapterQuestions,
+            currentQuestionIndex: 0
         };
     }
-
+    
     render() {
-        const answers = this.state.answers;
-        const answersComponents = answers.map( ( answer, index ) => {
+        const cQIndex = this.state.currentQuestionIndex; 
+        const cQuestion = this.state.chapterQuestions[ cQIndex ];
+        const cQHead = cQuestion[0];
+        const correctAnswerIndex = cQuestion[ cQuestion.length - 1 ] - 1;
+        const cQAnswers = cQuestion.filter( ( value, index ) => index !== 0 && index !== cQuestion.length - 1 );
+
+        const cQAnswersComponents = cQAnswers.map( ( answer, index ) => {
             let itemStyles = [ styles.answerContainer ];
-            if ( index == this.state.correctAnswerIndex ) {
+            if ( index == correctAnswerIndex ) {
                 itemStyles.push( styles.correctAnswerContainer );
             }
 
@@ -30,8 +35,8 @@ class ContentQuestion extends Component {
 
         return(
             <QuestionBody 
-                head = { this.state.head }
-                answersComponents = { answersComponents }
+                head = { cQHead }
+                answersComponents = { cQAnswersComponents }
             />
         );
     }

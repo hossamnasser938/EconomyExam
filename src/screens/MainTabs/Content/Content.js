@@ -2,27 +2,36 @@ import React, { Component } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import Chapter from '../../../components/Chapter/Chapter';
 import styles from './styles';
-import test from '../../../data/test';
+import getChapterQuestions from '../../../data/getChapterQuestions';
+import Papa from 'papaparse';
+
 
 class ContentScreen extends Component {
-    onChapterPress = () => {
-        this.props.navigator.push( {
-            screen: "EconomyExam.ContentQuestionScreen",
-            title: "Question",
-            passProps: {
-                head: "إزي الحال",
-                answers: ["زي الفل", "زي العسل", "تمام الحمد لله"],
-                correctAnswerIndex: 2
-            }
-        } );
+    onChapterPress = ( chapter ) => {
+        console.log("get " + chapter, "questions");
+
+        const chapterQuestionsPromise = getChapterQuestions( chapter );
+
+        chapterQuestionsPromise.then( result => {
+            console.log( "result: ", result );
+
+            chapterQuestions = Papa.parse( result ).data;
+            console.log( "content: got questions", chapterQuestions );
+
+            this.props.navigator.push( {
+                screen: "EconomyExam.ContentQuestionScreen",
+                title: "Question",
+                passProps: {
+                    chapterQuestions
+                }
+            } );
+        });
     };
 
     render() {
-        test();
-        
         const chapters = ["chapter 1", "chapter 2", "chapter 3", "chapter 4", "chapter 5"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (
-            <TouchableOpacity key = { index } onPress = { this.onChapterPress }>
+            <TouchableOpacity key = { index } onPress = { () => this.onChapterPress( chapters[index] ) }>
                 <Chapter name = { chapter } />
             </TouchableOpacity> 
         ) );

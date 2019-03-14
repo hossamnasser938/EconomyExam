@@ -14,9 +14,17 @@ class ContentQuestion extends Component {
     
     nextHandler = () => {
         this.setState( prevState => {
-            return {
-                currentQuestionIndex: prevState.currentQuestionIndex + 1
-            };
+            const newQuestionIndex = prevState.currentQuestionIndex + 1;
+            
+            if ( newQuestionIndex === this.props.chapterQuestions.length ) {
+                alert( "No more Questions" )
+                return prevState;
+            }
+            else {
+                return {
+                    currentQuestionIndex: newQuestionIndex
+                };
+            }
         } )
     };
 

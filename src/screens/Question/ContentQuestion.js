@@ -5,7 +5,6 @@ import styles from '../../components/QuestionBody/styles';
 
 class ContentQuestion extends Component {
     constructor( props ) {
-        console.log("all questions", props.chapterQuestions);
         super( props );
         this.state = {
             currentQuestionIndex: 0

@@ -7,12 +7,42 @@ class TrainQuestion extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            answers: props.answers,
-            head: props.head,
-            correctAnswerIndex: props.correctAnswerIndex,
+            currentQuestionIndex: 0,
             pressedAnswerIndex: -1
         };
     }
+
+    nextHandler = () => {
+        this.setState( prevState => {
+            const newQuestionIndex = prevState.currentQuestionIndex + 1;
+            
+            if ( newQuestionIndex === this.props.questions.length ) {
+                alert( "No Next Questions" )
+                return prevState;
+            }
+            else {
+                return {
+                    currentQuestionIndex: newQuestionIndex
+                };
+            }
+        } );
+    };
+
+    previousHandler = () => {
+        this.setState( prevState => {
+            const newQuestionIndex = prevState.currentQuestionIndex - 1;
+            
+            if ( newQuestionIndex === -1 ) {
+                alert( "No Previous Questions" )
+                return prevState;
+            }
+            else {
+                return {
+                    currentQuestionIndex: newQuestionIndex
+                };
+            }
+        } );
+    };
 
     onAnswerPressed = ( key ) => {
         console.log( "Item pressed", key )
@@ -22,11 +52,16 @@ class TrainQuestion extends Component {
     }
 
     render() {
-        const answers = this.state.answers;
-        const answersComponents = answers.map( ( answer, index ) => {
+        const cQuestion = this.props.questions[this.state.currentQuestionIndex]; 
+        
+        const cQHead = cQuestion[0];
+        const correctAnswerIndex = cQuestion[ cQuestion.length - 1 ] - 1;
+        const cQAnswers = cQuestion.slice(1, cQuestion.length - 1);
+
+        const cQAnswersComponents = cQAnswers.map( ( answer, index ) => {
             let itemStyles = [ styles.answerContainer ];
             if ( this.state.pressedAnswerIndex == index ) {
-                if ( index == this.state.correctAnswerIndex ) {
+                if ( index == correctAnswerIndex ) {
                     itemStyles.push( styles.correctAnswerContainer );
                 }
                 else {
@@ -45,8 +80,12 @@ class TrainQuestion extends Component {
 
         return(
             <QuestionBody 
-                head = { this.state.head }
-                answersComponents = { answersComponents }
+                head = { cQHead }
+                answersComponents = { cQAnswersComponents }
+                nextHandler = { this.nextHandler }
+                previousHandler = { this.previousHandler }
+                currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
+                totalQuestionsCount = { this.props.questions.length }
             />
         );
     }

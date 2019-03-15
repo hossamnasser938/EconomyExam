@@ -8,7 +8,9 @@ class TrainQuestion extends Component {
         super( props );
         this.state = {
             currentQuestionIndex: 0,
-            pressedAnswerIndex: -1
+            pressedAnswerIndex: -1,
+            previousEnabled: false,
+            nextEnabled: true
         };
     }
 
@@ -16,16 +18,22 @@ class TrainQuestion extends Component {
         this.setState( prevState => {
             const newQuestionIndex = prevState.currentQuestionIndex + 1;
             
-            if ( newQuestionIndex === this.props.questions.length ) {
-                alert( "No Next Questions" )
-                return prevState;
+            let newPreviousEnabled = prevState.previousEnabled;
+            if (  newQuestionIndex === 1 ) {
+                newPreviousEnabled = !newPreviousEnabled; 
             }
-            else {
-                return {
-                    currentQuestionIndex: newQuestionIndex,
-                    pressedAnswerIndex: -1
-                };
+        
+            let newNextEnabled = prevState.nextEnabled;
+            if ( newQuestionIndex === this.props.questions.length - 1 ) {
+                newNextEnabled = !newNextEnabled;
             }
+
+            return {
+                currentQuestionIndex: newQuestionIndex,
+                previousEnabled: newPreviousEnabled,
+                nextEnabled: newNextEnabled,
+                pressedAnswerIndex: -1
+            };
         } );
     };
 
@@ -33,16 +41,22 @@ class TrainQuestion extends Component {
         this.setState( prevState => {
             const newQuestionIndex = prevState.currentQuestionIndex - 1;
             
-            if ( newQuestionIndex === -1 ) {
-                alert( "No Previous Questions" )
-                return prevState;
+            let newPreviousEnabled = prevState.previousEnabled;
+            if (  newQuestionIndex === 0 ) {
+                newPreviousEnabled = !newPreviousEnabled; 
             }
-            else {
-                return {
-                    currentQuestionIndex: newQuestionIndex,
-                    pressedAnswerIndex: -1
-                };
+        
+            let newNextEnabled = prevState.nextEnabled;
+            if ( newQuestionIndex === this.props.questions.length - 2 ) {
+                newNextEnabled = !newNextEnabled;
             }
+
+            return {
+                currentQuestionIndex: newQuestionIndex,
+                previousEnabled: newPreviousEnabled,
+                nextEnabled: newNextEnabled,
+                pressedAnswerIndex: -1
+            };
         } );
     };
 
@@ -88,6 +102,8 @@ class TrainQuestion extends Component {
                 previousHandler = { this.previousHandler }
                 currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
                 totalQuestionsCount = { this.props.questions.length }
+                previousEnabled = { this.state.previousEnabled }
+                nextEnabled = { this.state.nextEnabled }
             />
         );
     }

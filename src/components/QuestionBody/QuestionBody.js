@@ -16,6 +16,7 @@ const QuestionBody = ( props ) => (
             <Button
                 title = "previous"
                 onPress = { props.previousHandler }
+                disabled = { !props.previousEnabled }
             />
 
             <Text style = { styles.questionNumberText } >
@@ -25,6 +26,7 @@ const QuestionBody = ( props ) => (
             <Button 
                 title = "next"
                 onPress = { props.nextHandler }
+                disabled = { !props.nextEnabled }
             />
         </View>
     </View>

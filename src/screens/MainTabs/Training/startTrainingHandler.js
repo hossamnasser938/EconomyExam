@@ -9,7 +9,8 @@ function startTrainingHandler() {
 
     this.props.navigator.showModal( {
         screen: "EconomyExam.LoadingModalScreen",
-        animationType: "none"
+        animationType: "none",
+        overrideBackPress: true
     } );
 
     getAllQuestions()

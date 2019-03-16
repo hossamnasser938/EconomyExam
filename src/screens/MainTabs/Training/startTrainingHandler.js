@@ -39,10 +39,6 @@ function startTrainingHandler() {
             const shuffledQuestions = shuffle( combinedQuestions );
             console.log( "shuffledQuestions:", shuffledQuestions );
 
-            this.props.navigator.dismissModal( {    
-                animationType: "none"
-            } );
-
             this.props.navigator.push( {
                 screen: "EconomyExam.TrainQuestionScreen",
                 title: "Question",
@@ -50,13 +46,18 @@ function startTrainingHandler() {
                     questions: shuffledQuestions
                 }
             } );
+
+            this.props.navigator.dismissModal( {    
+                animationType: "none"
+            } );
         })
         .catch( reason => {
             this.props.navigator.dismissModal( {
-            
+                animationType: "none"
             } );
 
             console.log( "error due to:", reason );  
+            alert("Error occurred, please try again");
         });
 }
 

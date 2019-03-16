@@ -4,6 +4,7 @@ import Chapter from '../../../components/Chapter/Chapter';
 import styles from './styles';
 import chapterPressHandler from './chapterPressHandler';
 
+
 class ContentScreen extends Component {
     onChapterPress = ( chapter ) => {
         const validChapterPressHandler = chapterPressHandler.bind( this );

@@ -7,6 +7,11 @@ import RNFS from 'react-native-fs';
 function startTrainingHandler() {
     console.log( "from start training handler" );
 
+    this.props.navigator.showModal( {
+        screen: "EconomyExam.LoadingModalScreen",
+        animationType: "none"
+    } );
+
     getAllQuestions()
         .then(results => {
             console.log( "result:", results );
@@ -33,6 +38,10 @@ function startTrainingHandler() {
             const shuffledQuestions = shuffle( combinedQuestions );
             console.log( "shuffledQuestions:", shuffledQuestions );
 
+            this.props.navigator.dismissModal( {    
+                animationType: "none"
+            } );
+
             this.props.navigator.push( {
                 screen: "EconomyExam.TrainQuestionScreen",
                 title: "Question",
@@ -42,6 +51,10 @@ function startTrainingHandler() {
             } );
         })
         .catch( reason => {
+            this.props.navigator.dismissModal( {
+            
+            } );
+
             console.log( "error due to:", reason );  
         });
 }

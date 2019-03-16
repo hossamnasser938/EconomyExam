@@ -6,15 +6,45 @@ import chapterPressHandler from './chapterPressHandler';
 
 
 class ContentScreen extends Component {
+    constructor( props ) {
+        super( props );
+        this.state = {
+            touchablesDisabled: false
+        };
+        props.navigator.setOnNavigatorEvent( event => {
+            if ( event.id === "willAppear" ) {
+                this.enableTouchables();
+            }
+        } )
+    }
+
+    toggleTouchables() {
+        this.setState( prevState => {
+            return {
+                touchablesDisabled: !prevState.touchablesDisabled
+            }
+        } );
+    }
+
+    enableTouchables() {
+        this.setState( {
+            touchablesDisabled: false
+        } );
+    }
+
     onChapterPress = ( chapter ) => {
         const validChapterPressHandler = chapterPressHandler.bind( this );
-        validChapterPressHandler( chapter );
+        validChapterPressHandler( chapter, this.toggleTouchables.bind( this ) );
     };
 
     render() {
         const chapters = ["chapter 1", "chapter 2", "chapter 3", "chapter 4", "chapter 5"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (
-            <TouchableOpacity key = { index } onPress = { () => this.onChapterPress( chapters[index] ) }>
+            <TouchableOpacity 
+                key = { index } 
+                onPress = { () => this.onChapterPress( chapters[index] ) }
+                disabled = { this.state.touchablesDisabled }    
+            >
                 <Chapter name = { chapter } />
             </TouchableOpacity> 
         ) );

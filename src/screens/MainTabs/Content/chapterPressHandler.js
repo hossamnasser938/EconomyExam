@@ -4,10 +4,6 @@ import Papa from 'papaparse';
 
 function chapterPressHandler ( chapter ) {
     console.log( "from chapter press handler with modal" );
-    this.props.navigator.showModal( {
-        screen: "EconomyExam.LoadingModalScreen",
-        animationType: "none"
-    } );
 
     const chapterQuestionsPromise = getChapterQuestions( chapter );
 
@@ -15,10 +11,6 @@ function chapterPressHandler ( chapter ) {
         const questions = Papa.parse( result ).data;
 
         const filteredQuestions = preprocessQuestions( questions )
-
-        this.props.navigator.dismissModal( {
-            animationType: "none"
-        } );
 
         this.props.navigator.push( {
             screen: "EconomyExam.ContentQuestionScreen",
@@ -28,10 +20,6 @@ function chapterPressHandler ( chapter ) {
             }
         } );
     }).catch( reason => {
-        this.props.navigator.dismissModal( {
-            animationType: "none"
-        } );
-
         alert( chapter + " does not exist yet");
     });
 }

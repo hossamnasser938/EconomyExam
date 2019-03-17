@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, ScrollView, Button } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import DefaultButton from '../UI/DefaultButton/DefaultButton';
 import styles from './styles';
 
 const QuestionBody = ( props ) => (
@@ -13,7 +14,7 @@ const QuestionBody = ( props ) => (
         </ScrollView>
 
         <View style = { styles.buttonsContainer }>
-            <Button
+            <DefaultButton
                 title = "previous"
                 onPress = { props.previousHandler }
                 disabled = { !props.previousEnabled }
@@ -23,7 +24,7 @@ const QuestionBody = ( props ) => (
                 { props.currentQuestionNumber } / { props.totalQuestionsCount }
             </Text>
 
-            <Button 
+            <DefaultButton 
                 title = "next"
                 onPress = { props.nextHandler }
                 disabled = { !props.nextEnabled }

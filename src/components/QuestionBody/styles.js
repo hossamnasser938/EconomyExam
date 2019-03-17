@@ -7,7 +7,7 @@ const styles = StyleSheet.create( {
     },
     questionHeadContainer: {
         margin: 16,
-        backgroundColor: "#987"
+        backgroundColor: "#BDBDBD"
     },
     questionHeadText: {
         fontSize: 24,

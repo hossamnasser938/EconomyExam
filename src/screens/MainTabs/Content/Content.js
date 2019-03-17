@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
+import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import Chapter from '../../../components/Chapter/Chapter';
 import styles from './styles';
 import chapterPressHandler from './chapterPressHandler';
@@ -40,13 +41,13 @@ class ContentScreen extends Component {
     render() {
         const chapters = ["chapter 1", "chapter 2", "chapter 3", "chapter 4", "chapter 5"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (
-            <TouchableOpacity 
-                key = { index } 
-                onPress = { () => this.onChapterPress( chapters[index] ) }
-                disabled = { this.state.touchablesDisabled }    
-            >
-                <Chapter name = { chapter } />
-            </TouchableOpacity> 
+            <View style = { styles.chapterContainer } key = { index }>
+                <DefaultButton
+                    title = { chapters[index] } 
+                    onPress = { () => this.onChapterPress( chapters[index] ) }
+                    disabled = { this.state.touchablesDisabled }
+                />
+            </View>
         ) );
 
         return(

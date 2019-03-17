@@ -9,6 +9,9 @@ const styles = StyleSheet.create( {
     },
     listContainer: {
         flex:1
+    },
+    chapterContainer: {
+        margin: 8
     }
 } );
 

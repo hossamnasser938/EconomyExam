@@ -20,7 +20,9 @@ const startMainTabs = () => {
                     label: "Training",
                     icon: sources[1]
                 }
-            ] } 
+            ],
+            animationType: "none"
+        } 
         );
     } );
 };

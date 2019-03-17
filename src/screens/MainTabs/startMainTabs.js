@@ -21,6 +21,12 @@ const startMainTabs = () => {
                     icon: sources[1]
                 }
             ],
+            tabsStyle: {
+                tabBarSelectedButtonColor: "#123"
+            },
+            appStyle: {
+                tabBarSelectedButtonColor: "#123"
+            },
             animationType: "fade"
         } 
         );

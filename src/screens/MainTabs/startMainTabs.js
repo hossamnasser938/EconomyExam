@@ -21,7 +21,7 @@ const startMainTabs = () => {
                     icon: sources[1]
                 }
             ],
-            animationType: "none"
+            animationType: "fade"
         } 
         );
     } );

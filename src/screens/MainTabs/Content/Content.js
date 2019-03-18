@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
-import Chapter from '../../../components/Chapter/Chapter';
 import styles from './styles';
 import chapterPressHandler from './chapterPressHandler';
 

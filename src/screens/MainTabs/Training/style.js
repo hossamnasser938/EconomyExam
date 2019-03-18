@@ -5,6 +5,10 @@ const styles = StyleSheet.create( {
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
+    },
+    inputContainer: {
+        width: "80%",
+        marginBottom: 16
     }
 } );
 

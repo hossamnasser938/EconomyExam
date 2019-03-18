@@ -4,14 +4,8 @@ import shuffle from '../../../data/shuffleArray';
 import Papa from 'papaparse';
 import RNFS from 'react-native-fs';
 
-function startTrainingHandler() {
+const getQuestionsReady = ( onQuestionsReady, onError ) => {
     console.log( "from start training handler" );
-
-    this.props.navigator.showModal( {
-        screen: "EconomyExam.LoadingModalScreen",
-        animationType: "none",
-        overrideBackPress: true
-    } );
 
     getAllQuestions()
         .then(results => {
@@ -38,27 +32,13 @@ function startTrainingHandler() {
 
             const shuffledQuestions = shuffle( combinedQuestions );
             console.log( "shuffledQuestions:", shuffledQuestions );
-
-            this.props.navigator.push( {
-                screen: "EconomyExam.TrainQuestionScreen",
-                title: "Question",
-                passProps: {
-                    questions: shuffledQuestions
-                }
-            } );
-
-            this.props.navigator.dismissModal( {    
-                animationType: "none"
-            } );
+                
+            onQuestionsReady( shuffledQuestions );
         })
         .catch( reason => {
-            this.props.navigator.dismissModal( {
-                animationType: "none"
-            } );
-
             console.log( "error due to:", reason );  
-            alert("Error occurred, please try again");
+            onError();
         });
 }
 
-export default startTrainingHandler;
+export default getQuestionsReady;

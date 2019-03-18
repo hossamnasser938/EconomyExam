@@ -14,13 +14,15 @@ class LoadingModal extends Component {
         };
         interval = setInterval(
             () => {
+                console.log("inside interval");
                 this.setState( prevState => {
                     return {
                         currentPattern: (prevState.currentPattern + 1) % 3
                     }
                 } );
+                props.checkToDismissModal();
             },
-            100            
+            500            
         );
     }
 

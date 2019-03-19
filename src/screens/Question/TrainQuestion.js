@@ -6,7 +6,7 @@ import styles from '../../components/QuestionBody/styles';
 class TrainQuestion extends Component {
     constructor( props ) {
         super( props );
-        this.questionsCount = (props.questionsCount === 0)? this.props.questions.length : props.questionsCount;
+        this.questionsCount = (props.questionsCount === 0 || props.questionsCount > this.props.questions.length)? this.props.questions.length : props.questionsCount;
         this.state = {
             currentQuestionIndex: 0,
             pressedAnswerIndex: -1,

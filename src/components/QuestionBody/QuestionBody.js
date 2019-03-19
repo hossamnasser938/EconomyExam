@@ -1,37 +1,85 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, ScrollView, Dimensions } from 'react-native';
 import DefaultButton from '../UI/DefaultButton/DefaultButton';
 import styles from './styles';
 
-const QuestionBody = ( props ) => (
-    <View style = { styles.container }>
-        <View style = { styles.questionHeadContainer }>
-            <Text style = { styles.questionHeadText }>{ props.head }</Text>
-        </View>
 
-        <ScrollView style = { styles.answersListContainer }>
-            { props.answersComponents }
-        </ScrollView>
+class QuestionBody extends Component {
+    constructor( props ) {
+        super( props );
+        this.state = {
+            portraitMode: (Dimensions.get("window").width < 500)? true: false
+        }
+        Dimensions.addEventListener( "change", this.onDimensionsChange );
+    }
 
-        <View style = { styles.buttonsContainer }>
-            <DefaultButton
-                title = "previous"
-                onPress = { props.previousHandler }
-                disabled = { !props.previousEnabled }
-            />
+    onDimensionsChange = event => {
+        console.log( "صباح العسل" );
+        console.log( event );
+        console.log( "portraitMode: ", this.state.portraitMode );
+        this.setState( {
+            portraitMode: (Dimensions.get("window").width < 500)? true: false
+        } );
+    };
 
-            <Text style = { styles.questionNumberText } >
-                { props.currentQuestionNumber } / { props.totalQuestionsCount }
-            </Text>
+    componentWillUnmount() {
+        Dimensions.removeEventListener( "change", this.onDimensionsChange );
+    }
 
-            <DefaultButton 
-                title = "next"
-                onPress = { props.nextHandler }
-                disabled = { !props.nextEnabled }
-            />
-        </View>
-    </View>
-);
+    render() {
+        const questionContainer = (
+            <View style = { this.state.portraitMode? styles.questionHeadContainer: [styles.questionHeadContainer, styles.landscapeQuestionHeadContainer] }>
+                <Text style = { styles.questionHeadText }>{ this.props.head }</Text>
+            </View>
+        );
 
+        const answersContainer = (
+            <ScrollView style = { styles.answersListContainer }>
+                { this.props.answersComponents }
+            </ScrollView>
+        );
+
+        const buttonsContainer = (
+            <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer]: styles.buttonsContainer }>
+                <DefaultButton
+                    title = "previous"
+                    onPress = { this.props.previousHandler }
+                    disabled = { !this.props.previousEnabled }
+                />
+
+                <Text style = { styles.questionNumberText } >
+                    { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
+                </Text>
+
+                <DefaultButton 
+                    title = "next"
+                    onPress = { this.props.nextHandler }
+                    disabled = { !this.props.nextEnabled }
+                />
+            </View>
+        );
+
+        let content;
+        if ( this.state.portraitMode ) {
+            content = (
+                <View style = { this.state.portraitMode? [styles.container, styles.portraitContainer]: [styles.container, styles.landscapeContainer] }>
+                    { questionContainer }
+                    { answersContainer }
+                    { buttonsContainer }
+                </View>
+            );
+        } else {
+            content = (
+                <View style = { this.state.portraitMode? [styles.container, styles.portraitContainer]: [styles.container, styles.landscapeContainer] }>
+                    { answersContainer }
+                    { questionContainer }
+                    { buttonsContainer }
+                </View>
+            );
+        }
+
+        return ( content );
+    }    
+}
 export default QuestionBody;
 

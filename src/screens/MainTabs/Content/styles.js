@@ -8,10 +8,13 @@ const styles = StyleSheet.create( {
         alignItems: "stretch"
     },
     listContainer: {
-        flex:1
+        flex:1,
+        alignItems: "center"
     },
     chapterContainer: {
-        margin: 8
+        width: "80%",
+        marginTop: 8,
+        marginBottom: 8
     }
 } );
 

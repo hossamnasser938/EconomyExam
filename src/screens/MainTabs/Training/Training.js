@@ -137,7 +137,7 @@ class TrainingScreen extends Component {
             content = (
                 <View style = { styles.fieldContainer }>
                     <Text style = { styles.errorText}>
-                        Enter a poitive integer number
+                        Enter a positive integer or check the box
                     </Text>
                 </View>
             );

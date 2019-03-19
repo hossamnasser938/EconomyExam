@@ -6,19 +6,27 @@ const styles = StyleSheet.create( {
         alignItems: "stretch"  
     },
     questionHeadContainer: {
-        margin: 16,
-        backgroundColor: "#BDBDBD"
+        margin: 8,
+        padding: 4,
+        backgroundColor: "#BDBDBD",
+        borderColor: "#123",
+        borderWidth: 3,
+        borderRadius: 10
     },
     questionHeadText: {
-        fontSize: 24,
-        color: "white"
+        color: "white",
+        fontSize: 18
     },
     answersListContainer: {
-        margin: 8
+        margin: 4
     },
     answerContainer: {
         backgroundColor: "white",
-        margin: 8
+        margin: 4,
+        padding: 4,
+        borderColor: "#123",
+        borderWidth: 2,
+        borderRadius: 5
     },
     correctAnswerContainer: {
         backgroundColor: "green"
@@ -27,16 +35,17 @@ const styles = StyleSheet.create( {
         backgroundColor: "red"
     },
     answerText: {
-        fontSize: 18,
-        color: "black"
+        color: "black",
+        fontSize: 14
     },
     buttonsContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        margin: 16
+        alignItems: "center",
+        margin: 8
     },
     questionNumberText: {
-        fontSize: 22
+        fontSize: 18
     }
 } );
 

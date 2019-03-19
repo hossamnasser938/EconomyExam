@@ -51,7 +51,7 @@ class ContentScreen extends Component {
 
         return(
             <View style = { styles.container }>
-                <ScrollView style = { styles.listContainer }>
+                <ScrollView contentContainerStyle = { styles.listContainer }>
                     { chaptersComponents }
                 </ScrollView>
             </View>

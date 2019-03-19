@@ -28,9 +28,9 @@ class QuestionBody extends Component {
 
     render() {
         const questionContainer = (
-            <View style = { this.state.portraitMode? styles.questionHeadContainer: [styles.questionHeadContainer, styles.landscapeQuestionHeadContainer] }>
+            <ScrollView style = { this.state.portraitMode? styles.questionHeadContainer: [styles.questionHeadContainer, styles.landscapeQuestionHeadContainer] }>
                 <Text style = { styles.questionHeadText }>{ this.props.head }</Text>
-            </View>
+            </ScrollView>
         );
 
         const answersContainer = (

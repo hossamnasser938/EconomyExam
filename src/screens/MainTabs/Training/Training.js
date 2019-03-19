@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
 import DefaultCheckBox from '../../../components/UI/DefaultCheckBox/DefaultCheckBox';
@@ -144,7 +144,7 @@ class TrainingScreen extends Component {
         }
 
         return(
-            <View style = { styles.container }>
+            <ScrollView contentContainerStyle = { styles.container }>
                 <View style = { styles.fieldContainer }>
                     <DefaultInput
                     placeholder = "Enter Number of Questions"
@@ -168,7 +168,7 @@ class TrainingScreen extends Component {
                     />
                 </View>
                 { content }
-            </View>
+            </ScrollView>
         );
     }
 }

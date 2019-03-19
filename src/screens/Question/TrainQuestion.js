@@ -6,6 +6,7 @@ import styles from '../../components/QuestionBody/styles';
 class TrainQuestion extends Component {
     constructor( props ) {
         super( props );
+        this.questionsCount = (props.questionsCount === 0)? this.props.questions.length : props.questionsCount;
         this.state = {
             currentQuestionIndex: 0,
             pressedAnswerIndex: -1,
@@ -24,7 +25,7 @@ class TrainQuestion extends Component {
             }
         
             let newNextEnabled = prevState.nextEnabled;
-            if ( newQuestionIndex === this.props.questions.length - 1 ) {
+            if ( newQuestionIndex === this.questionsCount - 1 ) {
                 newNextEnabled = !newNextEnabled;
             }
 
@@ -47,7 +48,7 @@ class TrainQuestion extends Component {
             }
         
             let newNextEnabled = prevState.nextEnabled;
-            if ( newQuestionIndex === this.props.questions.length - 2 ) {
+            if ( newQuestionIndex === this.questionsCount - 2 ) {
                 newNextEnabled = !newNextEnabled;
             }
 
@@ -101,7 +102,7 @@ class TrainQuestion extends Component {
                 nextHandler = { this.nextHandler }
                 previousHandler = { this.previousHandler }
                 currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
-                totalQuestionsCount = { this.props.questions.length }
+                totalQuestionsCount = { this.questionsCount }
                 previousEnabled = { this.state.previousEnabled }
                 nextEnabled = { this.state.nextEnabled }
             />

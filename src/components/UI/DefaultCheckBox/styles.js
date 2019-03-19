@@ -2,16 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create( {
     container: {
-        flex: 1,
-        justifyContent: "center",
+        flexDirection: "row",
         alignItems: "center"
     },
-    fieldContainer: {
-        width: "80%",
-        marginBottom: 16
-    },
-    errorText: {
-        color: "red"
+    text: {
+        margin: 8
     }
 } );
 

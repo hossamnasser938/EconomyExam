@@ -144,30 +144,32 @@ class TrainingScreen extends Component {
         }
 
         return(
-            <ScrollView contentContainerStyle = { styles.container }>
-                <View style = { styles.fieldContainer }>
-                    <DefaultInput
-                    placeholder = "Enter Number of Questions"
-                    keyboardType = "numeric"
-                    onChangeText = { this.onChangeInput }
-                    />
-                </View>
+            <ScrollView contentContainerStyle = { styles.outerContainer }>
+                <View style = { styles.innerContainer }>
+                    <View style = { styles.fieldContainer }>
+                        <DefaultInput
+                        placeholder = "Enter Number of Questions"
+                        keyboardType = "numeric"
+                        onChangeText = { this.onChangeInput }
+                        />
+                    </View>
 
-                <View style = { styles.fieldContainer }>
-                    <DefaultCheckBox 
-                        title = "or train on all questions"
-                        onValueChange = { this.onChangeCheckBox }
-                        value = { this.state.checked }
-                    />
-                </View>
+                    <View style = { styles.fieldContainer }>
+                        <DefaultCheckBox 
+                            title = "or train on all questions"
+                            onValueChange = { this.onChangeCheckBox }
+                            value = { this.state.checked }
+                        />
+                    </View>
 
-                <View style = { styles.fieldContainer }>
-                    <DefaultButton
-                        title = "Start Training"
-                        onPress = { this.onStartTraining }
-                    />
+                    <View style = { styles.fieldContainer }>
+                        <DefaultButton
+                            title = "Start Training"
+                            onPress = { this.onStartTraining }
+                        />
+                    </View>
+                    { content }
                 </View>
-                { content }
             </ScrollView>
         );
     }

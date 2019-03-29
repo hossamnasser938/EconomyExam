@@ -2,13 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create( {
     container: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "stretch"
+        flexGrow: 1
     },
     listContainer: {
-        flex:1,
+        flex: 1,
+        justifyContent: "center",
         alignItems: "center"
     },
     chapterContainer: {

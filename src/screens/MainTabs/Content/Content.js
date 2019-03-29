@@ -38,7 +38,7 @@ class ContentScreen extends Component {
     };
 
     render() {
-        const chapters = ["chapter 1", "chapter 2", "chapter 3", "chapter 4", "chapter 5"];
+        const chapters = ["chapter 1", "chapter 2", "chapter 3"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (
             <View style = { styles.chapterContainer } key = { index }>
                 <DefaultButton
@@ -50,11 +50,11 @@ class ContentScreen extends Component {
         ) );
 
         return(
-            <View style = { styles.container }>
-                <ScrollView contentContainerStyle = { styles.listContainer }>
+            <ScrollView contentContainerStyle = { styles.container }>
+                <View style = { styles.listContainer }>
                     { chaptersComponents }
-                </ScrollView>
-            </View>
+                </View>
+            </ScrollView>
         );
     }
 }

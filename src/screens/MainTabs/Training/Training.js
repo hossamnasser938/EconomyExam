@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, Image, Dimensions } from 'react-native';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
-import DefaultCheckBox from '../../../components/UI/DefaultCheckBox/DefaultCheckBox';
+import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
+import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import styles from './style';
 import getQuestionsReady from './getQuestionsReady';
+import WrapperText from '../../../components/UI/WrapperText/WrapperText';
 
 
 class TrainingScreen extends Component {
@@ -20,9 +22,27 @@ class TrainingScreen extends Component {
             error: false,
             input: null,
             invalidInput: false,
-            checked: false
-        } 
+            checked: false,
+            portraitMode: (Dimensions.get("window").width < 500)? true: false
+        }
+        Dimensions.addEventListener( "change", this.onDimensionsChange ); 
     }
+
+    onDimensionsChange = event => {
+        this.setState( {
+            portraitMode: (Dimensions.get("window").width < 500)? true: false
+        } );
+    };
+
+    componentWillUnmount() {
+        Dimensions.removeEventListener( "change", this.onDimensionsChange );
+    }
+
+    static navigatorStyle = {
+        navBarBackgroundColor: DARK_BACKGROUND,
+        navBarTextColor: DARK_TEXT_COLOR,
+        statusBarColor: DARK_BACKGROUND
+    };
 
     onQuestionsReady = ( questions ) => {
         this.setState( {
@@ -40,13 +60,6 @@ class TrainingScreen extends Component {
         console.log( "input changed: ", newInput );
         this.setState( {
             input: newInput
-        } );
-    }
-    
-    onChangeCheckBox = newValue => {
-        console.log( "new check: ", newValue );
-        this.setState( {
-            checked: newValue
         } );
     }
     
@@ -88,6 +101,13 @@ class TrainingScreen extends Component {
     }
 
     validateInput () {
+        if ( this.state.input == null || this.state.input == "" ) {
+            this.setState( {
+                invalidInput: false 
+            } );
+            return 0;
+        }
+
         const inputAsFloat = parseFloat( this.state.input );
         if ( !Number.isNaN( inputAsFloat ) && Number.isInteger( inputAsFloat ) && inputAsFloat > 0 ) {
             this.setState( {
@@ -100,21 +120,15 @@ class TrainingScreen extends Component {
             this.setState( {
                 invalidInput: true 
             } );
-            return 0;
+            return -1;
         }
     }
 
     onStartTraining = () => {
-        let questionsCount = null;
+        questionsCount = this.validateInput();
 
-        if ( this.state.checked ) {
-            questionsCount = 0;
-        } 
-        else {
-            questionsCount = this.validateInput();
-            if ( questionsCount == 0 ) {
-                return;
-            }
+        if ( questionsCount == -1 ) {
+            return;
         }
         
         if ( this.state.questions === null ) {
@@ -136,41 +150,52 @@ class TrainingScreen extends Component {
         if ( this.state.invalidInput ) {
             content = (
                 <View style = { styles.fieldContainer }>
-                    <Text style = { styles.errorText}>
-                        Enter a positive integer or check the box
-                    </Text>
+                    <WrapperText>
+                        <Text style = { styles.errorText}>
+                            Enter a Positive Integer, Please
+                        </Text>
+                    </WrapperText>
                 </View>
             );
         }
 
         return(
-            <ScrollView contentContainerStyle = { styles.outerContainer }>
-                <View style = { styles.innerContainer }>
-                    <View style = { styles.fieldContainer }>
-                        <DefaultInput
-                        placeholder = "Enter Number of Questions"
-                        keyboardType = "numeric"
-                        onChangeText = { this.onChangeInput }
-                        />
-                    </View>
-
-                    <View style = { styles.fieldContainer }>
-                        <DefaultCheckBox 
-                            title = "or train on all questions"
-                            onValueChange = { this.onChangeCheckBox }
-                            value = { this.state.checked }
-                        />
-                    </View>
-
-                    <View style = { styles.fieldContainer }>
-                        <DefaultButton
-                            title = "Start Training"
-                            onPress = { this.onStartTraining }
-                        />
-                    </View>
-                    { content }
+            <DefaultScreenContainer style = { this.state.portraitMode? styles.portraitContainer: styles.landscapeContainer }>
+                <View style = { styles.wrapper }>
+                    <Image source = { require( "../../../assets/quiz.png" ) }/>
                 </View>
-            </ScrollView>
+
+                <View style = { styles.outerContainer }>
+                    <ScrollView contentContainerStyle = { styles.scrollContainer }>
+                        <View style = { styles.wrapper }>
+                            <View style = { styles.fieldContainer }>
+                                <WrapperText>
+                                    <Text style = { styles.infoText }>
+                                    Specify the number of questions or simply hit START TRAINING to train on all available questions
+                                    </Text>
+                                </WrapperText>
+                            </View>
+
+                            <View style = { styles.fieldContainer }>
+                                <DefaultInput
+                                placeholder = "Number of Questions"
+                                keyboardType = "numeric"
+                                onChangeText = { this.onChangeInput }
+                                />
+                            </View>
+
+                            <View style = { styles.fieldContainer }>
+                                <DefaultButton
+                                    title = "Start Training"
+                                    onPress = { this.onStartTraining }
+                                />
+                            </View>
+                            { content }
+
+                        </View>
+                    </ScrollView>
+                </View>
+            </DefaultScreenContainer>
         );
     }
 }

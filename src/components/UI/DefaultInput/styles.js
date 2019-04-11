@@ -1,11 +1,19 @@
 import { StyleSheet } from 'react-native';
+import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
 
 const styles = StyleSheet.create( {
+    wrapper: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%",
+        backgroundColor: DARK_TEXT_COLOR,
+        borderColor: DARK_BACKGROUND,
+        borderWidth: 1,
+        padding: 5
+    },
     input: {
         width: "100%",
-        height: 40,
-        borderColor: "#123",
-        borderWidth: 2
+        paddingBottom: 5
     }
 } );
 

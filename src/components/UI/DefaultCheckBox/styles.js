@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { LESS_DARK_BACKGROUND } from '../../../utils/colors';
 
 const styles = StyleSheet.create( {
     container: {

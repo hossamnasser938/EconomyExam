@@ -1,21 +1,33 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create( {
-    outerContainer: {
-        flexGrow: 1
+    portraitContainer: {
+        flexDirection: "column"
     },
-    innerContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+    landscapeContainer: {
+        flexDirection: "row"
+    },
+    outerContainer: {
+        flex: 1
+    },
+    scrollContainer: {
+        flexGrow: 1
     },
     fieldContainer: {
         width: "80%",
         marginTop: 8,
         marginBottom: 8
     },
+    infoText: {
+        textAlign: "justify"
+    },
     errorText: {
         color: "red"
+    },
+    wrapper: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
     }
 } );
 

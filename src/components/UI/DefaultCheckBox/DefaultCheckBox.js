@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, CheckBox } from 'react-native';
+import WrapperText from '../WrapperText/WrapperText';
 import styles from './styles';
 
 const DefaultCheckBox = props => (
@@ -8,9 +9,11 @@ const DefaultCheckBox = props => (
             onValueChange = { props.onValueChange }
             value = { props.value }
         />
-        <Text style = { styles.text }>
-            { props.title }
-        </Text>
+        <WrapperText>
+            <Text style = { styles.text }>
+                { props.title }
+            </Text>
+        </WrapperText>
     </View>
 );
 

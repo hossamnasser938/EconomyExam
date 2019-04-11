@@ -1,14 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { DARK_BACKGROUND } from '../../../utils/colors';
 
 const styles = StyleSheet.create( {
     container: {
-        flexGrow: 1
-    },
-    listContainer: {
-        flex: 1
-    },
-    landscapeChapter: {
-        height: 60
+        flex: 1,
+        backgroundColor: DARK_BACKGROUND
     }
 } );
 

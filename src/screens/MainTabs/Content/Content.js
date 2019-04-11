@@ -1,22 +1,42 @@
 import React, { Component } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
-import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
-import styles from './styles';
+import { View, ScrollView, Dimensions } from 'react-native';
+import DefalautScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
+import Chapter from '../../../components/Chapter/Chapter';
 import chapterPressHandler from './chapterPressHandler';
-
+import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
+import styles from './styles';
 
 class ContentScreen extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            touchablesDisabled: false
-        };
+            touchablesDisabled: false,
+            portraitMode: (Dimensions.get("window").height > 500)? true: false
+        }
+        Dimensions.addEventListener( "change", this.onDimensionsChange ); 
+
         props.navigator.setOnNavigatorEvent( event => {
             if ( event.id === "willAppear" ) {
                 this.enableTouchables();
             }
         } )
     }
+
+    onDimensionsChange = event => {
+        this.setState( {
+            portraitMode: (Dimensions.get("window").height > 500)? true: false
+        } );
+    };
+
+    componentWillUnmount() {
+        Dimensions.removeEventListener( "change", this.onDimensionsChange );
+    }
+
+    static navigatorStyle = {
+        navBarBackgroundColor: DARK_BACKGROUND,
+        navBarTextColor: DARK_TEXT_COLOR,
+        statusBarColor: DARK_BACKGROUND
+    };
 
     toggleTouchables() {
         this.setState( prevState => {
@@ -38,23 +58,26 @@ class ContentScreen extends Component {
     };
 
     render() {
-        const chapters = ["chapter 1", "chapter 2", "chapter 3"];
+        const chapters = ["الفصل الأول", "الفصل الثاني", "الفصل الثالث", "الفصل الرابع", "الفصل الخامس"];
         const chaptersComponents = chapters.map( ( chapter, index ) => (
-            <View style = { styles.chapterContainer } key = { index }>
-                <DefaultButton
-                    title = { chapters[index] } 
-                    onPress = { () => this.onChapterPress( chapters[index] ) }
-                    disabled = { this.state.touchablesDisabled }
-                />
-            </View>
+            <Chapter
+              key = { index }
+              style = { this.portraitMode? null: styles.landscapeChapter }
+              index = { index }
+              title = { chapter }
+              onPress = { () => this.onChapterPress( "chapter" + (index + 1) ) }
+              disabled = { this.state.touchablesDisabled }
+            />
         ) );
 
         return(
-            <ScrollView contentContainerStyle = { styles.container }>
-                <View style = { styles.listContainer }>
+            <DefalautScreenContainer>
+                <ScrollView contentContainerStyle = { styles.container }>
+                    <View style = { styles.listContainer }>
                     { chaptersComponents }
-                </View>
-            </ScrollView>
+                    </View>
+                </ScrollView>
+            </DefalautScreenContainer>
         );
     }
 }

@@ -1,35 +1,28 @@
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 
 const startMainTabs = () => {
-    Promise.all( [
-        Icon.getImageSource("md-list", 30),
-        Icon.getImageSource("md-book", 30)
-    ] ).then( sources => {
-        Navigation.startTabBasedApp( {
-            tabs: [
-                {
-                    screen: "EconomyExam.ContentScreen",
-                    title: "Content",
-                    label: "Content",
-                    icon: sources[0]
-                },
-                {
-                    screen: "EconomyExam.TrainingScreen",
-                    title: "Training",
-                    label: "Training",
-                    icon: sources[1]
-                }
-            ],
-            tabsStyle: {
-                tabBarSelectedButtonColor: "#123"
+    Navigation.startTabBasedApp( {
+        tabs: [
+            {
+                screen: "EconomyExam.ContentScreen",
+                title: "Content",
+                label: "Content",
+                icon: require( "../../assets/study.png" )
             },
-            appStyle: {
-                tabBarSelectedButtonColor: "#123"
-            },
-            animationType: "fade"
-        } 
-        );
+            {
+                screen: "EconomyExam.TrainingScreen",
+                title: "Training",
+                label: "Training",
+                icon: require( "../../assets/train.png" )
+            }
+        ],
+        appStyle: {
+            tabBarSelectedButtonColor: DARK_TEXT_COLOR,
+            tabBarBackgroundColor: DARK_BACKGROUND
+        },
+        animationType: "fade"
     } );
 };
 

@@ -14,9 +14,6 @@ class QuestionBody extends Component {
     }
 
     onDimensionsChange = event => {
-        console.log( "صباح العسل" );
-        console.log( event );
-        console.log( "portraitMode: ", this.state.portraitMode );
         this.setState( {
             portraitMode: (Dimensions.get("window").width < 500)? true: false
         } );

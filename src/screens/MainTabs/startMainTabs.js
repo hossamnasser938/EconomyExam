@@ -16,6 +16,12 @@ const startMainTabs = () => {
                 title: "Training",
                 label: "Training",
                 icon: require( "../../assets/train.png" )
+            },
+            {
+                screen: "EconomyExam.CompetitionScreen",
+                title: "Competition",
+                label: "Competition",
+                icon: require( "../../assets/versus.png" )
             }
         ],
         appStyle: {

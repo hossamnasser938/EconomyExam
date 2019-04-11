@@ -99,7 +99,7 @@ class TrainQuestion extends Component {
             sound.play( success => {
                 console.log( "played: ", success );
                 if ( key === correctAnswerIndex && this.state.currentQuestionIndex !== this.questionsCount - 1 ) {
-                    setTimeout( this.nextHandler, 5000 );
+                    setTimeout( this.nextHandler, 2000 );
                 }
             } );
         }

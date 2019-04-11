@@ -8,7 +8,7 @@ const styles = StyleSheet.create( {
         flexDirection: "row"
     },
     outerContainer: {
-        flex: 1
+        flex: 3
     },
     scrollContainer: {
         flexGrow: 1
@@ -25,7 +25,7 @@ const styles = StyleSheet.create( {
         color: "red"
     },
     wrapper: {
-        flex: 1,
+        flex: 2,
         justifyContent: "center",
         alignItems: "center",
     }

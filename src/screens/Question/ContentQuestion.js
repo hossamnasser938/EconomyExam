@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import QuestionBody from '../../components/QuestionBody/QuestionBody';
+import WrapperText from '../../components/UI/WrapperText/WrapperText';
+import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 import styles from '../../components/QuestionBody/styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class ContentQuestion extends Component {
     constructor( props ) {
@@ -12,6 +15,13 @@ class ContentQuestion extends Component {
             nextEnabled: true
         };
     }
+
+    static navigatorStyle = {
+        navBarBackgroundColor: DARK_BACKGROUND,
+        navBarTextColor: DARK_TEXT_COLOR,
+        navBarButtonColor: DARK_TEXT_COLOR,
+        statusBarColor: DARK_BACKGROUND
+    };
     
     nextHandler = () => {
         this.setState( prevState => {
@@ -65,16 +75,33 @@ class ContentQuestion extends Component {
         const cQAnswers = cQuestion.slice(1, cQuestion.length - 1);
         
         const cQAnswersComponents = cQAnswers.map( ( answer, index ) => {
-            let itemStyles = [ styles.answerContainer ];
-            if ( index == correctAnswerIndex ) {
-                itemStyles.push( styles.correctAnswerContainer );
-            }
-
-            return(
-                <View key = { index } style = { itemStyles }>
-                    <Text style = { styles.answerText }>{ answer }</Text>
+            let itemStyles = [ styles.answerText ];
+            let content = (
+                <View key = { index } style = { styles.answerContainer }>
+                    <View style = { styles.answerTextWrapper }>
+                        <WrapperText>
+                            <Text style = { itemStyles }>{ answer }</Text>
+                        </WrapperText>
+                    </View>
                 </View>
             );
+            if ( index == correctAnswerIndex ) {
+                itemStyles.push( styles.correctAnswerText );
+                content = (
+                    <View key = { index } style = { styles.answerContainer }>
+                        <Icon name = "md-checkmark" size = { 30 } color = "green" />
+                        <View style = { { flex: 1 } }/>
+                        <View style = { styles.answerTextWrapper }>
+                            <WrapperText>
+                                <Text style = { itemStyles }>{ answer }</Text>
+                            </WrapperText>
+                        </View>
+                        
+                    </View>
+                );
+            }
+
+            return( content );
         } );
 
         return(

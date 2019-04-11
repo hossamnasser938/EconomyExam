@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Dimensions } from 'react-native';
 import DefaultButton from '../UI/DefaultButton/DefaultButton';
+import DefaultScreenContainer from '../UI/DefaultScreenContainer/DefaultScreenContainer';
 import styles from './styles';
 
 
@@ -59,19 +60,19 @@ class QuestionBody extends Component {
         let content;
         if ( this.state.portraitMode ) {
             content = (
-                <View style = { this.state.portraitMode? [styles.container, styles.portraitContainer]: [styles.container, styles.landscapeContainer] }>
+                <DefaultScreenContainer style = { this.state.portraitMode? [styles.container, styles.portraitContainer]: [styles.container, styles.landscapeContainer] }>
                     { questionContainer }
                     { answersContainer }
                     { buttonsContainer }
-                </View>
+                </DefaultScreenContainer>
             );
         } else {
             content = (
-                <View style = { this.state.portraitMode? [styles.container, styles.portraitContainer]: [styles.container, styles.landscapeContainer] }>
+                <DefaultScreenContainer style = { this.state.portraitMode? [styles.container, styles.portraitContainer]: [styles.container, styles.landscapeContainer] }>
                     { answersContainer }
                     { questionContainer }
                     { buttonsContainer }
-                </View>
+                </DefaultScreenContainer>
             );
         }
 

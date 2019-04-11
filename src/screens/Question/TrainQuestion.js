@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import QuestionBody from '../../components/QuestionBody/QuestionBody';
+import WrapperText from '../../components/UI/WrapperText/WrapperText';
+import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
+import Icon from 'react-native-vector-icons/Ionicons';
 import styles from '../../components/QuestionBody/styles';
 
 class TrainQuestion extends Component {
@@ -14,6 +17,13 @@ class TrainQuestion extends Component {
             nextEnabled: true
         };
     }
+
+    static navigatorStyle = {
+        navBarBackgroundColor: DARK_BACKGROUND,
+        navBarTextColor: DARK_TEXT_COLOR,
+        navBarButtonColor: DARK_TEXT_COLOR,
+        statusBarColor: DARK_BACKGROUND
+    };
 
     nextHandler = () => {
         this.setState( prevState => {
@@ -76,21 +86,39 @@ class TrainQuestion extends Component {
         const cQAnswers = cQuestion.slice(1, cQuestion.length - 1);
 
         const cQAnswersComponents = cQAnswers.map( ( answer, index ) => {
-            let itemStyles = [ styles.answerContainer ];
+            let itemStyles = [ styles.answerText ];
+            let content = (
+                <View style = { styles.answerContainer }>
+                    <View style = { styles.answerTextWrapper }>
+                        <WrapperText>
+                            <Text style = { itemStyles }>{ answer }</Text>
+                        </WrapperText>
+                    </View>
+                </View>
+            );
             if ( this.state.pressedAnswerIndex == index ) {
-                if ( index == correctAnswerIndex ) {
-                    itemStyles.push( styles.correctAnswerContainer );
+                let isCorrect = (index == correctAnswerIndex);
+                if ( isCorrect ) {
+                    itemStyles.push( styles.correctAnswerText );
+                } else {
+                    itemStyles.push( styles.wrongAnswerText );
                 }
-                else {
-                    itemStyles.push( styles.wrongAnswerContainer );
-                }
+                content = (
+                    <View style = { styles.answerContainer }>
+                        <Icon name = {isCorrect? "md-checkmark": "md-close"} size = { 30 } color = {isCorrect? "green": "red"} />
+                        <View style = { { flex: 1 } }/>
+                        <View style = { styles.answerTextWrapper }>
+                            <WrapperText>
+                                <Text style = { itemStyles }>{ answer }</Text>
+                            </WrapperText>
+                        </View>
+                    </View>
+                );
             } 
 
             return(
                 <TouchableOpacity key = { index } onPress = { () => this.onAnswerPressed( index ) }>
-                    <View style = { itemStyles }>
-                        <Text style = { styles.answerText }>{ answer }</Text>
-                    </View>
+                    { content }
                 </TouchableOpacity>
             );
         } );

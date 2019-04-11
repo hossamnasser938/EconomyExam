@@ -17,6 +17,8 @@ import com.oblador.vectoricons.VectorIconsPackage;
 
 import com.rnfs.RNFSPackage;
 
+import com.zmxv.RNSound.RNSoundPackage; 
+
 public class MainApplication extends NavigationApplication {
 
   @Override
@@ -30,7 +32,8 @@ public class MainApplication extends NavigationApplication {
 		// No need to add RnnPackage and MainReactPackage
 		return Arrays.<ReactPackage>asList(
 			new VectorIconsPackage(),
-			new RNFSPackage()
+			new RNFSPackage(),
+			new RNSoundPackage()
 		);
 	}
 

@@ -6,6 +6,9 @@ import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from '../../components/QuestionBody/styles';
 
+import Sound from 'react-native-sound';
+Sound.setCategory( "Playback" );
+
 class TrainQuestion extends Component {
     constructor( props ) {
         super( props );
@@ -16,6 +19,18 @@ class TrainQuestion extends Component {
             previousEnabled: false,
             nextEnabled: true
         };
+
+        this.correctSound = new Sound( "correct.wav", Sound.MAIN_BUNDLE, error => {
+            if ( error ) {
+                console.log( "failed to find correct sound: ", error );
+            }
+        } );
+        
+        this.wrongSound = new Sound( "wrong.mp3", Sound.MAIN_BUNDLE, error => {
+            if ( error ) {
+                console.log( "failed to find correct sound: ", error );
+            }
+        } );
     }
 
     static navigatorStyle = {
@@ -71,11 +86,23 @@ class TrainQuestion extends Component {
         } );
     };
 
-    onAnswerPressed = ( key ) => {
-        console.log( "Item pressed", key )
+    onAnswerPressed = ( key, correctAnswerIndex ) => {
+        console.log( "Item pressed " + key + " coorect answer " + correctAnswerIndex );
+
         this.setState( {
             pressedAnswerIndex: key
         } );
+
+        if ( this.correctSound && this.wrongSound ) {
+            const sound = key === correctAnswerIndex? this.correctSound: this.wrongSound;
+
+            sound.play( success => {
+                console.log( "played: ", success );
+                if ( key === correctAnswerIndex && this.state.currentQuestionIndex !== this.questionsCount - 1 ) {
+                    setTimeout( this.nextHandler, 5000 );
+                }
+            } );
+        }
     }
 
     render() {
@@ -117,7 +144,7 @@ class TrainQuestion extends Component {
             } 
 
             return(
-                <TouchableOpacity key = { index } onPress = { () => this.onAnswerPressed( index ) }>
+                <TouchableOpacity key = { index } onPress = { () => this.onAnswerPressed( index, correctAnswerIndex ) }>
                     { content }
                 </TouchableOpacity>
             );

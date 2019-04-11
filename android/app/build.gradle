@@ -163,6 +163,7 @@ dependencies {
     compile project(':react-native-navigation')
     compile project(':react-native-vector-icons')
     compile project(':react-native-fs')
+    compile project(':react-native-sound')
 }
 
 // Run this once to be able to run the application with BUCK

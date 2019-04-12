@@ -17,8 +17,17 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
+    wrapper: {
+        margin: 16,
+        justifyContent: "center",
+        alignItems: "stretch",
+        width: "80%"
+    },
     btnWrapper: {
         margin: 10
+    },
+    mainText: {
+        textAlign: "center"
     }
 } );
 

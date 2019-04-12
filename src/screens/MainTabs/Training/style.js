@@ -18,8 +18,8 @@ const styles = StyleSheet.create( {
         marginTop: 8,
         marginBottom: 8
     },
-    infoText: {
-        textAlign: "justify"
+    mainText: {
+        textAlign: "center"
     },
     errorText: {
         color: "red"

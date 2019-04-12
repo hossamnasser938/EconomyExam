@@ -169,8 +169,8 @@ class TrainingScreen extends Component {
                     <ScrollView contentContainerStyle = { styles.scrollContainer }>
                         <View style = { styles.wrapper }>
                             <View style = { styles.fieldContainer }>
-                                <WrapperText>
-                                    <Text style = { styles.infoText }>
+                                <WrapperText style = { styles.mainText }>
+                                    <Text>
                                     Specify the number of questions or simply hit START TRAINING to train on all available questions
                                     </Text>
                                 </WrapperText>

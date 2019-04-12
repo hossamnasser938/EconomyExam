@@ -40,15 +40,19 @@ export default class Competition extends Component {
                     <Image source = { require( "../../../assets/ready.png" ) }/>
                 </View>
                 <View style = { styles.restWrapper }>
-                    <WrapperText>
-                        <Text>
-                            Are you ready to compete with others?
-                        </Text>
-                    </WrapperText>
-                    <DefaultButton
-                      style = { styles.btnWrapper } 
-                      title = "I am Ready"
-                    />
+                    <View style = { styles.wrapper }>
+                        <WrapperText style = { styles.mainText }>
+                            <Text>
+                                Are you ready to compete with others?
+                            </Text>
+                        </WrapperText>
+                    </View>
+                    <View style = { styles.wrapper }>
+                        <DefaultButton
+                        style = { styles.btnWrapper } 
+                        title = "I am Ready"
+                        />
+                    </View>
                 </View>
             </DefaultScreenContainer>
         );

@@ -1,4 +1,5 @@
 import { Navigation } from 'react-native-navigation';
+import AuthScreen from './src/screens/Authentication/Authentication';
 import ContentScreen from './src/screens/MainTabs/Content/Content';
 import TrainingScreen from './src/screens/MainTabs/Training/Training';
 import ContentQuestionScreen from './src/screens/Question/ContentQuestion';
@@ -9,6 +10,7 @@ import startMainTabs from './src/screens/MainTabs/startMainTabs';
 
 
 //register screens
+Navigation.registerComponent( "EconomyExam.AuthScreen", () => AuthScreen );
 Navigation.registerComponent( "EconomyExam.ContentScreen", () => ContentScreen );
 Navigation.registerComponent( "EconomyExam.TrainingScreen", () => TrainingScreen );
 Navigation.registerComponent( "EconomyExam.ContentQuestionScreen", () => ContentQuestionScreen );

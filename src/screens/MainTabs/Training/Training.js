@@ -178,9 +178,10 @@ class TrainingScreen extends Component {
 
                             <View style = { styles.fieldContainer }>
                                 <DefaultInput
-                                placeholder = "Number of Questions"
-                                keyboardType = "numeric"
-                                onChangeText = { this.onChangeInput }
+                                  iconName = "information-circle-outline"
+                                  placeholder = "Number of Questions"
+                                  keyboardType = "numeric"
+                                  onChangeText = { this.onChangeInput }
                                 />
                             </View>
 

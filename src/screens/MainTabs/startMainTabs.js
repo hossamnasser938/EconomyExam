@@ -1,7 +1,6 @@
 import { Navigation } from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
-
+/*
 const startMainTabs = () => {
     Navigation.startTabBasedApp( {
         tabs: [
@@ -29,6 +28,18 @@ const startMainTabs = () => {
             tabBarBackgroundColor: DARK_BACKGROUND
         },
         animationType: "fade"
+    } );
+};*/
+
+const startMainTabs = () => {
+    Navigation.startSingleScreenApp( {
+        screen: {
+            screen: "EconomyExam.AuthScreen",
+            title: "Authentication",
+            navigatorStyle: {
+                navBarHidden: true
+            }
+        }
     } );
 };
 

@@ -5,10 +5,16 @@ import styles from './styles';
 
 const DefaultInput = ( props ) => (
     <View style = { styles.wrapper }>
-        <Icon name = "md-information-circle-outline" size = { 30 }/>
+        <Icon 
+          name = { "md-" + props.iconName } 
+          size = { props.size? props.size: 30 } 
+          color = { props.color? props.color: null }
+        />
         <TextInput
             style = { styles.input }
-            { ...props }
+            placeholder = { props.placeholder }
+            keyboardType = { props.keyboardType }
+            onChangeText = { props.onChangeText }
         />
     </View>
     

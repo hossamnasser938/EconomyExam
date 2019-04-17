@@ -1,6 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
-/*
+
 const startMainTabs = () => {
     Navigation.startTabBasedApp( {
         tabs: [
@@ -29,18 +29,18 @@ const startMainTabs = () => {
         },
         animationType: "fade"
     } );
-};*/
-
-const startMainTabs = () => {
-    Navigation.startSingleScreenApp( {
-        screen: {
-            screen: "EconomyExam.AuthScreen",
-            title: "Authentication",
-            navigatorStyle: {
-                navBarHidden: true
-            }
-        }
-    } );
 };
+
+// const startMainTabs = () => {
+//     Navigation.startSingleScreenApp( {
+//         screen: {
+//             screen: "EconomyExam.AuthScreen",
+//             title: "Authentication",
+//             navigatorStyle: {
+//                 navBarHidden: true
+//             }
+//         }
+//     } );
+// };
 
 export default startMainTabs;

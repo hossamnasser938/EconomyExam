@@ -12,6 +12,7 @@
     "papaparse": "^4.6.3",
     "react": "16.8.3",
     "react-native": "0.59.0",
+    "react-native-firebase": "^5.3.1",
     "react-native-fs": "^2.12.2",
     "react-native-navigation": "^1.1.493",
     "react-native-sound": "^0.10.12",

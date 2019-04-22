@@ -20,6 +20,8 @@ import com.rnfs.RNFSPackage;
 
 import com.zmxv.RNSound.RNSoundPackage; 
 
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+
 public class MainApplication extends NavigationApplication {
 
   @Override
@@ -34,7 +36,9 @@ public class MainApplication extends NavigationApplication {
 		return Arrays.<ReactPackage>asList(
 			new VectorIconsPackage(),
 			new RNFSPackage(),
-			new RNSoundPackage()
+			new RNSoundPackage(),
+			new RNFirebasePackage(),
+			new RNFirebaseAuthPackage()
 		);
 	}
 

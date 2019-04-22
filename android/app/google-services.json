@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "42444663203",
+    "firebase_url": "https://economyexam.firebaseio.com",
+    "project_id": "economyexam",
+    "storage_bucket": "economyexam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42444663203:android:24712f6795596878",
+        "android_client_info": {
+          "package_name": "com.economyexam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42444663203-dpagr60344c92bajkmd3co0d8bg6e48h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE0KBRyR41dV8PcUsN808FxDViOCmCuvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42444663203-dpagr60344c92bajkmd3co0d8bg6e48h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

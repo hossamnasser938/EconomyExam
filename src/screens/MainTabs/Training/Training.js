@@ -17,6 +17,7 @@ class TrainingScreen extends Component {
 
     constructor( props ) {
         super( props );
+        
         this.state = {
             questions: null,
             error: false,
@@ -24,7 +25,16 @@ class TrainingScreen extends Component {
             invalidInput: false,
             checked: false,
             portraitMode: (Dimensions.get("window").width < 500)? true: false
-        }
+        };
+
+        props.navigator.setOnNavigatorEvent( event => {
+            if ( event.id === "toggle_drawer_button" ) {
+                this.props.navigator.toggleDrawer( {
+                    side: "left"
+                } );
+            }
+        } );
+
         Dimensions.addEventListener( "change", this.onDimensionsChange ); 
     }
 

@@ -12,7 +12,15 @@ export default class Competition extends Component {
 
         this.state = {
             portrait: Dimensions.get( "window" ).height > 500? true: false
-        }
+        };
+
+        props.navigator.setOnNavigatorEvent( event => {
+            if ( event.id === "toggle_drawer_button" ) {
+                this.props.navigator.toggleDrawer( {
+                    side: "left"
+                } );
+            }
+        } );
 
         Dimensions.addEventListener( "change", this.onDimensionsChange );
     }

@@ -9,17 +9,25 @@ import styles from './styles';
 class ContentScreen extends Component {
     constructor( props ) {
         super( props );
+        
         this.state = {
             touchablesDisabled: false,
             portraitMode: (Dimensions.get("window").height > 500)? true: false
         }
-        Dimensions.addEventListener( "change", this.onDimensionsChange ); 
 
         props.navigator.setOnNavigatorEvent( event => {
+            console.log( event );
             if ( event.id === "willAppear" ) {
                 this.enableTouchables();
+            } 
+            else if ( event.id === "toggle_drawer_button" ) {
+                this.props.navigator.toggleDrawer( {
+                    side: "left"
+                } );
             }
-        } )
+        } );
+
+        Dimensions.addEventListener( "change", this.onDimensionsChange ); 
     }
 
     onDimensionsChange = event => {

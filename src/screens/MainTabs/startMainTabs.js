@@ -8,21 +8,51 @@ const startMainTabs = () => {
                 screen: "EconomyExam.ContentScreen",
                 title: "Content",
                 label: "Content",
-                icon: require( "../../assets/study.png" )
+                icon: require( "../../assets/study.png" ),
+                navigatorButtons: {
+                    leftButtons: [
+                        {
+                            icon: require( "../../assets/menu.png" ),
+                            title: "Menu",
+                            id: "toggle_drawer_button"
+                        }
+                    ]
+                }
             },
             {
                 screen: "EconomyExam.TrainingScreen",
                 title: "Training",
                 label: "Training",
-                icon: require( "../../assets/train.png" )
+                icon: require( "../../assets/train.png" ),
+                navigatorButtons: {
+                    leftButtons: [
+                        {
+                            icon: require( "../../assets/menu.png" ),
+                            title: "Menu",
+                            id: "toggle_drawer_button"
+                        }
+                    ]
+                }
             },
             {
                 screen: "EconomyExam.CompetitionScreen",
                 title: "Competition",
                 label: "Competition",
-                icon: require( "../../assets/versus.png" )
+                icon: require( "../../assets/versus.png" ),
+                navigatorButtons: {
+                    leftButtons: [
+                        {
+                            icon: require( "../../assets/menu.png" ),
+                            title: "Menu",
+                            id: "toggle_drawer_button"
+                        }
+                    ]
+                }
             }
         ],
+        navBarButtons: {
+
+        },
         drawer: {
             left: {
                 screen: "EconomyExam.SideDrawerScreen"

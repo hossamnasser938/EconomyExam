@@ -9,6 +9,7 @@ const styles = StyleSheet.create( {
         backgroundColor: DARK_TEXT_COLOR,
         borderColor: DARK_BACKGROUND,
         borderWidth: 1,
+        borderRadius: 5,
         padding: 5
     },
     input: {

@@ -4,10 +4,15 @@ import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/D
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
 import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
-import styles from './styles';
 import WrapperText from '../../components/UI/WrapperText/WrapperText';
+import styles from './styles';
+import { DARK_BACKGROUND } from '../../utils/colors';
 
 export default class Authentication extends Component {
+    static navigatorStyle = {
+        statusBarColor: DARK_BACKGROUND
+    };
+
     constructor( props ) {
         super( props );
         this.state = {

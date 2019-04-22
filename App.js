@@ -6,8 +6,8 @@ import ContentQuestionScreen from './src/screens/Question/ContentQuestion';
 import TrainQuestionScreen from './src/screens/Question/TrainQuestion';
 import CompetitionScreen from './src/screens/MainTabs/Competition/Competition';
 import LoadingModalScreen from './src/screens/LoadingModal/LoadingModal';
+import SideDrawerScreen from './src/screens/SideDrawer/SideDrawer';
 import startMainTabs from './src/screens/MainTabs/startMainTabs';
-
 
 //register screens
 Navigation.registerComponent( "EconomyExam.AuthScreen", () => AuthScreen );
@@ -17,7 +17,7 @@ Navigation.registerComponent( "EconomyExam.ContentQuestionScreen", () => Content
 Navigation.registerComponent( "EconomyExam.TrainQuestionScreen", () => TrainQuestionScreen );
 Navigation.registerComponent( "EconomyExam.LoadingModalScreen", () => LoadingModalScreen );
 Navigation.registerComponent( "EconomyExam.CompetitionScreen", () =>  CompetitionScreen );
-
+Navigation.registerComponent( "EconomyExam.SideDrawerScreen", () =>  SideDrawerScreen );
 
 // start a tab-based app
 startMainTabs();

@@ -23,6 +23,11 @@ const startMainTabs = () => {
                 icon: require( "../../assets/versus.png" )
             }
         ],
+        drawer: {
+            left: {
+                screen: "EconomyExam.SideDrawerScreen"
+            }
+        },
         appStyle: {
             tabBarSelectedButtonColor: DARK_TEXT_COLOR,
             tabBarBackgroundColor: DARK_BACKGROUND
@@ -30,17 +35,5 @@ const startMainTabs = () => {
         animationType: "fade"
     } );
 };
-
-// const startMainTabs = () => {
-//     Navigation.startSingleScreenApp( {
-//         screen: {
-//             screen: "EconomyExam.AuthScreen",
-//             title: "Authentication",
-//             navigatorStyle: {
-//                 navBarHidden: true
-//             }
-//         }
-//     } );
-// };
 
 export default startMainTabs;

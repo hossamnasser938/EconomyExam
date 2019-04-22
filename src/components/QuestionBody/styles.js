@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { DARK_TEXT_COLOR, DARK_SEC_TEXT_COLOR } from '../../utils/colors';
+import { DARK_TEXT_COLOR, DARK_SEC_TEXT_COLOR, DARK_BACKGROUND } from '../../utils/colors';
 
 const styles = StyleSheet.create( {
     container: {
@@ -36,7 +36,10 @@ const styles = StyleSheet.create( {
         backgroundColor: DARK_TEXT_COLOR,
         minHeight: 40,
         margin: 4,
-        padding: 4
+        padding: 4,
+        borderWidth: 1,
+        borderColor: DARK_BACKGROUND,
+        borderRadius: 5
     },
     correctAnswerText: {
         color: "green"

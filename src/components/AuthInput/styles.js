@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { DARK_BACKGROUND, LESS_DARK_BACKGROUND, MORE_DARK_BACKGROUND } from '../../utils/colors';
+import { DARK_BACKGROUND, LESS_DARK_BACKGROUND, MORE_DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 
 const styles = StyleSheet.create( {
     container: {
@@ -25,7 +25,8 @@ const styles = StyleSheet.create( {
         borderColor: DARK_BACKGROUND
     },
     input: {
-        width: "100%"
+        width: "100%",
+        color: DARK_TEXT_COLOR
     }
 } );
 

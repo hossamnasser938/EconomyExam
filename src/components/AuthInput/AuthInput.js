@@ -50,16 +50,28 @@ const AuthInput = props => {
             />
 
             <View style = { styles.checkMarkWrapper }>
-                <Tooltip 
-                  popover = { <Text style = { styles.toolTipText }>{ hint }</Text> } 
-                  width = { 250 }
-                >
-                  <Icon
-                    name = { props.valid? "check": "information-outline"}
-                    size = { 20 }
-                    color = { DARK_TEXT_COLOR }
-                  />
-                </Tooltip>
+                {
+                  !props.valid
+                  ? (
+                    <Tooltip 
+                      popover = { <Text style = { styles.toolTipText }>{ hint }</Text> } 
+                      width = { 250 }
+                    >
+                      <Icon
+                        name = "information-outline"
+                        size = { 20 }
+                        color = { DARK_TEXT_COLOR }
+                      />
+                    </Tooltip>
+                  )
+                  : (
+                    <Icon
+                      name = "check"
+                      size = { 20 }
+                      color = { DARK_TEXT_COLOR }
+                    />
+                  )
+                }
             </View>
         </View>
     </View>

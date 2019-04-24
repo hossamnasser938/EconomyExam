@@ -5,6 +5,7 @@ import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
 import DefaultButton from '../../components/UI/DefaultButton/DefaultButton';
 import WrapperText from '../../components/UI/WrapperText/WrapperText';
+import validateInputs from '../../utils/validateInputs';
 import styles from './styles';
 import { DARK_BACKGROUND } from '../../utils/colors';
 
@@ -23,22 +24,22 @@ export default class Authentication extends Component {
                 email: {
                     value: "",
                     valid: false,
-                    validationRules: []
+                    validationRules: { isEmail: "" }
                 },
                 name: {
                     value: "",
                     valid: false,
-                    validationRules: []
+                    validationRules: { isName: "" }
                 },
                 password: {
                     value: "",
                     valid: false,
-                    validationRules: []
+                    validationRules: { minLength: 6 }
                 },
                 confirmPassword: {
                     value: "",
                     valid: false,
-                    validationRules: []
+                    validationRules: { isEqualTo: "password" }
                 }
             }        
         };
@@ -65,15 +66,25 @@ export default class Authentication extends Component {
     };
 
     updateInput = ( key, value ) => {
-        console.log( "key got=", value );
+        const connectedValues = {
+            password: key === "password"? value: this.state.controls.password.value
+        };
+
         this.setState( prevState => {
             return {
                 ...prevState,
                 controls: {
                     ...prevState.controls,
+                    confirmPassword: {
+                        ...prevState.controls.confirmPassword,
+                        valid: key === "password"
+                            ? validateInputs( prevState.controls.confirmPassword.value, prevState.controls.confirmPassword.validationRules, connectedValues ) 
+                            : prevState.controls.confirmPassword.valid
+                    },
                     [key]: {
                         ...prevState.controls[key],
-                        value
+                        value,
+                        valid: validateInputs( value, prevState.controls[key].validationRules, connectedValues )
                     }
                 }
             };

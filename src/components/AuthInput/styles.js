@@ -34,6 +34,9 @@ const styles = StyleSheet.create( {
         alignItems: "center",
         padding: 10,
     },
+    toolTipText: {
+        color: DARK_TEXT_COLOR
+    }
 } );
 
 export default styles;

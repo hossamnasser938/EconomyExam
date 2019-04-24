@@ -106,6 +106,7 @@ export default class Authentication extends Component {
                           keyboardType = "email-address"
                           value = { this.state.controls.email.value }
                           updateInput = { this.updateInput }
+                          valid = { this.state.controls.email.valid }
                         />
                         {
                             this.state.authMode === "signup"
@@ -116,6 +117,7 @@ export default class Authentication extends Component {
                                   keyboardType = "default"
                                   value = { this.state.controls.name.value }
                                   updateInput = { this.updateInput }
+                                  valid = { this.state.controls.name.valid }
                                 />
                             ):
                             null
@@ -129,6 +131,7 @@ export default class Authentication extends Component {
                               secureTextEntry = { true }
                               value = { this.state.controls.password.value }
                               updateInput = { this.updateInput }
+                              valid = { this.state.controls.password.valid }
                             />
                             {
                                 this.state.authMode === "signup"
@@ -141,13 +144,13 @@ export default class Authentication extends Component {
                                       secureTextEntry = { true }
                                       value = { this.state.controls.confirmPassword.value }
                                       updateInput = { this.updateInput }
+                                      valid = { this.state.controls.confirmPassword.valid }
                                     />
                                 ):
                                 null
                             }
                         </View>
                     </View>
-
                     <View style = { styles.buttonsWrapper }>
                         <View style = { styles.btnWrapper }>
                             <DefaultButton 

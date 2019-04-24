@@ -41,6 +41,14 @@ const AuthInput = props => {
               value = { props.value }
               onChangeText = { newValue => props.updateInput( key, newValue ) }
             />
+
+            <View style = { styles.checkMarkWrapper }>
+                <Icon
+                  name = { props.valid? "check": "information-outline"}
+                  size = { 20 }
+                  color = { DARK_TEXT_COLOR }
+                />
+            </View>
         </View>
     </View>
   );

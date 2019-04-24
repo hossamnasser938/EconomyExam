@@ -17,17 +17,23 @@ const styles = StyleSheet.create( {
         borderColor: DARK_BACKGROUND
     },
     inputWrapper: {
+        flexDirection: "row",
         backgroundColor: LESS_DARK_BACKGROUND,
-        flex: 1  ,
+        flex: 1,
         justifyContent: "center",
         borderWidth: 1,
         borderRadius: 5,
         borderColor: DARK_BACKGROUND
     },
     input: {
-        width: "100%",
+        flex: 1,
         color: DARK_TEXT_COLOR
-    }
+    },
+    checkMarkWrapper: {
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 10,
+    },
 } );
 
 export default styles;

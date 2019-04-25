@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -154,7 +155,8 @@ export default class Authentication extends Component {
                     <View style = { styles.buttonsWrapper }>
                         <View style = { styles.btnWrapper }>
                             <DefaultButton 
-                            title = { this.state.authMode === "login"? "LogIn": "SignUp"}
+                              title = { this.state.authMode === "login"? "LogIn": "SignUp" }
+                              onPress = { () => this.dropDownAlert.alertWithType( "warn", "Warning", "Not yet" ) }
                             />
                         </View>
                         <View style = { styles.switchTextWrapper }>
@@ -168,6 +170,9 @@ export default class Authentication extends Component {
                         </View>
                     </View>
                 </DefaultScreenContainer>
+                <DropdownAlert 
+                  ref = { ref => this.dropDownAlert = ref }
+                />
             </ScrollView>
         );
     }

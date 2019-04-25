@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { View, Image, Text, Dimensions } from 'react-native';
+import firebase from 'react-native-firebase';
+import DropdownAlert from 'react-native-dropdownalert';
+import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
@@ -41,6 +44,17 @@ export default class Competition extends Component {
         statusBarColor: DARK_BACKGROUND
     };
 
+    iAmReadyHandler = () => {
+        if ( firebase.auth().currentUser ) {
+            //TODO: let user compete
+            alert( "not yet" );
+        }
+        else {
+            this.DropdownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
+            setTimeout( startAuthScreen, 2300 );
+        }
+    };
+
     render() {
         return(
             <DefaultScreenContainer style = { this.state.portrait? styles.portraitContainer: styles.landscapeContainer }>
@@ -57,11 +71,17 @@ export default class Competition extends Component {
                     </View>
                     <View style = { styles.wrapper }>
                         <DefaultButton
-                        style = { styles.btnWrapper } 
-                        title = "I am Ready"
+                          style = { styles.btnWrapper } 
+                          title = "I am Ready"
+                          onPress = { this.iAmReadyHandler }
                         />
                     </View>
                 </View>
+
+                <DropdownAlert 
+                  ref = { ref => this.DropdownAlert = ref }
+                  closeInterval = { 2000 }
+                />
             </DefaultScreenContainer>
         );
     }

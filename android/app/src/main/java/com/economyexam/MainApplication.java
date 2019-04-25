@@ -21,6 +21,7 @@ import com.rnfs.RNFSPackage;
 import com.zmxv.RNSound.RNSoundPackage; 
 
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 
 public class MainApplication extends NavigationApplication {
 
@@ -38,7 +39,8 @@ public class MainApplication extends NavigationApplication {
 			new RNFSPackage(),
 			new RNSoundPackage(),
 			new RNFirebasePackage(),
-			new RNFirebaseAuthPackage()
+			new RNFirebaseAuthPackage(),
+			new RNFirebaseDatabasePackage()
 		);
 	}
 

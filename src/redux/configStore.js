@@ -1,7 +1,7 @@
 import { createStore, combineReducers, compose } from 'redux';
-import testReducer from './reducers/test';
+import authReducer from './reducers/auth';
 
-const rootReducer = combineReducers( { test: testReducer } );
+const rootReducer = combineReducers( { auth: authReducer } );
 
 let composeEnhancers = compose;
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
-import { testActionCreator } from '../../redux/actions/index';
+import { startLoadingActionCreator, stopLoadingActionCreator } from '../../redux/actions/index';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -174,11 +174,11 @@ class Authentication extends Component {
                 </DefaultScreenContainer>
 
                 <Button 
-                  title = "Test"
-                  onPress = { this.props.changeTestState }
+                  title = "load"
+                  onPress = { this.props.startLoading }
                 />
 
-                <Text> { this.props.testState } </Text>
+                <Text> { this.props.loading? "true": "false" } </Text>
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
@@ -190,13 +190,14 @@ class Authentication extends Component {
 
 const mapStateToProps = state => {
     return {
-        testState: state.test.state
+        loading: state.auth.loading
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeTestState: () => dispatch( testActionCreator() )
+        startLoading: () => dispatch( startLoadingActionCreator() ),
+        stopLoading: () => dispatch( stopLoadingActionCreator() )
     };
 };
 

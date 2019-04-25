@@ -1,1 +1,1 @@
-export { testActionCreator } from './test';
+export { startLoadingActionCreator, stopLoadingActionCreator } from './auth';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
-import { signInActionCreator } from '../../redux/actions/index';
+import { signInActionCreator, signUpActionCreator } from '../../redux/actions/index';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -161,10 +161,15 @@ class Authentication extends Component {
                                 ? <ActivityIndicator />
                                 : <DefaultButton 
                                     title = { this.state.authMode === "login"? "LogIn": "SignUp" }
-                                    onPress = { 
-                                        this.state.controls.email.valid && this.state.controls.password.valid
-                                        ? () => this.props.onSignIn()
-                                        : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Not yet" )
+                                    onPress = {
+                                        this.state.authMode === "login"
+                                        ? this.state.controls.email.valid && this.state.controls.password.valid
+                                          ? () => this.props.onSignIn( this.state.controls.email.value, this.state.controls.password.value )
+                                          : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Please enter valid email and password" )
+                                        : this.state.controls.email.valid && this.state.controls.name.valid && this.state.controls.password.valid && this.state.controls.confirmPassword.valid
+                                          ? () => this.props.onSignUp( this.state.controls.email.value, this.state.controls.name.value, this.state.controls.password.value )
+                                          : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Please enter valid email, name, password and confirm password" )
+                                        
                                     }
                                   />
                             }
@@ -197,7 +202,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignIn: () => dispatch( signInActionCreator( "", "" ) )
+        onSignIn: ( email, password ) => dispatch( signInActionCreator( email, password ) ),
+        onSignUp: ( email, name, password ) => dispatch( signUpActionCreator( email, name, password ) )
     };
 };
 

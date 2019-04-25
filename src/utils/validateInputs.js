@@ -1,13 +1,8 @@
 
 const validateInputs = ( input, rules, connectedValues ) => {
-    console.log( "input:", input );
-    console.log( "c v:", connectedValues );
-    console.log( "rules:", rules );
-    
     let valid = true;
     
     for ( rule in rules ) {
-        console.log( "rule:", rule );
         switch( rule ) {
             case "isEmail":
                 valid = valid && validateIsEmail( input );
@@ -42,8 +37,6 @@ const validateMinLength = ( value, minLength ) => {
 };
 
 const validateIsEqualTo = ( value, checkValue ) => {
-    console.log( "value:", value );
-    console.log( "check value:", checkValue );
     return value === checkValue;
 }
 

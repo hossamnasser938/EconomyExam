@@ -1,11 +1,19 @@
-import { START_LOADING, STOP_LOADING, SIGN_IN, SIGN_UP } from './ActionTypes';
+import { START_LOADING, STOP_LOADING } from './ActionTypes';
 
 export const signInActionCreator = ( email, password ) => {
     return dispatch => {
         dispatch( startLoadingActionCreator() );
 
         setTimeout( () => dispatch( stopLoadingActionCreator() ), 4000 );
-    }
+    };
+};
+
+export const signUpActionCreator = ( email, name, password ) => {
+    return dispatch => {
+        dispatch( startLoadingActionCreator() );
+
+        setTimeout( () => dispatch( stopLoadingActionCreator() ), 4000 );
+    };
 };
 
 export const startLoadingActionCreator = () => {

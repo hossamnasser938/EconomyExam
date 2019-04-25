@@ -1,0 +1,1 @@
+export { testActionCreator } from './test';

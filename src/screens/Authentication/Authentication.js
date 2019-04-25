@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
+import { connect } from 'react-redux';
+import { testActionCreator } from '../../redux/actions/index';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -10,7 +12,7 @@ import validateInputs from '../../utils/validateInputs';
 import styles from './styles';
 import { DARK_BACKGROUND } from '../../utils/colors';
 
-export default class Authentication extends Component {
+class Authentication extends Component {
     static navigatorStyle = {
         statusBarColor: DARK_BACKGROUND
     };
@@ -170,6 +172,14 @@ export default class Authentication extends Component {
                         </View>
                     </View>
                 </DefaultScreenContainer>
+
+                <Button 
+                  title = "Test"
+                  onPress = { this.props.changeTestState }
+                />
+
+                <Text> { this.props.testState } </Text>
+
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
                 />
@@ -177,3 +187,17 @@ export default class Authentication extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        testState: state.test.state
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeTestState: () => dispatch( testActionCreator() )
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( Authentication );

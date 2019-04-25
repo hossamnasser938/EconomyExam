@@ -6,16 +6,23 @@ export const signInActionCreator = ( email, password ) => {
     return dispatch => {
         dispatch( startLoadingActionCreator() );
 
-
-
-        dispatch( stopLoadingActionCreator() );
+        firebase.auth().signInWithEmailAndPassword( email, password )
+            .then( userCredential => {
+                console.log( "successfully signed user:", userCredential );
+                dispatch( stopLoadingActionCreator() );
+                startMainTabs();
+            } )
+            .catch( error => {
+                console.log( "error ocuured:", error );
+                dispatch( stopLoadingActionCreator() );
+                dispatch( setError( error ) );
+            } );
     };
 };
 
 export const signUpActionCreator = ( email, name, password ) => {
     return dispatch => {
         dispatch( startLoadingActionCreator() );
-        dispatch( clearError() );
 
         firebase.auth().createUserWithEmailAndPassword( email, password )
             .then( userCredential => {

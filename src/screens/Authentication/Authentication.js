@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions, BackHandler } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
 import { signInActionCreator, signUpActionCreator, clearError } from '../../redux/actions/index';
+import startMainTabs from '../MainTabs/startMainTabs';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -47,6 +48,8 @@ class Authentication extends Component {
             }        
         };
 
+        BackHandler.addEventListener( "hardwareBackPress", startMainTabs )
+
         Dimensions.addEventListener( "change", this.onDimensionsChange );
     }
 
@@ -57,6 +60,8 @@ class Authentication extends Component {
     };
 
     componentWillUnmount() {
+        BackHandler.removeEventListener( "hardwareBackPress" );
+
         Dimensions.removeEventListener( "change", this.onDimensionsChange );
     }
 

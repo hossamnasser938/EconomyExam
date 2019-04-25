@@ -2,7 +2,7 @@ import getChapterQuestions from '../../../data/getChapterQuestions';
 import preprocessQuestions from '../../../data/preprocessQuestions';
 import Papa from 'papaparse';
 
-function chapterPressHandler ( chapter, toggleTouchables ) {
+function chapterPressHandler ( chapter, toggleTouchables, dropDownAlert ) {
     console.log( "from chapter press handler with modal" );
     toggleTouchables();
 
@@ -21,8 +21,9 @@ function chapterPressHandler ( chapter, toggleTouchables ) {
             }
         } );
     }).catch( reason => {
+        console.log( "Error ocurred due to:", reason );
         toggleTouchables();
-        alert( chapter + " does not exist yet");
+        dropDownAlert.alertWithType( "error", "Error", "Cannot find " + chapter );
     });
 }
 

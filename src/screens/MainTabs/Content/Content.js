@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Dimensions } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
 import DefalautScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import Chapter from '../../../components/Chapter/Chapter';
 import chapterPressHandler from './chapterPressHandler';
@@ -62,7 +63,7 @@ class ContentScreen extends Component {
 
     onChapterPress = ( chapter ) => {
         const validChapterPressHandler = chapterPressHandler.bind( this );
-        validChapterPressHandler( chapter, this.toggleTouchables.bind( this ) );
+        validChapterPressHandler( chapter, this.toggleTouchables.bind( this ), this.dropDownAlert );
     };
 
     render() {
@@ -85,6 +86,9 @@ class ContentScreen extends Component {
                     { chaptersComponents }
                     </View>
                 </ScrollView>
+                <DropdownAlert 
+                  ref = { ref => this.dropDownAlert = ref }
+                />
             </DefalautScreenContainer>
         );
     }

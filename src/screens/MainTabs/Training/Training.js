@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, Image, Dimensions } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
@@ -22,7 +23,6 @@ class TrainingScreen extends Component {
             questions: null,
             error: false,
             input: null,
-            invalidInput: false,
             checked: false,
             portraitMode: (Dimensions.get("window").width < 500)? true: false
         };
@@ -84,7 +84,7 @@ class TrainingScreen extends Component {
             this.props.navigator.dismissModal( {    
                 animationType: "none"
             } );
-            alert("Error occurred, please try again");
+            this.dropDownAlert.alertWithType( "error", "Error", "Error occurred, please try again" );
         }
     }
 
@@ -112,24 +112,18 @@ class TrainingScreen extends Component {
 
     validateInput () {
         if ( this.state.input == null || this.state.input == "" ) {
-            this.setState( {
-                invalidInput: false 
-            } );
             return 0;
         }
 
         const inputAsFloat = parseFloat( this.state.input );
         if ( !Number.isNaN( inputAsFloat ) && Number.isInteger( inputAsFloat ) && inputAsFloat > 0 ) {
             this.setState( {
-                input: inputAsFloat,
-                invalidInput: false 
+                input: inputAsFloat
             } );
             return inputAsFloat;
         }
         else {
-            this.setState( {
-                invalidInput: true 
-            } );
+            this.dropDownAlert.alertWithType( "error", "Error", "Enter a Positive Integer, Please" );
             return -1;
         }
     }
@@ -143,7 +137,7 @@ class TrainingScreen extends Component {
         
         if ( this.state.questions === null ) {
             if ( this.state.error ) {
-                alert("Error occurred, please try again");
+                this.dropDownAlert.alertWithType( "error", "Error", "Error occurred, please try again" );
             }
             else {
                 this.showLoadingModal();
@@ -156,19 +150,6 @@ class TrainingScreen extends Component {
     };
     
     render() {
-        let content = null;
-        if ( this.state.invalidInput ) {
-            content = (
-                <View style = { styles.fieldContainer }>
-                    <WrapperText>
-                        <Text style = { styles.errorText}>
-                            Enter a Positive Integer, Please
-                        </Text>
-                    </WrapperText>
-                </View>
-            );
-        }
-
         return(
             <DefaultScreenContainer style = { this.state.portraitMode? styles.portraitContainer: styles.landscapeContainer }>
                 <View style = { styles.wrapper }>
@@ -201,11 +182,12 @@ class TrainingScreen extends Component {
                                     onPress = { this.onStartTraining }
                                 />
                             </View>
-                            { content }
-
                         </View>
                     </ScrollView>
                 </View>
+                <DropdownAlert 
+                  ref = { ref => this.dropDownAlert = ref }
+                />
             </DefaultScreenContainer>
         );
     }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Dimensions, Button } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
-import { startLoadingActionCreator, stopLoadingActionCreator } from '../../redux/actions/index';
+import { signInActionCreator } from '../../redux/actions/index';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -156,10 +156,18 @@ class Authentication extends Component {
                     </View>
                     <View style = { styles.buttonsWrapper }>
                         <View style = { styles.btnWrapper }>
-                            <DefaultButton 
-                              title = { this.state.authMode === "login"? "LogIn": "SignUp" }
-                              onPress = { () => this.dropDownAlert.alertWithType( "warn", "Warning", "Not yet" ) }
-                            />
+                            {
+                                this.props.loading
+                                ? <ActivityIndicator />
+                                : <DefaultButton 
+                                    title = { this.state.authMode === "login"? "LogIn": "SignUp" }
+                                    onPress = { 
+                                        this.state.controls.email.valid && this.state.controls.password.valid
+                                        ? () => this.props.onSignIn()
+                                        : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Not yet" )
+                                    }
+                                  />
+                            }
                         </View>
                         <View style = { styles.switchTextWrapper }>
                             <TouchableOpacity onPress = { this.toggleAuthMode }>
@@ -172,13 +180,6 @@ class Authentication extends Component {
                         </View>
                     </View>
                 </DefaultScreenContainer>
-
-                <Button 
-                  title = "load"
-                  onPress = { this.props.startLoading }
-                />
-
-                <Text> { this.props.loading? "true": "false" } </Text>
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
@@ -196,8 +197,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        startLoading: () => dispatch( startLoadingActionCreator() ),
-        stopLoading: () => dispatch( stopLoadingActionCreator() )
+        onSignIn: () => dispatch( signInActionCreator( "", "" ) )
     };
 };
 

@@ -1,4 +1,5 @@
 export { startLoadingActionCreator, 
     stopLoadingActionCreator, 
     signInActionCreator, 
-    signUpActionCreator } from './auth';
+    signUpActionCreator,
+    clearError } from './auth';

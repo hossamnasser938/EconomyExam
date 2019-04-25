@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
-import { signInActionCreator, signUpActionCreator } from '../../redux/actions/index';
+import { signInActionCreator, signUpActionCreator, clearError } from '../../redux/actions/index';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import AuthInput from '../../components/AuthInput/AuthInput';
@@ -57,7 +57,7 @@ class Authentication extends Component {
     };
 
     componentWillUnmount() {
-        Dimensions.removeEventListener( this.onDimensionsChange );
+        Dimensions.removeEventListener( "change", this.onDimensionsChange );
     }
 
     toggleAuthMode = () => {
@@ -95,6 +95,11 @@ class Authentication extends Component {
     };
     
     render() {
+        if ( this.props.error ) {
+            this.dropDownAlert.alertWithType( "error", "Error", this.props.errorType );
+            this.props.onClearError();
+        }
+
         return(
             <ScrollView contentContainerStyle = { {height: Dimensions.get("window").height} }>
                 <DefaultScreenContainer>
@@ -196,14 +201,17 @@ class Authentication extends Component {
 
 const mapStateToProps = state => {
     return {
-        loading: state.auth.loading
+        loading: state.auth.loading,
+        error: state.auth.error,
+        errorType: state.auth.errorType
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         onSignIn: ( email, password ) => dispatch( signInActionCreator( email, password ) ),
-        onSignUp: ( email, name, password ) => dispatch( signUpActionCreator( email, name, password ) )
+        onSignUp: ( email, name, password ) => dispatch( signUpActionCreator( email, name, password ) ),
+        onClearError: () => dispatch( clearError() )
     };
 };
 

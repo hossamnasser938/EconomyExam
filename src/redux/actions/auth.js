@@ -27,6 +27,11 @@ export const signUpActionCreator = ( email, name, password ) => {
         firebase.auth().createUserWithEmailAndPassword( email, password )
             .then( userCredential => {
                 console.log( "successfully created user:", userCredential );
+                return firebase.database().ref( "users" )
+                    .child( userCredential.user.uid ).child( "name" ).set( name )
+            } )
+            .then( response => {
+                console.log( "respnse from database:", response );
                 dispatch( stopLoadingActionCreator() );
                 startMainTabs();
             } )

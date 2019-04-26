@@ -10,7 +10,7 @@ import DefaultScreenContainer from '../../../components/UI/DefaultScreenContaine
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
-import { READY_STATE_KEY, GO_AUTH_KEY } from '../../../utils/constants';
+import { READY_STATE_KEY, GO_AUTH_KEY, JUST_AUTHED_KEY } from '../../../utils/constants';
 import styles from './styles';
 
 class Competition extends Component {
@@ -32,12 +32,14 @@ class Competition extends Component {
                     .then( result => {
                         if ( result && result !== "" ) {
                             if ( firebase.auth().currentUser ) {
-                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated" );
+                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated", null, 2000 );
                             } 
                             else {
-                                this.dropDownAlert.alertWithType( "warn", "Warning", "You did not sign in/up" );
+                                this.dropDownAlert.alertWithType( "warn", "Warning", "You did not sign in/up", 2000 );
                             }
+                            
                             AsyncStorage.setItem( GO_AUTH_KEY, "" );
+                            AsyncStorage.setItem( JUST_AUTHED_KEY, "" );
                         }
                     } )
                     .catch( error => {
@@ -86,7 +88,7 @@ class Competition extends Component {
         }
 
         if ( this.props.isSuccess ) {
-            this.dropDownAlert.alertWithType( "success", "Success", "You can compete now" );
+            this.dropDownAlert.alertWithType( "success", "Success", "You can compete now", null, 2000 );
             this.props.onClearSuccess();
         }
     }
@@ -103,7 +105,7 @@ class Competition extends Component {
         }
         else {
             AsyncStorage.setItem( GO_AUTH_KEY, "just_went" );
-            this.dropDownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
+            this.dropDownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature", null, 2000 );
             setTimeout( startAuthScreen, 2500 );
         }
     };
@@ -152,7 +154,6 @@ class Competition extends Component {
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
-                  closeInterval = { 2000 }
                 />
             </DefaultScreenContainer>
         );

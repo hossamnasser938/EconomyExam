@@ -1,7 +1,7 @@
 import { AUTH_SET_SUCCESS, AUTH_CLEAR_SUCCESS, 
     AUTH_START_LOADING, AUTH_STOP_LOADING, 
     AUTH_SET_ERROR, AUTH_CLEAR_ERROR } from './ActionTypes';
-import { READY_STATE_KEY } from '../../utils/constants';
+import { READY_STATE_KEY, JUST_AUTHED_KEY } from '../../utils/constants';
 import { clearReady } from './index';
 import firebase from 'react-native-firebase';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,12 +13,13 @@ export const signIn = ( email, password, fromCompetition ) => {
 
         firebase.auth().signInWithEmailAndPassword( email, password )
             .then( userCredential => {
-                console.log( "successfully signed user:", userCredential );
+                return AsyncStorage.setItem( JUST_AUTHED_KEY, "authed" );
+            } )
+            .then( response => {
                 dispatch( authStopLoading() );
                 startMainTabs( fromCompetition? 2: 0 );
             } )
             .catch( error => {
-                console.log( "error ocuured:", error );
                 dispatch( authStopLoading() );
                 dispatch( authSetError( error ) );
             } );
@@ -31,7 +32,6 @@ export const signUp = ( email, name, password, fromCompetition ) => {
 
         firebase.auth().createUserWithEmailAndPassword( email, password )
             .then( userCredential => {
-                console.log( "successfully created user:", userCredential );
                 return firebase.database().ref( "users" )
                     .child( userCredential.user.uid )
                     .set( {
@@ -40,12 +40,13 @@ export const signUp = ( email, name, password, fromCompetition ) => {
                     } );
             } )
             .then( response => {
-                console.log( "respnse from database:", response );
+                return AsyncStorage.setItem( JUST_AUTHED_KEY, "authed" );
+            } )
+            .then( response => {
                 dispatch( authStopLoading() );
                 startMainTabs( fromCompetition? 2: 0 );
             } )
             .catch( error => {
-                console.log( "error ocuured:", error );
                 dispatch( authStopLoading() );
                 dispatch( authSetError( error ) );
             } );        
@@ -76,7 +77,6 @@ export const signOut = () => {
                 dispatch( clearReady() );
             } )
             .catch( error => {
-                console.log( "Error ocurred:", error );
                 dispatch( authStopLoading() );
                 dispatch( authSetError( error ) );
             } );

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions, Button } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import firebase from 'react-native-firebase';
 import DropdownAlert from 'react-native-dropdownalert';
 import DefalautScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import Chapter from '../../../components/Chapter/Chapter';
 import chapterPressHandler from './chapterPressHandler';
+import { JUST_AUTHED_KEY } from '../../../utils/constants';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
 import styles from './styles';
 
@@ -25,6 +28,22 @@ class ContentScreen extends Component {
                 this.props.navigator.toggleDrawer( {
                     side: "left"
                 } );
+            }
+            else if ( event.id === "didAppear" ) {
+                AsyncStorage.getItem( JUST_AUTHED_KEY )
+                    .then( result => {
+                        console.log( "result from then block:", result );
+                        if ( result && result !== "" ) {
+                            if ( firebase.auth().currentUser ) {
+                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated", null, 2000 );
+                            }
+
+                            AsyncStorage.setItem( JUST_AUTHED_KEY, "" );
+                        }
+                    } )
+                    .catch( error => {
+                        console.log( "Error getting JUST_AUTHED:", error );
+                    } );
             }
         } );
 
@@ -86,6 +105,7 @@ class ContentScreen extends Component {
                     { chaptersComponents }
                     </View>
                 </ScrollView>
+
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
                 />

@@ -73,7 +73,7 @@ class Competition extends Component {
         }
         else {
             this.DropdownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
-            setTimeout( startAuthScreen, 2300 );
+            setTimeout( startAuthScreen, 2500 );
         }
     };
 

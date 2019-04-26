@@ -1,6 +1,8 @@
 export {  signIn, 
     signUp,
-    authClearError } from './auth';
+    signOut,
+    authClearError,
+    authClearSuccess } from './auth';
 
 export { updateReadyState,
     setReady,

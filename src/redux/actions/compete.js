@@ -18,6 +18,7 @@ export const updateReadyState = isReady => {
                 );
             } )
             .then( response => {
+                dispatch( competeStopLoading() );
                 dispatch( competeSetSuccess() );
                 dispatch( isReady? setReady(): clearReady() );
             } )

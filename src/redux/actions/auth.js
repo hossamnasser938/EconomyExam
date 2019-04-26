@@ -1,5 +1,8 @@
-import { START_LOADING, STOP_LOADING, SET_ERROR, CLEAR_ERROR } from './ActionTypes';
+import { SET_SUCCESS, CLEAR_SUCCESS, START_LOADING, STOP_LOADING, SET_ERROR, CLEAR_ERROR } from './ActionTypes';
+import { READY_STATE_KEY } from '../../utils/constants';
+import { clearReady } from './index';
 import firebase from 'react-native-firebase';
+import AsyncStorage from '@react-native-community/async-storage';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
 
 export const signIn = ( email, password, fromCompetition ) => {
@@ -47,6 +50,47 @@ export const signUp = ( email, name, password, fromCompetition ) => {
     };
 };
 
+export const signOut = () => {
+    const currentUserID = firebase.auth().currentUser.uid;
+
+    return ( dispatch, getState ) => {
+        if ( getState().compete.ready ) {
+            dispatch( authStartLoading() );
+
+            firebase.database().ref( "users" ).child( currentUserID ).child( "active" )
+            .set( false )
+            .then( response => {
+                return AsyncStorage.setItem( 
+                    READY_STATE_KEY, 
+                    "false"
+                );
+            } )
+            .then( response => {
+                return firebase.auth().signOut();
+            } )
+            .then( response => {
+                dispatch( authStopLoading() );
+                dispatch( authSetSuccess() );
+                dispatch( clearReady() );
+            } )
+            .catch( error => {
+                console.log( "Error ocurred:", error );
+                dispatch( authStopLoading() );
+                dispatch( authSetError( error ) );
+            } );
+        }
+        else {
+            firebase.auth().signOut()
+                .then( response => {
+                    dispatch( authSetSuccess() );
+                } )
+                .catch( error => {
+                    dispatch( authSetError( error ) );
+                } );
+        }
+    };
+};
+
 export const authStartLoading = () => {
     return {
         type: START_LOADING
@@ -56,6 +100,18 @@ export const authStartLoading = () => {
 export const authStopLoading = () => {
     return {
         type: STOP_LOADING
+    };
+};
+
+export const authSetSuccess = () => {
+    return {
+        type: SET_SUCCESS
+    };
+};
+
+export const authClearSuccess = () => {
+    return {
+        type: CLEAR_SUCCESS
     };
 };
 

@@ -1,6 +1,7 @@
-import { START_LOADING, STOP_LOADING, SET_ERROR, CLEAR_ERROR } from '../actions/ActionTypes';
+import { START_LOADING, STOP_LOADING, SET_SUCCESS, CLEAR_SUCCESS, SET_ERROR, CLEAR_ERROR } from '../actions/ActionTypes';
 
 const initialState = { 
+    success: false,
     loading: false,
     error: false,
     errorType: null 
@@ -25,6 +26,12 @@ const authReducer = ( state = initialState, action ) => {
         case CLEAR_ERROR:
             coppiedState.error = false;
             coppiedState.errorType = null;
+            break;
+        case SET_SUCCESS:
+            coppiedState.success = true;
+            break;
+        case CLEAR_SUCCESS:
+            coppiedState.success = false;
             break;
     }
 

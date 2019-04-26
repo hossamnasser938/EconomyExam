@@ -16,14 +16,16 @@ import configStore from './src/redux/configStore';
 
 const appStore = configStore(); 
 
-//register screens
+//register screens with redux
 Navigation.registerComponent( "EconomyExam.AuthScreen", () => AuthScreen, appStore, Provider );
+Navigation.registerComponent( "EconomyExam.CompetitionScreen", () =>  CompetitionScreen, appStore, Provider );
+
+//register screens without redux
 Navigation.registerComponent( "EconomyExam.ContentScreen", () => ContentScreen );
 Navigation.registerComponent( "EconomyExam.TrainingScreen", () => TrainingScreen );
 Navigation.registerComponent( "EconomyExam.ContentQuestionScreen", () => ContentQuestionScreen );
 Navigation.registerComponent( "EconomyExam.TrainQuestionScreen", () => TrainQuestionScreen );
 Navigation.registerComponent( "EconomyExam.LoadingModalScreen", () => LoadingModalScreen );
-Navigation.registerComponent( "EconomyExam.CompetitionScreen", () =>  CompetitionScreen );
 Navigation.registerComponent( "EconomyExam.SideDrawerScreen", () =>  SideDrawerScreen );
 
 // start a tab-based app

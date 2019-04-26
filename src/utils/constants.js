@@ -1,0 +1,1 @@
+export const READY_STATE_KEY = "READY_STATE_KEY";

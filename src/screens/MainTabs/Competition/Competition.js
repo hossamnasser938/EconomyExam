@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Dimensions } from 'react-native';
+import { View, Image, Text, Dimensions, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
+import { connect } from 'react-redux';
+import { toggleReadyState, setReady, clearReady } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
 import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
+import { READY_STATE_KEY } from '../../../utils/constants';
 import styles from './styles';
 
-export default class Competition extends Component {
+class Competition extends Component {
     constructor( props ) {
         super( props );
 
@@ -38,6 +41,26 @@ export default class Competition extends Component {
         Dimensions.removeEventListener( "change", this.onDimensionsChange );
     }
 
+    componentWillMount() {
+        AsyncStorage.getItem( READY_STATE_KEY )
+            .then( result => {
+                if ( result && result !== "" ) {
+                    if ( result === "true" ) {
+                        this.props.onSetReadyState();
+                    } else if ( result === "false" ) {
+                        this.props.onClearReadyState()
+                    } else {
+                        console.log( "ready state is neither true not error" );
+                    }
+                } else {
+                    console.log( "ready state is null or empty" );
+                }
+            } )
+            .catch( error => {
+                console.log( "Error getting ready state" );
+            } ); 
+    }
+
     static navigatorStyle = {
         navBarBackgroundColor: DARK_BACKGROUND,
         navBarTextColor: DARK_TEXT_COLOR, 
@@ -46,8 +69,7 @@ export default class Competition extends Component {
 
     iAmReadyHandler = () => {
         if ( firebase.auth().currentUser ) {
-            //TODO: let user compete
-            alert( "not yet" );
+            this.props.onToggleReadyState();
         }
         else {
             this.DropdownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
@@ -61,22 +83,37 @@ export default class Competition extends Component {
                 <View style = { styles.imageWrapper }>
                     <Image source = { require( "../../../assets/ready.png" ) }/>
                 </View>
-                <View style = { styles.restWrapper }>
-                    <View style = { styles.wrapper }>
-                        <WrapperText style = { styles.mainText }>
-                            <Text>
-                                Are you ready to compete with others?
-                            </Text>
-                        </WrapperText>
-                    </View>
-                    <View style = { styles.wrapper }>
-                        <DefaultButton
-                          style = { styles.btnWrapper } 
-                          title = "I am Ready"
-                          onPress = { this.iAmReadyHandler }
-                        />
-                    </View>
-                </View>
+                
+                {
+                    this.props.isReady
+                        ? (
+                            <View style = { styles.restWrapper }>
+                                <WrapperText style = { styles.mainText }>
+                                    <Text>
+                                        Yes, I'm ready
+                                    </Text>
+                                </WrapperText>
+                            </View>
+                        )
+                        : (
+                            <View style = { styles.restWrapper }>
+                                <View style = { styles.wrapper }>
+                                    <WrapperText style = { styles.mainText }>
+                                        <Text>
+                                            Are you ready to compete with others?
+                                        </Text>
+                                    </WrapperText>
+                                </View>
+                                <View style = { styles.wrapper }>
+                                    <DefaultButton
+                                    style = { styles.btnWrapper } 
+                                    title = "I am Ready"
+                                    onPress = { this.iAmReadyHandler }
+                                    />
+                                </View>
+                            </View>
+                        )
+                }
 
                 <DropdownAlert 
                   ref = { ref => this.DropdownAlert = ref }
@@ -86,3 +123,19 @@ export default class Competition extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        isReady: state.compete.ready
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onToggleReadyState: () => dispatch( toggleReadyState() ),
+        onSetReadyState: () => dispatch( setReady() ),
+        onClearReadyState: () => dispatch( clearReady() )
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( Competition );

@@ -2,7 +2,7 @@ import { START_LOADING, STOP_LOADING, SET_ERROR, CLEAR_ERROR } from './ActionTyp
 import firebase from 'react-native-firebase';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
 
-export const signInActionCreator = ( email, password ) => {
+export const signInActionCreator = ( email, password, fromCompetition ) => {
     return dispatch => {
         dispatch( startLoadingActionCreator() );
 
@@ -10,7 +10,7 @@ export const signInActionCreator = ( email, password ) => {
             .then( userCredential => {
                 console.log( "successfully signed user:", userCredential );
                 dispatch( stopLoadingActionCreator() );
-                startMainTabs();
+                startMainTabs( fromCompetition? 2: 0 );
             } )
             .catch( error => {
                 console.log( "error ocuured:", error );
@@ -20,7 +20,7 @@ export const signInActionCreator = ( email, password ) => {
     };
 };
 
-export const signUpActionCreator = ( email, name, password ) => {
+export const signUpActionCreator = ( email, name, password, fromCompetition ) => {
     return dispatch => {
         dispatch( startLoadingActionCreator() );
 
@@ -33,7 +33,7 @@ export const signUpActionCreator = ( email, name, password ) => {
             .then( response => {
                 console.log( "respnse from database:", response );
                 dispatch( stopLoadingActionCreator() );
-                startMainTabs();
+                startMainTabs( fromCompetition? 2: 0 );
             } )
             .catch( error => {
                 console.log( "error ocuured:", error );

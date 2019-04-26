@@ -1,7 +1,8 @@
 import { Navigation } from 'react-native-navigation';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 
-const startMainTabs = () => {
+const startMainTabs = ( initialTabIndex = 0 ) => {
+    console.log( "initial tab = " + initialTabIndex );
     Navigation.startTabBasedApp( {
         tabs: [
             {
@@ -50,9 +51,6 @@ const startMainTabs = () => {
                 }
             }
         ],
-        navBarButtons: {
-
-        },
         drawer: {
             left: {
                 screen: "EconomyExam.SideDrawerScreen"
@@ -60,7 +58,8 @@ const startMainTabs = () => {
         },
         appStyle: {
             tabBarSelectedButtonColor: DARK_TEXT_COLOR,
-            tabBarBackgroundColor: DARK_BACKGROUND
+            tabBarBackgroundColor: DARK_BACKGROUND,
+            initialTabIndex
         },
         animationType: "fade"
     } );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions, BackHandler } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions, BackHandler, AsyncStorage } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
 import { signInActionCreator, signUpActionCreator, clearError } from '../../redux/actions/index';
@@ -12,6 +12,7 @@ import WrapperText from '../../components/UI/WrapperText/WrapperText';
 import validateInputs from '../../utils/validateInputs';
 import styles from './styles';
 import { DARK_BACKGROUND } from '../../utils/colors';
+import { GO_AUTH_KEY } from '../../utils/constants';
 
 class Authentication extends Component {
     static navigatorStyle = {
@@ -24,6 +25,7 @@ class Authentication extends Component {
         this.state = {
             authMode: "login",
             orientation: Dimensions.get( "window" ).width > 500? "landscape": "portrait",
+            fromCompetition: false,
             controls: {
                 email: {
                     value: "",
@@ -48,7 +50,10 @@ class Authentication extends Component {
             }        
         };
 
-        BackHandler.addEventListener( "hardwareBackPress", startMainTabs )
+        BackHandler.addEventListener( 
+            "hardwareBackPress", 
+            () => startMainTabs( this.state.fromCompetition? 2: 0 ) 
+        );
 
         Dimensions.addEventListener( "change", this.onDimensionsChange );
     }
@@ -63,6 +68,20 @@ class Authentication extends Component {
         BackHandler.removeEventListener( "hardwareBackPress" );
 
         Dimensions.removeEventListener( "change", this.onDimensionsChange );
+    }
+
+    componentWillMount() {
+        AsyncStorage.getItem( GO_AUTH_KEY )
+            .then( result => {
+                if ( result && result !== "" ) {
+                    this.setState( {
+                        fromCompetition: true
+                    } );
+                }
+            } )
+            .catch( error => {
+                console.log( "Error getting GO_AUTH" );
+            } );
     }
 
     toggleAuthMode = () => {
@@ -174,12 +193,11 @@ class Authentication extends Component {
                                     onPress = {
                                         this.state.authMode === "login"
                                         ? this.state.controls.email.valid && this.state.controls.password.valid
-                                          ? () => this.props.onSignIn( this.state.controls.email.value, this.state.controls.password.value )
+                                          ? () => this.props.onSignIn( this.state.controls.email.value, this.state.controls.password.value, this.state.fromCompetition )
                                           : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Please enter valid email and password" )
                                         : this.state.controls.email.valid && this.state.controls.name.valid && this.state.controls.password.valid && this.state.controls.confirmPassword.valid
-                                          ? () => this.props.onSignUp( this.state.controls.email.value, this.state.controls.name.value, this.state.controls.password.value )
-                                          : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Please enter valid email, name, password and confirm password" )
-                                        
+                                          ? () => this.props.onSignUp( this.state.controls.email.value, this.state.controls.name.value, this.state.controls.password.value, this.state.fromCompetition )
+                                          : () => this.dropDownAlert.alertWithType( "warn", "Warning", "Please enter valid email, name, password and confirm password" ) 
                                     }
                                   />
                             }
@@ -214,8 +232,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignIn: ( email, password ) => dispatch( signInActionCreator( email, password ) ),
-        onSignUp: ( email, name, password ) => dispatch( signUpActionCreator( email, name, password ) ),
+        onSignIn: ( email, password, fromCompetition ) => dispatch( signInActionCreator( email, password, fromCompetition ) ),
+        onSignUp: ( email, name, password, fromCompetition ) => dispatch( signUpActionCreator( email, name, password, fromCompetition ) ),
         onClearError: () => dispatch( clearError() )
     };
 };

@@ -2,27 +2,27 @@ import { START_LOADING, STOP_LOADING, SET_ERROR, CLEAR_ERROR } from './ActionTyp
 import firebase from 'react-native-firebase';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
 
-export const signInActionCreator = ( email, password, fromCompetition ) => {
+export const signIn = ( email, password, fromCompetition ) => {
     return dispatch => {
-        dispatch( startLoadingActionCreator() );
+        dispatch( authStartLoading() );
 
         firebase.auth().signInWithEmailAndPassword( email, password )
             .then( userCredential => {
                 console.log( "successfully signed user:", userCredential );
-                dispatch( stopLoadingActionCreator() );
+                dispatch( authStopLoading() );
                 startMainTabs( fromCompetition? 2: 0 );
             } )
             .catch( error => {
                 console.log( "error ocuured:", error );
-                dispatch( stopLoadingActionCreator() );
-                dispatch( setError( error ) );
+                dispatch( authStopLoading() );
+                dispatch( authSetError( error ) );
             } );
     };
 };
 
-export const signUpActionCreator = ( email, name, password, fromCompetition ) => {
+export const signUp = ( email, name, password, fromCompetition ) => {
     return dispatch => {
-        dispatch( startLoadingActionCreator() );
+        dispatch( authStartLoading() );
 
         firebase.auth().createUserWithEmailAndPassword( email, password )
             .then( userCredential => {
@@ -36,37 +36,37 @@ export const signUpActionCreator = ( email, name, password, fromCompetition ) =>
             } )
             .then( response => {
                 console.log( "respnse from database:", response );
-                dispatch( stopLoadingActionCreator() );
+                dispatch( authStopLoading() );
                 startMainTabs( fromCompetition? 2: 0 );
             } )
             .catch( error => {
                 console.log( "error ocuured:", error );
-                dispatch( stopLoadingActionCreator() );
-                dispatch( setError( error ) );
+                dispatch( authStopLoading() );
+                dispatch( authSetError( error ) );
             } );        
     };
 };
 
-export const startLoadingActionCreator = () => {
+export const authStartLoading = () => {
     return {
         type: START_LOADING
     };
 };
 
-export const stopLoadingActionCreator = () => {
+export const authStopLoading = () => {
     return {
         type: STOP_LOADING
     };
 };
 
-export const setError = error => {
+export const authSetError = error => {
     return {
         type: SET_ERROR,
         payload: { error }
     };
 };
 
-export const clearError = () => {
+export const authClearError = () => {
     return {
         type: CLEAR_ERROR
     };

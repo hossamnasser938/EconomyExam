@@ -3,7 +3,7 @@ import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions
 import AsyncStorage from '@react-native-community/async-storage';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
-import { signInActionCreator, signUpActionCreator, clearError } from '../../redux/actions/index';
+import { signIn, signUp, authClearError } from '../../redux/actions/index';
 import startMainTabs from '../MainTabs/startMainTabs';
 import DefaultScreenContainer from '../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
@@ -85,6 +85,13 @@ class Authentication extends Component {
             } );
     }
 
+    componentDidUpdate() {
+        if ( this.props.error ) {
+            this.dropDownAlert.alertWithType( "error", "Error", this.props.errorType );
+            this.props.onClearError();
+        }
+    }
+
     toggleAuthMode = () => {
         this.setState( prevState => {
             return {
@@ -120,11 +127,6 @@ class Authentication extends Component {
     };
     
     render() {
-        if ( this.props.error ) {
-            this.dropDownAlert.alertWithType( "error", "Error", this.props.errorType );
-            this.props.onClearError();
-        }
-
         return(
             <ScrollView contentContainerStyle = { {height: Dimensions.get("window").height} }>
                 <DefaultScreenContainer>
@@ -233,9 +235,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignIn: ( email, password, fromCompetition ) => dispatch( signInActionCreator( email, password, fromCompetition ) ),
-        onSignUp: ( email, name, password, fromCompetition ) => dispatch( signUpActionCreator( email, name, password, fromCompetition ) ),
-        onClearError: () => dispatch( clearError() )
+        onSignIn: ( email, password, fromCompetition ) => dispatch( signIn( email, password, fromCompetition ) ),
+        onSignUp: ( email, name, password, fromCompetition ) => dispatch( signUp( email, name, password, fromCompetition ) ),
+        onClearError: () => dispatch( authClearError() )
     };
 };
 

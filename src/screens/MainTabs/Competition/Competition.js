@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Dimensions } from 'react-native';
+import { View, Image, Text, ActivityIndicator, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { updateReadyState, setReady, clearReady } from '../../../redux/actions/index';
+import { updateReadyState, setReady, clearReady, competeClearError, competeClearSuccess } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
 import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
@@ -32,10 +32,10 @@ class Competition extends Component {
                     .then( result => {
                         if ( result && result !== "" ) {
                             if ( firebase.auth().currentUser ) {
-                                this.DropdownAlert.alertWithType( "success", "Success", "Now you're authenticated" );
+                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated" );
                             } 
                             else {
-                                this.DropdownAlert.alertWithType( "warn", "Warning", "You did not sign in/up" );
+                                this.dropDownAlert.alertWithType( "warn", "Warning", "You did not sign in/up" );
                             }
                             AsyncStorage.setItem( GO_AUTH_KEY, "" );
                         }
@@ -79,6 +79,18 @@ class Competition extends Component {
             } ); 
     }
 
+    componentDidUpdate() {
+        if ( this.props.isError ) {
+            this.dropDownAlert.alertWithType( "error", "Error", this.props.errorType );
+            this.props.onClearError();
+        }
+
+        if ( this.props.isSuccess ) {
+            this.dropDownAlert.alertWithType( "success", "Success", "You can compete now" );
+            this.props.onClearSuccess();
+        }
+    }
+
     static navigatorStyle = {
         navBarBackgroundColor: DARK_BACKGROUND,
         navBarTextColor: DARK_TEXT_COLOR, 
@@ -88,11 +100,10 @@ class Competition extends Component {
     iAmReadyHandler = () => {
         if ( firebase.auth().currentUser ) {
             this.props.onUpdateReadyState( true );
-            this.DropdownAlert.alertWithType( "success", "Success", "You can compete now" )
         }
         else {
             AsyncStorage.setItem( GO_AUTH_KEY, "just_went" );
-            this.DropdownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
+            this.dropDownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
             setTimeout( startAuthScreen, 2500 );
         }
     };
@@ -125,18 +136,22 @@ class Competition extends Component {
                                     </WrapperText>
                                 </View>
                                 <View style = { styles.wrapper }>
-                                    <DefaultButton
-                                      style = { styles.btnWrapper } 
-                                      title = "I am Ready"
-                                      onPress = { this.iAmReadyHandler }
-                                    />
+                                    {
+                                        this.props.isLoading
+                                        ? <ActivityIndicator />
+                                        : <DefaultButton
+                                            style = { styles.btnWrapper } 
+                                            title = "I am Ready"
+                                            onPress = { this.iAmReadyHandler }
+                                          />
+                                    }
                                 </View>
                             </View>
                         )
                 }
 
                 <DropdownAlert 
-                  ref = { ref => this.DropdownAlert = ref }
+                  ref = { ref => this.dropDownAlert = ref }
                   closeInterval = { 2000 }
                 />
             </DefaultScreenContainer>
@@ -146,7 +161,11 @@ class Competition extends Component {
 
 const mapStateToProps = state => {
     return {
-        isReady: state.compete.ready
+        isReady: state.compete.ready,
+        isSuccess: state.compete.success,
+        isError: state.compete.error,
+        errorType: state.compete.errorType,
+        isLoading: state.compete.loading
     };
 };
 
@@ -154,7 +173,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onUpdateReadyState: isReady => dispatch( updateReadyState( isReady ) ),
         onSetReadyState: () => dispatch( setReady() ),
-        onClearReadyState: () => dispatch( clearReady() )
+        onClearReadyState: () => dispatch( clearReady() ),
+        onClearError: () => dispatch( competeClearError() ),
+        onClearSuccess: () => dispatch( competeClearSuccess() )
     };
 };
 

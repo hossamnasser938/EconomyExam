@@ -7,3 +7,5 @@ export const CLEAR_ERROR = "CLEAR_ERROR";
 // compete
 export const SET_READY = "SET_READY";
 export const CLEAR_READY = "CLEAR_READY"; 
+export const SET_SUCCESS = "SET_SUCCESS";
+export const CLEAR_SUCCESS = "CLEAR_SUCCESS";

@@ -1,9 +1,9 @@
-export { startLoadingActionCreator, 
-    stopLoadingActionCreator, 
-    signInActionCreator, 
-    signUpActionCreator,
-    clearError } from './auth';
+export {  signIn, 
+    signUp,
+    authClearError } from './auth';
 
 export { updateReadyState,
     setReady,
-    clearReady } from './compete';
+    clearReady,
+    competeClearError,
+    competeClearSuccess } from './compete';

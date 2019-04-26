@@ -28,7 +28,11 @@ export const signUpActionCreator = ( email, name, password, fromCompetition ) =>
             .then( userCredential => {
                 console.log( "successfully created user:", userCredential );
                 return firebase.database().ref( "users" )
-                    .child( userCredential.user.uid ).child( "name" ).set( name )
+                    .child( userCredential.user.uid )
+                    .set( {
+                        name,
+                        active: false
+                    } );
             } )
             .then( response => {
                 console.log( "respnse from database:", response );

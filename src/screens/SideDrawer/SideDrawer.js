@@ -19,6 +19,7 @@ class SideDrawer extends Component {
           }
 
           setTimeout( () => {
+            // TODO: We need to close the drawer if it is open not togle it
             this.props.navigator.toggleDrawer( {
               side: "left"
             } );

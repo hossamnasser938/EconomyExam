@@ -1,4 +1,7 @@
-import { START_LOADING, STOP_LOADING, SET_READY, CLEAR_READY, SET_ERROR, CLEAR_ERROR, SET_SUCCESS, CLEAR_SUCCESS } from '../actions/ActionTypes';
+import { COMPETE_START_LOADING, COMPETE_STOP_LOADING, 
+    SET_READY, CLEAR_READY, 
+    COMPETE_SET_ERROR, COMPETE_CLEAR_ERROR, 
+    COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
@@ -14,10 +17,10 @@ const competeReducer = ( state = initialState, action ) => {
     };
 
     switch ( action.type ) {
-        case START_LOADING:
+        case COMPETE_START_LOADING:
             coppiedState.loading = true;
             break;
-        case STOP_LOADING:
+        case COMPETE_STOP_LOADING:
             coppiedState.loading = false;
             break;
         case SET_READY:
@@ -26,18 +29,18 @@ const competeReducer = ( state = initialState, action ) => {
         case CLEAR_READY:
             coppiedState.ready = false;
             break;
-        case SET_ERROR:
+        case COMPETE_SET_ERROR:
             coppiedState.error = true;
             coppiedState.errorType = action.payload.error
             break;
-        case CLEAR_ERROR:
+        case COMPETE_CLEAR_ERROR:
             coppiedState.error = false;
             coppiedState.errorType = null;
             break;
-        case SET_SUCCESS:
+        case COMPETE_SET_SUCCESS:
             coppiedState.success = true;
             break;
-        case CLEAR_SUCCESS:
+        case COMPETE_CLEAR_SUCCESS:
             coppiedState.success = false;
             break;
     }

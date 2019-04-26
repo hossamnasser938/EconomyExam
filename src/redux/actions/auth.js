@@ -1,4 +1,6 @@
-import { SET_SUCCESS, CLEAR_SUCCESS, START_LOADING, STOP_LOADING, SET_ERROR, CLEAR_ERROR } from './ActionTypes';
+import { AUTH_SET_SUCCESS, AUTH_CLEAR_SUCCESS, 
+    AUTH_START_LOADING, AUTH_STOP_LOADING, 
+    AUTH_SET_ERROR, AUTH_CLEAR_ERROR } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
 import { clearReady } from './index';
 import firebase from 'react-native-firebase';
@@ -93,37 +95,37 @@ export const signOut = () => {
 
 export const authStartLoading = () => {
     return {
-        type: START_LOADING
+        type: AUTH_START_LOADING
     };
 };
 
 export const authStopLoading = () => {
     return {
-        type: STOP_LOADING
+        type: AUTH_STOP_LOADING
     };
 };
 
 export const authSetSuccess = () => {
     return {
-        type: SET_SUCCESS
+        type: AUTH_SET_SUCCESS
     };
 };
 
 export const authClearSuccess = () => {
     return {
-        type: CLEAR_SUCCESS
+        type: AUTH_CLEAR_SUCCESS
     };
 };
 
 export const authSetError = error => {
     return {
-        type: SET_ERROR,
+        type: AUTH_SET_ERROR,
         payload: { error }
     };
 };
 
 export const authClearError = () => {
     return {
-        type: CLEAR_ERROR
+        type: AUTH_CLEAR_ERROR
     };
 };

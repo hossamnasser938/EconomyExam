@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Dimensions, AsyncStorage } from 'react-native';
+import { View, Image, Text, Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import { toggleReadyState, setReady, clearReady } from '../../../redux/actions/index';

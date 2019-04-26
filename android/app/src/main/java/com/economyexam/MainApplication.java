@@ -23,6 +23,8 @@ import com.zmxv.RNSound.RNSoundPackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+
 public class MainApplication extends NavigationApplication {
 
   @Override
@@ -40,7 +42,8 @@ public class MainApplication extends NavigationApplication {
 			new RNSoundPackage(),
 			new RNFirebasePackage(),
 			new RNFirebaseAuthPackage(),
-			new RNFirebaseDatabasePackage()
+			new RNFirebaseDatabasePackage(),
+			new AsyncStoragePackage()
 		);
 	}
 

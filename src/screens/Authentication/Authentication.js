@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions, BackHandler, AsyncStorage } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, Dimensions, BackHandler } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
 import { signInActionCreator, signUpActionCreator, clearError } from '../../redux/actions/index';

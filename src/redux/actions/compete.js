@@ -1,6 +1,6 @@
 import { SET_READY, CLEAR_READY } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from '@react-native-community/async-storage';
 
 export const toggleReadyState = () => {
     return ( dispatch, getState ) => {

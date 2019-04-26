@@ -167,6 +167,8 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:16.2.1"
     implementation "com.google.firebase:firebase-database:16.1.0"
 
+    implementation project(':@react-native-community_async-storage')
+
     implementation project(':react-native-navigation')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-fs')

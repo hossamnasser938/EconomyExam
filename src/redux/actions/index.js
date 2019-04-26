@@ -4,6 +4,6 @@ export { startLoadingActionCreator,
     signUpActionCreator,
     clearError } from './auth';
 
-export { toggleReadyState,
+export { updateReadyState,
     setReady,
     clearReady } from './compete';

@@ -3,7 +3,7 @@ import { View, Image, Text, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { toggleReadyState, setReady, clearReady } from '../../../redux/actions/index';
+import { updateReadyState, setReady, clearReady } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
 import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
@@ -87,7 +87,7 @@ class Competition extends Component {
 
     iAmReadyHandler = () => {
         if ( firebase.auth().currentUser ) {
-            this.props.onToggleReadyState();
+            this.props.onUpdateReadyState( true );
             this.DropdownAlert.alertWithType( "success", "Success", "You can compete now" )
         }
         else {
@@ -152,7 +152,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onToggleReadyState: () => dispatch( toggleReadyState() ),
+        onUpdateReadyState: isReady => dispatch( updateReadyState( isReady ) ),
         onSetReadyState: () => dispatch( setReady() ),
         onClearReadyState: () => dispatch( clearReady() )
     };

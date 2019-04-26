@@ -1,16 +1,15 @@
 import { SET_READY, CLEAR_READY } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
-import { AsyncStorage } from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export const toggleReadyState = () => {
-    return ( dispatch, getState ) => {
-        const isReady = getState().compete.ready;
+export const updateReadyState = isReady => {
+    return dispatch => {
         AsyncStorage.setItem( 
             READY_STATE_KEY, 
-            (!isReady).toString(), 
+            isReady.toString(), 
             error => {
                 if ( !error ) {
-                    dispatch( isReady? clearReady(): setReady() );
+                    dispatch( isReady? setReady(): clearReady() );
                 }
         } );
     };

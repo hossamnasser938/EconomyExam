@@ -1,6 +1,15 @@
 import { StyleSheet } from 'react-native';
+import { DARK_TEXT_COLOR } from '../../../utils/colors';
 
 const styles = StyleSheet.create({
+    container: { 
+        alignItems: "center",
+        justifyContent: "center" 
+    },
+    listContainer: {
+        flexGrow: 1,
+        width: "80%"
+    },
     portraitContainer: {
         flexDirection: "column"
     },
@@ -27,6 +36,10 @@ const styles = StyleSheet.create({
         margin: 10
     },
     mainText: {
+        textAlign: "center"
+    },
+    emptyListText: {
+        color: DARK_TEXT_COLOR,
         textAlign: "center"
     }
 } );

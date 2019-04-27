@@ -6,14 +6,13 @@ const styles = StyleSheet.create( {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: LESS_DARK_BACKGROUND,
         width: "100%",
+        backgroundColor: LESS_DARK_BACKGROUND,
         padding: 5,
-        margin: 5
-    },
-    image: {
-        width: 64,
-        height: 64
+        marginTop: 10,
+        borderColor: LESS_DARK_BACKGROUND,
+        borderWidth: 1,
+        borderRadius: 5
     },
     text: {
         color: DARK_TEXT_COLOR,

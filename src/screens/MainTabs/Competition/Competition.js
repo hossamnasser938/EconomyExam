@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Image, Text, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
@@ -9,6 +9,8 @@ import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
+import ActiveUser from '../../../components/ActiveUser/ActiveUser';
+import EmptyActiveUsersList from '../../../components/EmptyActiveUsersList/EmptyActiveUsersList';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
 import { READY_STATE_KEY, GO_AUTH_KEY, JUST_AUTHED_KEY } from '../../../utils/constants';
 import styles from './styles';
@@ -18,6 +20,7 @@ class Competition extends Component {
         super( props );
 
         this.state = {
+            activeUsers: [],
             portrait: Dimensions.get( "window" ).height > 500? true: false
         };
 
@@ -111,52 +114,75 @@ class Competition extends Component {
     };
 
     render() {
-        return(
-            <DefaultScreenContainer style = { this.state.portrait? styles.portraitContainer: styles.landscapeContainer }>
-                <View style = { styles.imageWrapper }>
-                    <Image source = { require( "../../../assets/ready.png" ) }/>
-                </View>
-                
+        let readyUI = (
+            <DefaultScreenContainer style = { styles.container }>
                 {
-                    this.props.isReady
-                        ? (
-                            <View style = { styles.restWrapper }>
-                                <WrapperText style = { styles.mainText }>
-                                    <Text>
-                                        Yes, I'm ready
-                                    </Text>
-                                </WrapperText>
-                            </View>
-                        )
-                        : (
-                            <View style = { styles.restWrapper }>
-                                <View style = { styles.wrapper }>
-                                    <WrapperText style = { styles.mainText }>
-                                        <Text>
-                                            Are you ready to compete with others?
-                                        </Text>
-                                    </WrapperText>
-                                </View>
-                                <View style = { styles.wrapper }>
-                                    {
-                                        this.props.isLoading
-                                        ? <ActivityIndicator />
-                                        : <DefaultButton
-                                            style = { styles.btnWrapper } 
-                                            title = "I am Ready"
-                                            onPress = { this.iAmReadyHandler }
-                                          />
-                                    }
-                                </View>
-                            </View>
-                        )
+                    this.state.activeUsers.length
+                    ? <FlatList
+                        style = { styles.listContainer }
+                        data = { this.state.activeUsers }
+                        renderItem = { ({ item }) => <ActiveUser userName = { item.name }/> }         
+                      />
+                    : <EmptyActiveUsersList />
                 }
+                
+                <View style = { styles.wrapper }>
+                    {
+                        this.props.isLoading
+                        ? <ActivityIndicator />
+                        : <DefaultButton
+                            style = { styles.btnWrapper } 
+                            title = "I am not Ready"
+                            onPress = { () => this.props.onUpdateReadyState( false ) }
+                            />
+                    }
+                </View>                
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
                 />
             </DefaultScreenContainer>
         );
+
+        let notReadyUI = (
+            <DefaultScreenContainer style = { this.state.portrait? styles.portraitContainer: styles.landscapeContainer }>
+                <View style = { styles.imageWrapper }>
+                    <Image source = { require( "../../../assets/ready.png" ) }/>
+                </View>
+                
+                <View style = { styles.restWrapper }>
+                    <View style = { styles.wrapper }>
+                        <WrapperText style = { styles.mainText }>
+                            <Text>
+                                Are you ready to compete with others?
+                            </Text>
+                        </WrapperText>
+                    </View>
+                    <View style = { styles.wrapper }>
+                        {
+                            this.props.isLoading
+                            ? <ActivityIndicator />
+                            : <DefaultButton
+                                style = { styles.btnWrapper } 
+                                title = "I am Ready"
+                                onPress = { this.iAmReadyHandler }
+                                />
+                        }
+                    </View>
+                </View>
+
+                <DropdownAlert 
+                  ref = { ref => this.dropDownAlert = ref }
+                />
+            </DefaultScreenContainer>
+        );
+
+        return (
+            this.props.isReady
+            ? readyUI
+            : notReadyUI 
+        ); 
+        
     }
 }
 

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ActivityIndicator, FlatList, Dimensions } from 'react-native';
+import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { updateReadyState, setReady, clearReady, competeClearError, competeClearSuccess } from '../../../redux/actions/index';
+import { updateReadyState,
+    listenOnActiveUsers, 
+    setReady, clearReady, 
+    competeClearError, competeClearSuccess } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
 import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
@@ -20,7 +23,6 @@ class Competition extends Component {
         super( props );
 
         this.state = {
-            activeUsers: [],
             portrait: Dimensions.get( "window" ).height > 500? true: false
         };
 
@@ -117,10 +119,10 @@ class Competition extends Component {
         let readyUI = (
             <DefaultScreenContainer style = { styles.container }>
                 {
-                    this.state.activeUsers.length
+                    this.props.activeUsersList.length
                     ? <FlatList
                         style = { styles.listContainer }
-                        data = { this.state.activeUsers }
+                        data = { this.props.activeUsersList }
                         renderItem = { ({ item }) => <ActiveUser userName = { item.name }/> }         
                       />
                     : <EmptyActiveUsersList />
@@ -136,7 +138,9 @@ class Competition extends Component {
                             onPress = { () => this.props.onUpdateReadyState( false ) }
                             />
                     }
-                </View>                
+                </View>  
+
+                <Button onPress = { this.props.onListenOnActiveUsers } title = "Listen" />
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
@@ -166,7 +170,7 @@ class Competition extends Component {
                                 style = { styles.btnWrapper } 
                                 title = "I am Ready"
                                 onPress = { this.iAmReadyHandler }
-                                />
+                              />
                         }
                     </View>
                 </View>
@@ -192,7 +196,8 @@ const mapStateToProps = state => {
         isSuccess: state.compete.success,
         isError: state.compete.error,
         errorType: state.compete.errorType,
-        isLoading: state.compete.loading
+        isLoading: state.compete.loading,
+        activeUsersList: state.compete.activeUsersList
     };
 };
 
@@ -202,7 +207,8 @@ const mapDispatchToProps = dispatch => {
         onSetReadyState: () => dispatch( setReady() ),
         onClearReadyState: () => dispatch( clearReady() ),
         onClearError: () => dispatch( competeClearError() ),
-        onClearSuccess: () => dispatch( competeClearSuccess() )
+        onClearSuccess: () => dispatch( competeClearSuccess() ),
+        onListenOnActiveUsers: () => dispatch( listenOnActiveUsers() )
     };
 };
 

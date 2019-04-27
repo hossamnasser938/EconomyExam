@@ -1,14 +1,16 @@
 import { COMPETE_START_LOADING, COMPETE_STOP_LOADING, 
     SET_READY, CLEAR_READY, 
     COMPETE_SET_ERROR, COMPETE_CLEAR_ERROR, 
-    COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS } from '../actions/ActionTypes';
+    COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
+    NOTIFY_NEW_ACTIVE_USERS } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
     ready: false,
     success: false,
     error: false,
-    errorType: null
+    errorType: null,
+    activeUsersList: []
 };
 
 const competeReducer = ( state = initialState, action ) => {
@@ -42,6 +44,9 @@ const competeReducer = ( state = initialState, action ) => {
             break;
         case COMPETE_CLEAR_SUCCESS:
             coppiedState.success = false;
+            break;
+        case NOTIFY_NEW_ACTIVE_USERS:
+            coppiedState.activeUsersList = action.payload.activeUsersList;
             break;
     }
 

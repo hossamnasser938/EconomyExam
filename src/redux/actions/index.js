@@ -9,4 +9,5 @@ export { updateReadyState,
     clearReady,
     competeClearError,
     competeClearSuccess,
-    listenOnActiveUsers } from './compete';
+    listenOnActiveUsers,
+    stopListeningOnActiveUsers } from './compete';

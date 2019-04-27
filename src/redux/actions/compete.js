@@ -47,6 +47,13 @@ export const listenOnActiveUsers = () => {
     };
 }
 
+export const stopListeningOnActiveUsers = () => {
+    return dispatch => {
+        firebase.database().ref( "users" ).
+            off( "value" );
+    };
+};
+
 export const filterActiveUsers = dataSnapshot => {
     const currentUserID = firebase.auth().currentUser.uid;
 
@@ -57,12 +64,12 @@ export const filterActiveUsers = dataSnapshot => {
         const usersArray = [];
         for ( let userObject in usersObject ) {
             usersArray.push( {
-                id: userObject,
+                key: userObject,
                 ...usersObject[userObject]
             } );
         }
         
-        const activeUsers = usersArray.filter( user => user.id !== currentUserID && user.active );
+        const activeUsers = usersArray.filter( user => user.key !== currentUserID && user.active );
         console.log( "active users:", activeUsers );
 
         dispatch( competeStopLoading() );

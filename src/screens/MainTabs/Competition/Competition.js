@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, Button } from 'react-native';
+import { View, Image, Text, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import { updateReadyState,
     listenOnActiveUsers, 
+    stopListeningOnActiveUsers,
     setReady, clearReady, 
     competeClearError, competeClearSuccess } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -23,7 +24,8 @@ class Competition extends Component {
         super( props );
 
         this.state = {
-            portrait: Dimensions.get( "window" ).height > 500? true: false
+            portrait: Dimensions.get( "window" ).height > 500? true: false,
+            listening: false
         };
 
         props.navigator.setOnNavigatorEvent( event => {
@@ -33,6 +35,13 @@ class Competition extends Component {
                 } );
             } 
             else if ( event.id === "didAppear" ) {
+                console.log( "did appear" );
+                if ( this.props.isReady && !this.state.listening ) {
+                    console.log( "listen" );
+                    this.setState( { listening: true } );
+                    this.props.onListenOnActiveUsers();
+                }
+
                 AsyncStorage.getItem( GO_AUTH_KEY )
                     .then( result => {
                         if ( result && result !== "" ) {
@@ -50,6 +59,14 @@ class Competition extends Component {
                     .catch( error => {
                         console.log( "Error getting GO_AUTH" );
                     } );
+            }
+            else if ( event.id === "didDisappear" ) {
+                console.log( "did disappear" );
+                if ( this.props.isReady && this.state.listening ) {
+                    console.log( "stop listening" );
+                    this.setState( { listening: false } );
+                    this.props.onStopListeningOnActiveUsers();
+                }
             }
         } );
 
@@ -106,13 +123,23 @@ class Competition extends Component {
 
     iAmReadyHandler = () => {
         if ( firebase.auth().currentUser ) {
+            console.log( "ready handler: start listening" );
             this.props.onUpdateReadyState( true );
+            this.setState( { listening: true } );
+            this.props.onListenOnActiveUsers();
         }
         else {
             AsyncStorage.setItem( GO_AUTH_KEY, "just_went" );
             this.dropDownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature", null, 2000 );
             setTimeout( startAuthScreen, 2500 );
         }
+    };
+
+    iAmNotReadyHandler = () => {
+        console.log( "not ready handler: stop listening" );
+        this.setState( { listening: false } );
+        this.props.onStopListeningOnActiveUsers();
+        this.props.onUpdateReadyState( false );
     };
 
     render() {
@@ -135,12 +162,10 @@ class Competition extends Component {
                         : <DefaultButton
                             style = { styles.btnWrapper } 
                             title = "I am not Ready"
-                            onPress = { () => this.props.onUpdateReadyState( false ) }
+                            onPress = { this.iAmNotReadyHandler }
                             />
                     }
                 </View>  
-
-                <Button onPress = { this.props.onListenOnActiveUsers } title = "Listen" />
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
@@ -208,7 +233,8 @@ const mapDispatchToProps = dispatch => {
         onClearReadyState: () => dispatch( clearReady() ),
         onClearError: () => dispatch( competeClearError() ),
         onClearSuccess: () => dispatch( competeClearSuccess() ),
-        onListenOnActiveUsers: () => dispatch( listenOnActiveUsers() )
+        onListenOnActiveUsers: () => dispatch( listenOnActiveUsers() ),
+        onStopListeningOnActiveUsers: () => dispatch( stopListeningOnActiveUsers() )
     };
 };
 

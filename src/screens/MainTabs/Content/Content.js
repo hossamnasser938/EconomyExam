@@ -20,7 +20,6 @@ class ContentScreen extends Component {
         }
 
         props.navigator.setOnNavigatorEvent( event => {
-            console.log( event );
             if ( event.id === "willAppear" ) {
                 this.enableTouchables();
             } 

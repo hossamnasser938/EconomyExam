@@ -6,22 +6,20 @@ import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import styles from './style';
-import getQuestionsReady from './getQuestionsReady';
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
-
+import { getQuestionsReady } from '../../../redux/actions/index';
+import { connect } from 'react-redux';
 
 class TrainingScreen extends Component {
     componentWillMount() {
         console.log( "component will mount" );
-        getQuestionsReady( this.onQuestionsReady, this.onError );
+        this.props.onGetQuestionsReady();
     }
 
     constructor( props ) {
         super( props );
         
         this.state = {
-            questions: null,
-            error: false,
             input: null,
             checked: false,
             portraitMode: (Dimensions.get("window").width < 500)? true: false
@@ -54,18 +52,6 @@ class TrainingScreen extends Component {
         statusBarColor: DARK_BACKGROUND
     };
 
-    onQuestionsReady = ( questions ) => {
-        this.setState( {
-            questions: questions
-        } );
-    };
-
-    onError = () => {
-        this.setState( {
-            error: true
-        } );
-    }
-
     onChangeInput = newInput => {
         console.log( "input changed: ", newInput );
         this.setState( {
@@ -74,13 +60,13 @@ class TrainingScreen extends Component {
     }
     
     checkToDismissModal = () => {
-        if ( this.state.questions !== null ) {
+        if ( this.props.questions !== null ) {
             this.props.navigator.dismissModal( {    
                 animationType: "none"
             } );
             this.navigateToQuestions();
         }
-        else if ( this.state.error ) {
+        else if ( this.props.error ) {
             this.props.navigator.dismissModal( {    
                 animationType: "none"
             } );
@@ -104,7 +90,7 @@ class TrainingScreen extends Component {
             screen: "EconomyExam.TrainQuestionScreen",
             title: "Question",
             passProps: {
-                questions: this.state.questions,
+                questions: this.props.questions,
                 questionsCount
             }
         } );
@@ -135,8 +121,8 @@ class TrainingScreen extends Component {
             return;
         }
         
-        if ( this.state.questions === null ) {
-            if ( this.state.error ) {
+        if ( this.props.questions === null ) {
+            if ( this.props.error ) {
                 this.dropDownAlert.alertWithType( "error", "Error", "Error occurred, please try again" );
             }
             else {
@@ -193,4 +179,17 @@ class TrainingScreen extends Component {
     }
 }
 
-export default TrainingScreen;
+const mapStateToProps = state => {
+    return {
+        questions: state.questions.questions,
+        error: state.questions.error
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onGetQuestionsReady: () => dispatch( getQuestionsReady() )
+    }
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( TrainingScreen );

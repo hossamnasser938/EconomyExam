@@ -18,12 +18,12 @@ const appStore = configStore();
 
 //register screens with redux
 Navigation.registerComponent( "EconomyExam.AuthScreen", () => AuthScreen, appStore, Provider );
+Navigation.registerComponent( "EconomyExam.TrainingScreen", () => TrainingScreen, appStore, Provider );
 Navigation.registerComponent( "EconomyExam.CompetitionScreen", () =>  CompetitionScreen, appStore, Provider );
 Navigation.registerComponent( "EconomyExam.SideDrawerScreen", () =>  SideDrawerScreen, appStore, Provider );
 
 //register screens without redux
 Navigation.registerComponent( "EconomyExam.ContentScreen", () => ContentScreen );
-Navigation.registerComponent( "EconomyExam.TrainingScreen", () => TrainingScreen );
 Navigation.registerComponent( "EconomyExam.ContentQuestionScreen", () => ContentQuestionScreen );
 Navigation.registerComponent( "EconomyExam.TrainQuestionScreen", () => TrainQuestionScreen );
 Navigation.registerComponent( "EconomyExam.LoadingModalScreen", () => LoadingModalScreen );

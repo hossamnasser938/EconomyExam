@@ -5,6 +5,7 @@ import ContentScreen from './src/screens/MainTabs/Content/Content';
 import TrainingScreen from './src/screens/MainTabs/Training/Training';
 import ContentQuestionScreen from './src/screens/Question/ContentQuestion';
 import TrainQuestionScreen from './src/screens/Question/TrainQuestion';
+import CompeteQuestionScreen from './src/screens/Question/CompeteQuestion';
 import CompetitionScreen from './src/screens/MainTabs/Competition/Competition';
 import LoadingModalScreen from './src/screens/LoadingModal/LoadingModal';
 import SideDrawerScreen from './src/screens/SideDrawer/SideDrawer';
@@ -20,6 +21,7 @@ const appStore = configStore();
 Navigation.registerComponent( "EconomyExam.AuthScreen", () => AuthScreen, appStore, Provider );
 Navigation.registerComponent( "EconomyExam.TrainingScreen", () => TrainingScreen, appStore, Provider );
 Navigation.registerComponent( "EconomyExam.CompetitionScreen", () =>  CompetitionScreen, appStore, Provider );
+Navigation.registerComponent( "EconomyExam.CompeteQuestionScreen", () => CompeteQuestionScreen, appStore, Provider );
 Navigation.registerComponent( "EconomyExam.SideDrawerScreen", () =>  SideDrawerScreen, appStore, Provider );
 
 //register screens without redux

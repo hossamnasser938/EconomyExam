@@ -106,7 +106,8 @@ export const handleNotification = dataSnapshot => {
         const notification = {
             id: dataSnapshot.key,
             name: dataSnapshot._value.name,
-            request: dataSnapshot._value.request
+            request: dataSnapshot._value.request,
+            sessionID: dataSnapshot._value.sessionID
         };
 
         dispatch( newNotification( notification ) );
@@ -132,6 +133,7 @@ export const stopListeningOnNotifications = () => {
 
 export const pushNotification = notification => {
     return dispatch => {
+        console.log( "push notification" );
         const currentUserID = firebase.auth().currentUser.uid;
 
         dispatch( competeStartLoading() );
@@ -143,12 +145,14 @@ export const pushNotification = notification => {
         firebase.database().ref( "users" ).child( currentUserID )
             .once( "value" )
             .then( response => {
+            console.log( "push name & request" );
                 const currentUserName = response._value.name;
                 return notificationReference.set( { 
                     name: currentUserName,
                     request: notification.request 
                 } )
             } ).then( response => {
+            console.log( "push session id" );
                 let uniqueSessionID;
 
                 if ( notification.request === "start" ) {
@@ -184,22 +188,26 @@ export const clearNotificationPushed = () => {
     };
 };
 
-export const listenOnAnswers = sessionID => {
-    return dispatch => {
+export const listenOnAnswers = () => {
+    return ( dispatch, getState ) => {
+        const sessionID = getState().compete.notification.sessionID;
+
         firebase.database().ref( "sessions" ).child( sessionID )
             .on( "child_added", dataSnapshot => {
                 console.log( "datasnapshot:", dataSnapshot );
-                dispatch( handleAnswer() );
+                dispatch( handleAnswer( dataSnapshot ) );
             } );
     };
 };
 
 export const handleAnswer = dataSnapshot => {
+    console.log( "dispatch handle answer" );
     return dispatch => {
-        const currentUserID = firebase.auth().currentUser.id;
+        const currentUserID = firebase.auth().currentUser.uid;
 
-        if ( dataSnapshot._value.key !== currentUserID ) {
+        if ( dataSnapshot._value.id !== currentUserID ) {
             const answer = {
+                questionIndex: dataSnapshot._value.questionIndex,
                 answerIndex: dataSnapshot._value.answerIndex
             };
 
@@ -209,26 +217,33 @@ export const handleAnswer = dataSnapshot => {
 };
 
 export const notifyNewAnswer = answer => {
+    console.log( "dispatch notify answer" );
     return {
         type: NOTIFY_NEW_ANSWER,
         payload: { answer }
     };
 };
 
-export const stopListeningOnAnswers = sessionID => {
-    return dispatch => {
+export const stopListeningOnAnswers = () => {
+    return ( dispatch, getState ) => {
+        const sessionID = getState().compete.notification.sessionID;
+
         firebase.database().ref( "sessions" ).child( sessionID )
             .off( "child_added" );
     };
 };
 
-export const pushAnswer = ( answer, sessionID ) => {
-    return dispatch => {
-        const currentUserID = firebase.auth().currentUser.id;
+export const pushAnswer = answer => {
+    return ( dispatch, getState ) => {
+        const currentUserID = firebase.auth().currentUser.uid;
+        const sessionID = getState().compete.notification.sessionID;
         const uniqueID = uuidv4();
 
         firebase.database().ref( "sessions" ).child( sessionID )
-            .child( uniqueID ).set( answer )
+            .child( uniqueID ).set( { 
+                id: currentUserID,
+                ...answer 
+            } )
             .then( response => {
                 dispatch( updateTurn() )
             } )

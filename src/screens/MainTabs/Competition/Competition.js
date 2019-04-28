@@ -154,7 +154,9 @@ class Competition extends Component {
                 case "confirm":
                     console.log( "request confirm" );
                     this.setState( { waiting: false } );
-                    alert( "You're ready to go" );
+                    // TODO: start competing
+                    // alert( "You're ready to go" );
+                    this.navigateToQuestions();
                     break;
                 case "cancel":
                     console.log( "request cancel" );
@@ -221,7 +223,8 @@ class Competition extends Component {
         this.props.onPushNotification( notification );
 
         // TODO: start competing
-        alert( "You're ready to go" );
+        // alert( "You're ready to go" );
+        this.navigateToQuestions();
     };
 
     recepientCancelHandler = () => {
@@ -234,6 +237,17 @@ class Competition extends Component {
         
         this.props.onPushNotification( notification );
     };    
+
+    navigateToQuestions = ( questionsCount = 50 ) => {
+        this.props.navigator.push( {
+            screen: "EconomyExam.CompeteQuestionScreen",
+            title: "Question",
+            passProps: {
+                questions: this.props.questions,
+                questionsCount
+            }
+        } );
+    }
 
     render() {
         let readyUI = (
@@ -348,7 +362,8 @@ const mapStateToProps = state => {
         activeUsersList: state.compete.activeUsersList,
         notification: state.compete.notification,
         notificationPushed: state.compete.notificationPushed,
-        notificationRequest: state.compete.notificationRequest
+        notificationRequest: state.compete.notificationRequest,
+        questions: state.questions.questions
     };
 };
 

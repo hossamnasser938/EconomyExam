@@ -11,6 +11,7 @@ import { updateReadyState,
     setReady, clearReady, 
     competeClearError, competeClearSuccess } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
+import { MaterialDialog } from 'react-native-material-dialog';
 import startAuthScreen from '../../Authentication/startAuthScreen';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
@@ -27,7 +28,9 @@ class Competition extends Component {
 
         this.state = {
             portrait: Dimensions.get( "window" ).height > 500? true: false,
-            listening: false
+            listening: false,
+            dialogVisible: false,
+            clickedUserIndex: -1
         };
 
         props.navigator.setOnNavigatorEvent( event => {
@@ -148,15 +151,35 @@ class Competition extends Component {
         this.props.onUpdateReadyState( false );
     };
 
+    activeUserPressHandler = clickedUserIndex => {
+        this.setState( { dialogVisible: true, clickedUserIndex } );
+    };
+
+    startCompetingHandler = () => {
+        alert( "not yet" );
+        this.setState( { dialogVisible: false, clickedUserIndex: -1 } );
+    };
+
     render() {
         let readyUI = (
             <DefaultScreenContainer style = { styles.container }>
+                <MaterialDialog
+                  title = "Start Competing"
+                  visible = { this.state.dialogVisible }
+                  onOk = { this.startCompetingHandler }
+                  onCancel = { () => this.setState( { dialogVisible: false, clickedUserIndex: -1 } ) }
+                >
+                    <WrapperText style = { { color: "black" } }>
+                        <Text>Are you sure you want to compete with {this.state.clickedUserIndex !== -1? this.props.activeUsersList[this.state.clickedUserIndex].name: "test"} ?</Text>
+                    </WrapperText>
+                </MaterialDialog>
+
                 {
                     this.props.activeUsersList.length
                     ? <FlatList
                         style = { styles.listContainer }
                         data = { this.props.activeUsersList }
-                        renderItem = { ({ item }) => <ActiveUser userName = { item.name }/> }         
+                        renderItem = { ({ item, index }) => <ActiveUser userName = { item.name } onPress = { () => this.activeUserPressHandler( index ) }/> }         
                       />
                     : <EmptyActiveUsersList />
                 }

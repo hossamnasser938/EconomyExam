@@ -4,7 +4,9 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
     NOTIFY_NEW_ACTIVE_USERS,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
-    NEW_NOTIFICATION } from '../actions/ActionTypes';
+    NEW_NOTIFICATION,
+    NOTIFY_NEW_ANSWER,
+    UPDATE_TURN } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
@@ -15,7 +17,9 @@ const initialState = {
     activeUsersList: [],
     notification: null,
     notificationPushed: false,
-    notificationRequest: null
+    notificationRequest: null,
+    newAnswer: null,
+    turn: "mine"
 };
 
 const competeReducer = ( state = initialState, action ) => {
@@ -64,6 +68,12 @@ const competeReducer = ( state = initialState, action ) => {
         case CLEAR_NOTIFICATION_PUSHED:
             coppiedState.notificationPushed = false;
             break;
+        case NOTIFY_NEW_ANSWER:
+            coppiedState.newAnswer = action.payload.answer;
+            break;
+        case UPDATE_TURN:
+            coppiedState.turn = (state.turn === "mine")? "his": "mine";  
+            break;  
     }
 
     return coppiedState;

@@ -4,7 +4,9 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
     NOTIFY_NEW_ACTIVE_USERS,
     NEW_NOTIFICATION,
-    SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED } from './ActionTypes';
+    SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
+    NOTIFY_NEW_ANSWER,
+    UPDATE_TURN } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
@@ -179,6 +181,67 @@ export const setNotificationPushed = request => {
 export const clearNotificationPushed = () => {
     return {
         type: CLEAR_NOTIFICATION_PUSHED
+    };
+};
+
+export const listenOnAnswers = sessionID => {
+    return dispatch => {
+        firebase.database().ref( "sessions" ).child( sessionID )
+            .on( "child_added", dataSnapshot => {
+                console.log( "datasnapshot:", dataSnapshot );
+                dispatch( handleAnswer() );
+            } );
+    };
+};
+
+export const handleAnswer = dataSnapshot => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.id;
+
+        if ( dataSnapshot._value.key !== currentUserID ) {
+            const answer = {
+                answerIndex: dataSnapshot._value.answerIndex
+            };
+
+            dispatch( notifyNewAnswer( answer ) );
+        }
+    };
+};
+
+export const notifyNewAnswer = answer => {
+    return {
+        type: NOTIFY_NEW_ANSWER,
+        payload: { answer }
+    };
+};
+
+export const stopListeningOnAnswers = sessionID => {
+    return dispatch => {
+        firebase.database().ref( "sessions" ).child( sessionID )
+            .off( "child_added" );
+    };
+};
+
+export const pushAnswer = ( answer, sessionID ) => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.id;
+        const uniqueID = uuidv4();
+
+        firebase.database().ref( "sessions" ).child( sessionID )
+            .child( uniqueID ).set( answer )
+            .then( response => {
+                dispatch( updateTurn() )
+            } )
+            .catch( error => {
+                dispatch( competeSetError( error ) );
+            } );
+
+    };
+};
+
+export const updateTurn = () => {
+    return {
+        type: UPDATE_TURN
     };
 };
 

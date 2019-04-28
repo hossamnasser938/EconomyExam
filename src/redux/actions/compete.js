@@ -147,13 +147,20 @@ export const pushNotification = notification => {
                     request: notification.request 
                 } )
             } ).then( response => {
-                const uniqueSessionID = uuidv4();
+                let uniqueSessionID;
+
+                if ( notification.request === "start" ) {
+                    uniqueSessionID = uuidv4();
+                } else {
+                    uniqueSessionID = notification.sessionID;
+                }
     
                 return notificationReference.child( "sessionID" ).set( uniqueSessionID );
             } )
             .then( response => {
+                console.log( "dispatch set notification pushed" );
                 dispatch( competeStopLoading() );
-                dispatch( setNotificationPushed() );
+                dispatch( setNotificationPushed( notification.request ) );
             } )
             .catch( error => {
                 dispatch( competeStopLoading() );
@@ -162,9 +169,10 @@ export const pushNotification = notification => {
     };
 };
 
-export const setNotificationPushed = () => {
+export const setNotificationPushed = request => {
     return {
-        type: SET_NOTIFICATION_PUSHED
+        type: SET_NOTIFICATION_PUSHED,
+        payload: { request }
     };
 };
 

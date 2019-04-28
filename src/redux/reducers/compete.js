@@ -14,7 +14,8 @@ const initialState = {
     errorType: null,
     activeUsersList: [],
     notification: null,
-    notificationPushed: false
+    notificationPushed: false,
+    notificationRequest: null
 };
 
 const competeReducer = ( state = initialState, action ) => {
@@ -56,7 +57,9 @@ const competeReducer = ( state = initialState, action ) => {
             coppiedState.notification = action.payload.notification;
             break;
         case SET_NOTIFICATION_PUSHED:
+            console.log( "reduced set notification pushed" );
             coppiedState.notificationPushed = true;
+            coppiedState.notificationRequest = action.payload.request;
             break;
         case CLEAR_NOTIFICATION_PUSHED:
             coppiedState.notificationPushed = false;

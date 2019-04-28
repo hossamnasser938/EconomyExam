@@ -126,9 +126,22 @@ class Competition extends Component {
         }
 
         if ( this.props.notificationPushed ) {
-            this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm", null, 2000 );
-            this.setState( { waiting: true } );
-            this.props.onClearNotificationPushed();
+            console.log( "received notification pushed in screen:", this.props.notificationPushed )
+            switch ( this.props.notificationRequest ) {
+                case "start":
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm", null, 2000 );
+                    this.setState( { waiting: true } );
+                    this.props.onClearNotificationPushed();
+                    break;
+                case "confirm":
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed", null, 2000 );
+                    this.props.onClearNotificationPushed();
+                    break;
+                case "cancel":
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is cancelled", null, 2000 );
+                    this.props.onClearNotificationPushed();
+                    break;
+            }
         }
 
         if ( this.props.notification && this.props.notification !== prevProps.notification ) {
@@ -140,11 +153,12 @@ class Competition extends Component {
                     break;
                 case "confirm":
                     console.log( "request confirm" );
+                    this.setState( { waiting: false } );
                     alert( "You're ready to go" );
                     break;
                 case "cancel":
                     console.log( "request cancel" );
-                    this.dropDownAlert.alertWithType( "warn", "Warning", this.props.activeUsersList[this.state.clickedUserIndex].name + "canceled the request" );
+                    this.dropDownAlert.alertWithType( "warn", "Warning", this.props.activeUsersList[this.state.clickedUserIndex].name + " canceled the request" );
                     this.setState( { waiting: false } );
                     break;
             }
@@ -200,7 +214,8 @@ class Competition extends Component {
 
         const notification = {
             recepientID: this.props.notification.id,
-            request: "confirm"
+            request: "confirm",
+            sessionID: this.props.notification.sessionID
         };
         
         this.props.onPushNotification( notification );
@@ -332,7 +347,8 @@ const mapStateToProps = state => {
         isLoading: state.compete.loading,
         activeUsersList: state.compete.activeUsersList,
         notification: state.compete.notification,
-        notificationPushed: state.compete.notificationPushed
+        notificationPushed: state.compete.notificationPushed,
+        notificationRequest: state.compete.notificationRequest
     };
 };
 

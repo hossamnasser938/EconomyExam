@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ActivityIndicator, FlatList, Dimensions } from 'react-native';
+import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
 import { updateReadyState,
     listenOnActiveUsers, 
     stopListeningOnActiveUsers,
+    listenOnNotifications,
+    stopListeningOnNotifications,
     setReady, clearReady, 
     competeClearError, competeClearSuccess } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -40,6 +42,7 @@ class Competition extends Component {
                     console.log( "listen" );
                     this.setState( { listening: true } );
                     this.props.onListenOnActiveUsers();
+                    this.props.onListenOnNotifications();
                 }
 
                 AsyncStorage.getItem( GO_AUTH_KEY )
@@ -66,6 +69,7 @@ class Competition extends Component {
                     console.log( "stop listening" );
                     this.setState( { listening: false } );
                     this.props.onStopListeningOnActiveUsers();
+                    this.props.onStopListeningOnNotifications();
                 }
             }
         } );
@@ -127,6 +131,7 @@ class Competition extends Component {
             this.props.onUpdateReadyState( true );
             this.setState( { listening: true } );
             this.props.onListenOnActiveUsers();
+            this.props.onListenOnNotifications();
         }
         else {
             AsyncStorage.setItem( GO_AUTH_KEY, "just_went" );
@@ -139,6 +144,7 @@ class Competition extends Component {
         console.log( "not ready handler: stop listening" );
         this.setState( { listening: false } );
         this.props.onStopListeningOnActiveUsers();
+        this.props.onStopListeningOnNotifications();
         this.props.onUpdateReadyState( false );
     };
 
@@ -165,7 +171,7 @@ class Competition extends Component {
                             onPress = { this.iAmNotReadyHandler }
                             />
                     }
-                </View>  
+                </View> 
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
@@ -222,7 +228,9 @@ const mapStateToProps = state => {
         isError: state.compete.error,
         errorType: state.compete.errorType,
         isLoading: state.compete.loading,
-        activeUsersList: state.compete.activeUsersList
+        activeUsersList: state.compete.activeUsersList,
+        oponentReady: state.compete.oponentReady,
+        oponent: state.compete.oponent
     };
 };
 
@@ -234,7 +242,9 @@ const mapDispatchToProps = dispatch => {
         onClearError: () => dispatch( competeClearError() ),
         onClearSuccess: () => dispatch( competeClearSuccess() ),
         onListenOnActiveUsers: () => dispatch( listenOnActiveUsers() ),
-        onStopListeningOnActiveUsers: () => dispatch( stopListeningOnActiveUsers() )
+        onStopListeningOnActiveUsers: () => dispatch( stopListeningOnActiveUsers() ),
+        onListenOnNotifications: () => dispatch( listenOnNotifications() ),
+        onStopListeningOnNotifications: () => dispatch( stopListeningOnNotifications() )
     };
 };
 

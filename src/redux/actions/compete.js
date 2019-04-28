@@ -2,7 +2,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     SET_READY, CLEAR_READY, 
     COMPETE_SET_ERROR, COMPETE_CLEAR_ERROR, 
     COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
-    NOTIFY_NEW_ACTIVE_USERS } from './ActionTypes';
+    NOTIFY_NEW_ACTIVE_USERS,
+    NOTIFY_OPONENT_READY } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
@@ -47,13 +48,6 @@ export const listenOnActiveUsers = () => {
     };
 }
 
-export const stopListeningOnActiveUsers = () => {
-    return dispatch => {
-        firebase.database().ref( "users" ).
-            off( "value" );
-    };
-};
-
 export const filterActiveUsers = dataSnapshot => {
     const currentUserID = firebase.auth().currentUser.uid;
 
@@ -81,6 +75,54 @@ export const notifyNewActiveUsers = activeUsersList => {
     return {
         type: NOTIFY_NEW_ACTIVE_USERS,
         payload: { activeUsersList }
+    };
+};
+
+export const stopListeningOnActiveUsers = () => {
+    return dispatch => {
+        firebase.database().ref( "users" ).
+            off( "value" );
+    };
+};
+
+export const listenOnNotifications = () => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.uid;
+
+        firebase.database().ref( "users" ).child( currentUserID ).child( "notifications" )
+            .on( "child_changed", dataSnapshot => {
+                console.log( dataSnapshot );
+                dispatch( handleNotification( dataSnapshot ) );
+            } );
+    };
+};
+
+export const handleNotification = dataSnapshot => {
+    return dispatch => {
+        const oponent = {
+            id: dataSnapshot.key,
+            name: dataSnapshot._value.name,
+            request: dataSnapshot._value.request
+        };
+
+        dispatch( notifyOponentReady( oponent ) );
+    };
+};
+
+export const notifyOponentReady = oponent => {
+    console.log( "oponent:", oponent );
+    return {
+        type: NOTIFY_OPONENT_READY,
+        payload: { oponent }
+    };
+};
+
+export const stopListeningOnNotifications = () => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.uid;
+
+        firebase.database().ref( "users" ).child( currentUserID ).child( "notifications" )
+            .off( "child_changed" );
     };
 };
 

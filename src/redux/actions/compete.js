@@ -3,7 +3,7 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     COMPETE_SET_ERROR, COMPETE_CLEAR_ERROR, 
     COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
     NOTIFY_NEW_ACTIVE_USERS,
-    NOTIFY_OPONENT_READY,
+    NEW_NOTIFICATION,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -101,21 +101,21 @@ export const listenOnNotifications = () => {
 
 export const handleNotification = dataSnapshot => {
     return dispatch => {
-        const oponent = {
+        const notification = {
             id: dataSnapshot.key,
             name: dataSnapshot._value.name,
             request: dataSnapshot._value.request
         };
 
-        dispatch( notifyOponentReady( oponent ) );
+        dispatch( newNotification( notification ) );
     };
 };
 
-export const notifyOponentReady = oponent => {
-    console.log( "oponent:", oponent );
+export const newNotification = notification => {
+    console.log( "notification:", notification );
     return {
-        type: NOTIFY_OPONENT_READY,
-        payload: { oponent }
+        type: NEW_NOTIFICATION,
+        payload: { notification }
     };
 };
 
@@ -134,14 +134,22 @@ export const pushNotification = notification => {
 
         dispatch( competeStartLoading() );
 
-        const reference = firebase.database().ref( "users" ).child( notification.recepientID )
-        .child( "notifications" ).child( currentUserID );
+        const notificationReference = firebase.database().ref( "users" )
+                                        .child( notification.recepientID )
+                                        .child( "notifications" ).child( currentUserID );
 
-            reference.set( { request: notification.request } )
+        firebase.database().ref( "users" ).child( currentUserID )
+            .once( "value" )
             .then( response => {
+                const currentUserName = response._value.name;
+                return notificationReference.set( { 
+                    name: currentUserName,
+                    request: notification.request 
+                } )
+            } ).then( response => {
                 const uniqueSessionID = uuidv4();
-
-                return reference.child( "sessionID" ).set( uniqueSessionID );
+    
+                return notificationReference.child( "sessionID" ).set( uniqueSessionID );
             } )
             .then( response => {
                 dispatch( competeStopLoading() );
@@ -150,7 +158,7 @@ export const pushNotification = notification => {
             .catch( error => {
                 dispatch( competeStopLoading() );
                 dispatch( competeSetError( error ) );
-            } );
+            } );        
     };
 };
 

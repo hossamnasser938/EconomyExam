@@ -3,8 +3,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     COMPETE_SET_ERROR, COMPETE_CLEAR_ERROR, 
     COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
     NOTIFY_NEW_ACTIVE_USERS,
-    NOTIFY_OPONENT_READY,
-    SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED } from '../actions/ActionTypes';
+    SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
+    NEW_NOTIFICATION } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
@@ -13,8 +13,7 @@ const initialState = {
     error: false,
     errorType: null,
     activeUsersList: [],
-    oponentReady: false,
-    oponent: null,
+    notification: null,
     notificationPushed: false
 };
 
@@ -53,9 +52,8 @@ const competeReducer = ( state = initialState, action ) => {
         case NOTIFY_NEW_ACTIVE_USERS:
             coppiedState.activeUsersList = action.payload.activeUsersList;
             break;
-        case NOTIFY_OPONENT_READY:
-            coppiedState.oponentReady = true;
-            coppiedState.oponent = action.payload.oponent;
+        case NEW_NOTIFICATION:
+            coppiedState.notification = action.payload.notification;
             break;
         case SET_NOTIFICATION_PUSHED:
             coppiedState.notificationPushed = true;

@@ -31,7 +31,8 @@ class Competition extends Component {
         this.state = {
             portrait: Dimensions.get( "window" ).height > 500? true: false,
             listening: false,
-            dialogVisible: false,
+            senderDialogVisible: false,
+            recepientDialogVisible: false,
             clickedUserIndex: -1,
             waiting: false
         };
@@ -113,7 +114,7 @@ class Competition extends Component {
             } ); 
     }
 
-    componentDidUpdate() {
+    componentDidUpdate( prevProps ) {
         if ( this.props.isError ) {
             this.dropDownAlert.alertWithType( "error", "Error", this.props.errorType );
             this.props.onClearError();
@@ -128,6 +129,25 @@ class Competition extends Component {
             this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm", null, 2000 );
             this.setState( { waiting: true } );
             this.props.onClearNotificationPushed();
+        }
+
+        if ( this.props.notification && this.props.notification !== prevProps.notification ) {
+            console.log( "received notification in screen:", this.props.notification );
+            switch ( this.props.notification.request ) {
+                case "start":
+                    console.log( "request start" );
+                    this.setState( { recepientDialogVisible: true } );
+                    break;
+                case "confirm":
+                    console.log( "request confirm" );
+                    alert( "You're ready to go" );
+                    break;
+                case "cancel":
+                    console.log( "request cancel" );
+                    this.dropDownAlert.alertWithType( "warn", "Warning", this.props.activeUsersList[this.state.clickedUserIndex].name + "canceled the request" );
+                    this.setState( { waiting: false } );
+                    break;
+            }
         }
     }
 
@@ -161,11 +181,11 @@ class Competition extends Component {
     };
 
     activeUserPressHandler = clickedUserIndex => {
-        this.setState( { dialogVisible: true, clickedUserIndex } );
+        this.setState( { senderDialogVisible: true, clickedUserIndex } );
     };
 
-    startCompetingHandler = () => {
-        this.setState( { dialogVisible: false } );
+    senderOkHandler = () => {
+        this.setState( { senderDialogVisible: false } );
 
         const notification = {
             recepientID: this.props.activeUsersList[this.state.clickedUserIndex].key,
@@ -175,17 +195,53 @@ class Competition extends Component {
         this.props.onPushNotification( notification );
     };
 
+    recepientOkHandler = () => {
+        this.setState( { recepientDialogVisible: false } );
+
+        const notification = {
+            recepientID: this.props.notification.id,
+            request: "confirm"
+        };
+        
+        this.props.onPushNotification( notification );
+
+        // TODO: start competing
+        alert( "You're ready to go" );
+    };
+
+    recepientCancelHandler = () => {
+        this.setState( { recepientDialogVisible: false } );
+
+        const notification = {
+            recepientID: this.props.notification.id,
+            request: "cancel"
+        };
+        
+        this.props.onPushNotification( notification );
+    };    
+
     render() {
         let readyUI = (
             <DefaultScreenContainer style = { styles.container }>
                 <MaterialDialog
                   title = "Start Competing"
-                  visible = { this.state.dialogVisible }
-                  onOk = { this.startCompetingHandler }
-                  onCancel = { () => this.setState( { dialogVisible: false } ) }
+                  visible = { this.state.senderDialogVisible }
+                  onOk = { this.senderOkHandler }
+                  onCancel = { () => this.setState( { senderDialogVisible: false } ) }
                 >
                     <WrapperText style = { { color: "black" } }>
                         <Text>Are you sure you want to compete with {this.state.clickedUserIndex !== -1? this.props.activeUsersList[this.state.clickedUserIndex].name: "test"} ?</Text>
+                    </WrapperText>
+                </MaterialDialog>
+
+                <MaterialDialog
+                  title = "Confirm Competing"
+                  visible = { this.state.recepientDialogVisible }
+                  onOk = { this.recepientOkHandler }
+                  onCancel = { this.recepientCancelHandler }
+                >
+                    <WrapperText style = { { color: "black" } }>
+                        <Text>{ this.props.notification? this.props.notification.name: "test" } wants to compete with you</Text>
                     </WrapperText>
                 </MaterialDialog>
 
@@ -275,8 +331,7 @@ const mapStateToProps = state => {
         errorType: state.compete.errorType,
         isLoading: state.compete.loading,
         activeUsersList: state.compete.activeUsersList,
-        oponentReady: state.compete.oponentReady,
-        oponent: state.compete.oponent,
+        notification: state.compete.notification,
         notificationPushed: state.compete.notificationPushed
     };
 };

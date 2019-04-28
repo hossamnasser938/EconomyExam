@@ -8,6 +8,8 @@ import { updateReadyState,
     stopListeningOnActiveUsers,
     listenOnNotifications,
     stopListeningOnNotifications,
+    pushNotification,
+    clearNotificationPushed,
     setReady, clearReady, 
     competeClearError, competeClearSuccess } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -30,7 +32,8 @@ class Competition extends Component {
             portrait: Dimensions.get( "window" ).height > 500? true: false,
             listening: false,
             dialogVisible: false,
-            clickedUserIndex: -1
+            clickedUserIndex: -1,
+            waiting: false
         };
 
         props.navigator.setOnNavigatorEvent( event => {
@@ -120,6 +123,12 @@ class Competition extends Component {
             this.dropDownAlert.alertWithType( "success", "Success", "You can compete now", null, 2000 );
             this.props.onClearSuccess();
         }
+
+        if ( this.props.notificationPushed ) {
+            this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm", null, 2000 );
+            this.setState( { waiting: true } );
+            this.props.onClearNotificationPushed();
+        }
     }
 
     static navigatorStyle = {
@@ -156,8 +165,14 @@ class Competition extends Component {
     };
 
     startCompetingHandler = () => {
-        alert( "not yet" );
-        this.setState( { dialogVisible: false, clickedUserIndex: -1 } );
+        this.setState( { dialogVisible: false } );
+
+        const notification = {
+            recepientID: this.props.activeUsersList[this.state.clickedUserIndex].key,
+            request: "start"
+        };
+        
+        this.props.onPushNotification( notification );
     };
 
     render() {
@@ -167,7 +182,7 @@ class Competition extends Component {
                   title = "Start Competing"
                   visible = { this.state.dialogVisible }
                   onOk = { this.startCompetingHandler }
-                  onCancel = { () => this.setState( { dialogVisible: false, clickedUserIndex: -1 } ) }
+                  onCancel = { () => this.setState( { dialogVisible: false } ) }
                 >
                     <WrapperText style = { { color: "black" } }>
                         <Text>Are you sure you want to compete with {this.state.clickedUserIndex !== -1? this.props.activeUsersList[this.state.clickedUserIndex].name: "test"} ?</Text>
@@ -182,6 +197,14 @@ class Competition extends Component {
                         renderItem = { ({ item, index }) => <ActiveUser userName = { item.name } onPress = { () => this.activeUserPressHandler( index ) }/> }         
                       />
                     : <EmptyActiveUsersList />
+                }
+                
+                {
+                    this.state.waiting
+                    ? <WrapperText>
+                        <Text>Wait for {this.state.clickedUserIndex !== -1? this.props.activeUsersList[this.state.clickedUserIndex].name: "test"} to confirm</Text>
+                      </WrapperText>
+                    : null
                 }
                 
                 <View style = { styles.wrapper }>
@@ -253,7 +276,8 @@ const mapStateToProps = state => {
         isLoading: state.compete.loading,
         activeUsersList: state.compete.activeUsersList,
         oponentReady: state.compete.oponentReady,
-        oponent: state.compete.oponent
+        oponent: state.compete.oponent,
+        notificationPushed: state.compete.notificationPushed
     };
 };
 
@@ -267,7 +291,9 @@ const mapDispatchToProps = dispatch => {
         onListenOnActiveUsers: () => dispatch( listenOnActiveUsers() ),
         onStopListeningOnActiveUsers: () => dispatch( stopListeningOnActiveUsers() ),
         onListenOnNotifications: () => dispatch( listenOnNotifications() ),
-        onStopListeningOnNotifications: () => dispatch( stopListeningOnNotifications() )
+        onStopListeningOnNotifications: () => dispatch( stopListeningOnNotifications() ),
+        onPushNotification: notification => dispatch( pushNotification( notification ) ),
+        onClearNotificationPushed: () => dispatch( clearNotificationPushed() )
     };
 };
 

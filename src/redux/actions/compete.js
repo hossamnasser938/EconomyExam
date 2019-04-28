@@ -3,10 +3,12 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     COMPETE_SET_ERROR, COMPETE_CLEAR_ERROR, 
     COMPETE_SET_SUCCESS, COMPETE_CLEAR_SUCCESS,
     NOTIFY_NEW_ACTIVE_USERS,
-    NOTIFY_OPONENT_READY } from './ActionTypes';
+    NOTIFY_OPONENT_READY,
+    SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED } from './ActionTypes';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
+import uuidv4 from 'uuid-v4';
 
 export const updateReadyState = isReady => {
     return dispatch => {
@@ -123,6 +125,44 @@ export const stopListeningOnNotifications = () => {
 
         firebase.database().ref( "users" ).child( currentUserID ).child( "notifications" )
             .off( "child_changed" );
+    };
+};
+
+export const pushNotification = notification => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.uid;
+
+        dispatch( competeStartLoading() );
+
+        const reference = firebase.database().ref( "users" ).child( notification.recepientID )
+        .child( "notifications" ).child( currentUserID );
+
+            reference.set( { request: notification.request } )
+            .then( response => {
+                const uniqueSessionID = uuidv4();
+
+                return reference.child( "sessionID" ).set( uniqueSessionID );
+            } )
+            .then( response => {
+                dispatch( competeStopLoading() );
+                dispatch( setNotificationPushed() );
+            } )
+            .catch( error => {
+                dispatch( competeStopLoading() );
+                dispatch( competeSetError( error ) );
+            } );
+    };
+};
+
+export const setNotificationPushed = () => {
+    return {
+        type: SET_NOTIFICATION_PUSHED
+    };
+};
+
+export const clearNotificationPushed = () => {
+    return {
+        type: CLEAR_NOTIFICATION_PUSHED
     };
 };
 

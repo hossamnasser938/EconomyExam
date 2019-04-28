@@ -12,4 +12,6 @@ export { updateReadyState,
     listenOnActiveUsers,
     stopListeningOnActiveUsers,
     listenOnNotifications,
-    stopListeningOnNotifications } from './compete';
+    stopListeningOnNotifications,
+    clearNotificationPushed,
+    pushNotification } from './compete';

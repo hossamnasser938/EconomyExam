@@ -23,7 +23,8 @@
     "react-redux": "^7.0.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "rn-tooltip": "^1.1.2"
+    "rn-tooltip": "^1.1.2",
+    "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.3.4",

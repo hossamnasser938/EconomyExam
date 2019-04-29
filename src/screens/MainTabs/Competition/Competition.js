@@ -11,7 +11,8 @@ import { updateReadyState,
     pushNotification,
     clearNotificationPushed,
     setReady, clearReady, 
-    competeClearError, competeClearSuccess } from '../../../redux/actions/index';
+    competeClearError, competeClearSuccess,
+    getQuestionsIndices } from '../../../redux/actions/index';
 import DropdownAlert from 'react-native-dropdownalert';
 import { MaterialDialog } from 'react-native-material-dialog';
 import startAuthScreen from '../../Authentication/startAuthScreen';
@@ -20,6 +21,7 @@ import WrapperText from '../../../components/UI/WrapperText/WrapperText';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import ActiveUser from '../../../components/ActiveUser/ActiveUser';
 import EmptyActiveUsersList from '../../../components/EmptyActiveUsersList/EmptyActiveUsersList';
+import convertIndicesToQuestions from '../../../data/convertIndicesToQuestions';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
 import { READY_STATE_KEY, GO_AUTH_KEY, JUST_AUTHED_KEY } from '../../../utils/constants';
 import styles from './styles';
@@ -129,8 +131,9 @@ class Competition extends Component {
                     this.props.onClearNotificationPushed();
                     break;
                 case "confirm":
-                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed", null, 2000 );
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed. Redirecting you ...", null, 2000 );
                     this.props.onClearNotificationPushed();
+                    this.props.onGetQuestionsIndices();
                     break;
                 case "cancel":
                     this.dropDownAlert.alertWithType( "info", "Sent", "Request is cancelled", null, 2000 );
@@ -139,20 +142,27 @@ class Competition extends Component {
             }
         }
 
-        if ( this.props.notification && this.props.notification !== prevProps.notification ) {
+        if ( this.props.notification && JSON.stringify( this.props.notification ) !== JSON.stringify( prevProps.notification ) ) {
             switch ( this.props.notification.request ) {
                 case "start":
                     this.setState( { recepientDialogVisible: true } );
                     break;
                 case "confirm":
                     this.setState( { waiting: false } );
-                    this.navigateToQuestions();
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed. Redirecting you ...", null, 2000 );                                        
+                    this.props.onGetQuestionsIndices();
                     break;
                 case "cancel":
                     this.dropDownAlert.alertWithType( "warn", "Warning", this.props.activeUsersList[this.state.clickedUserIndex].name + " canceled the request" );
                     this.setState( { waiting: false } );
                     break;
             }
+        }
+
+        if ( this.props.questionsIndices && JSON.stringify( this.props.questionsIndices ) !== JSON.stringify( prevProps.questionsIndices ) ) {
+            const competeQuestions = convertIndicesToQuestions( this.props.questionsIndices, this.props.questions );
+            console.log( "competeQuestions =", competeQuestions );
+            this.navigateToQuestions( competeQuestions );
         }
     }
 
@@ -208,10 +218,6 @@ class Competition extends Component {
         };
         
         this.props.onPushNotification( notification );
-
-        // TODO: start competing
-        // alert( "You're ready to go" );
-        this.navigateToQuestions();
     };
 
     recepientCancelHandler = () => {
@@ -225,12 +231,12 @@ class Competition extends Component {
         this.props.onPushNotification( notification );
     };    
 
-    navigateToQuestions = ( questionsCount = 50 ) => {
+    navigateToQuestions = ( questions, questionsCount = 50 ) => {
         this.props.navigator.push( {
             screen: "EconomyExam.CompeteQuestionScreen",
             title: "Question",
             passProps: {
-                questions: this.props.questions,
+                questions,
                 questionsCount
             }
         } );
@@ -350,7 +356,8 @@ const mapStateToProps = state => {
         notification: state.compete.notification,
         notificationPushed: state.compete.notificationPushed,
         notificationRequest: state.compete.notificationRequest,
-        questions: state.questions.questions
+        questions: state.questions.questions,
+        questionsIndices: state.compete.questionsIndices
     };
 };
 
@@ -366,7 +373,8 @@ const mapDispatchToProps = dispatch => {
         onListenOnNotifications: () => dispatch( listenOnNotifications() ),
         onStopListeningOnNotifications: () => dispatch( stopListeningOnNotifications() ),
         onPushNotification: notification => dispatch( pushNotification( notification ) ),
-        onClearNotificationPushed: () => dispatch( clearNotificationPushed() )
+        onClearNotificationPushed: () => dispatch( clearNotificationPushed() ),
+        onGetQuestionsIndices: () => dispatch( getQuestionsIndices() )
     };
 };
 

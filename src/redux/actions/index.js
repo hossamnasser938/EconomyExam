@@ -17,6 +17,7 @@ export { updateReadyState,
     pushNotification,
     listenOnAnswers,
     stopListeningOnAnswers,
-    pushAnswer } from './compete';
+    pushAnswer,
+    getQuestionsIndices } from './compete';
 
 export { getQuestionsReady } from './questions';

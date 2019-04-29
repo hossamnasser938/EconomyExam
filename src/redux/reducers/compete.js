@@ -6,7 +6,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
     NEW_NOTIFICATION,
     NOTIFY_NEW_ANSWER,
-    UPDATE_TURN } from '../actions/ActionTypes';
+    UPDATE_TURN,
+    SET_QUESTIONS_INDICES } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
@@ -19,7 +20,8 @@ const initialState = {
     notificationPushed: false,
     notificationRequest: null,
     newAnswer: null,
-    turn: "mine"
+    turn: "mine",
+    questionsIndices: null
 };
 
 const competeReducer = ( state = initialState, action ) => {
@@ -72,6 +74,9 @@ const competeReducer = ( state = initialState, action ) => {
             break;
         case UPDATE_TURN:
             coppiedState.turn = (state.turn === "mine")? "his": "mine";  
+            break;
+        case SET_QUESTIONS_INDICES:
+            coppiedState.questionsIndices = action.payload.questionsIndices;
             break;  
     }
 

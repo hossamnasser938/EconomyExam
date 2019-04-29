@@ -6,7 +6,9 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     NEW_NOTIFICATION,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
     NOTIFY_NEW_ANSWER,
-    UPDATE_TURN } from './ActionTypes';
+    UPDATE_TURN,
+    SET_QUESTIONS_INDICES } from './ActionTypes';
+import getRandomNumbers from '../../data/getRandomNumbers';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
@@ -99,14 +101,16 @@ export const listenOnNotifications = () => {
 
 export const handleNotification = dataSnapshot => {
     return dispatch => {
-        const notification = {
-            id: dataSnapshot.key,
-            name: dataSnapshot._value.name,
-            request: dataSnapshot._value.request,
-            sessionID: dataSnapshot._value.sessionID
-        };
-
-        dispatch( newNotification( notification ) );
+        if ( dataSnapshot._value.sessionID ) {
+            const notification = {
+                id: dataSnapshot.key,
+                name: dataSnapshot._value.name,
+                request: dataSnapshot._value.request,
+                sessionID: dataSnapshot._value.sessionID
+            };
+    
+            dispatch( newNotification( notification ) );
+        }
     };
 };
 
@@ -127,7 +131,7 @@ export const stopListeningOnNotifications = () => {
 };
 
 export const pushNotification = notification => {
-    return dispatch => {
+    return ( dispatch, getState ) => {
         const currentUserID = firebase.auth().currentUser.uid;
 
         dispatch( competeStartLoading() );
@@ -151,6 +155,17 @@ export const pushNotification = notification => {
                     uniqueSessionID = uuidv4();
                 } else {
                     uniqueSessionID = notification.sessionID;
+                    if ( notification.request === "confirm" ) {
+                        const questionsCount = getState().questions.questions.length;
+                        
+                        const randomQuestionsIndices = getRandomNumbers( questionsCount, 0, 50 );
+                        const randomQuestionsIndicesStr = "[" + randomQuestionsIndices.toString() + "]";
+
+                        return Promise.all( 
+                            [ firebase.database().ref( "sessions" ).child( uniqueSessionID ).child( "questions" ).set( randomQuestionsIndicesStr ),
+                              notificationReference.child( "sessionID" ).set( uniqueSessionID ) ]
+                        );
+                    }
                 }
     
                 return notificationReference.child( "sessionID" ).set( uniqueSessionID );
@@ -179,6 +194,35 @@ export const clearNotificationPushed = () => {
     };
 };
 
+export const getQuestionsIndices = () => {
+    return ( dispatch, getState ) => {
+        dispatch( competeStartLoading() );
+
+        const sessionID = getState().compete.notification.sessionID;
+
+        firebase.database().ref( "sessions" ).child( sessionID ).once( "child_added" )
+            .then( dataSnapshot => {
+                dispatch( competeStopLoading() );
+                if ( dataSnapshot.key === "questions" ) {
+                    dispatch( setQuestionsIndices( dataSnapshot._value ) );
+                } else {
+                    dispatch( competeSetError( new Error( "Unexpected error ocurred. Please try again" ) ) );
+                }
+            } )
+            .catch( error => {
+                dispatch( competeStopLoading() );
+                dispatch( competeSetError( error ) );
+            } );
+    };
+};
+
+export const setQuestionsIndices = questionsIndices => {
+    return {
+        type: SET_QUESTIONS_INDICES,
+        payload: { questionsIndices }
+    };
+};
+
 export const listenOnAnswers = () => {
     return ( dispatch, getState ) => {
         const sessionID = getState().compete.notification.sessionID;
@@ -194,7 +238,7 @@ export const handleAnswer = dataSnapshot => {
     return dispatch => {
         const currentUserID = firebase.auth().currentUser.uid;
 
-        if ( dataSnapshot._value.id !== currentUserID ) {
+        if ( dataSnapshot._value.id && dataSnapshot._value.id !== currentUserID ) {
             const answer = {
                 questionIndex: dataSnapshot._value.questionIndex,
                 answerIndex: dataSnapshot._value.answerIndex

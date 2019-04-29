@@ -110,6 +110,10 @@ export const handleNotification = dataSnapshot => {
             };
     
             dispatch( newNotification( notification ) );
+
+            if ( notification.request === "confirm" ) {
+                dispatch( updateTurn() );
+            }
         }
     };
 };
@@ -245,6 +249,7 @@ export const handleAnswer = dataSnapshot => {
             };
 
             dispatch( notifyNewAnswer( answer ) );
+            dispatch( updateTurn() );
         }
     };
 };

@@ -20,7 +20,7 @@ const initialState = {
     notificationPushed: false,
     notificationRequest: null,
     newAnswer: null,
-    turn: "mine",
+    turn: "his",
     questionsIndices: null
 };
 

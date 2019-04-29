@@ -4,6 +4,7 @@ import QuestionBody from '../../components/QuestionBody/QuestionBody';
 import WrapperText from '../../components/UI/WrapperText/WrapperText';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
+import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
 import { listenOnAnswers, stopListeningOnAnswers, pushAnswer } from '../../redux/actions/index';
 import styles from '../../components/QuestionBody/styles';
@@ -14,13 +15,19 @@ Sound.setCategory( "Playback" );
 class CompeteQuestion extends Component {
     constructor( props ) {
         super( props );
+        
         this.questionsCount = (props.questionsCount === 0 || props.questionsCount > this.props.questions.length)? this.props.questions.length : props.questionsCount;
+        
         this.state = {
             currentQuestionIndex: 0,
             pressedAnswerIndex: -1,
             previousEnabled: false,
             nextEnabled: true
         };
+
+        this.props.navigator.setTitle( {
+            title: this.props.turn === "mine"? "Your Turn": this.props.oponentName + "'s Turn"            
+        } );
 
         this.correctSound = new Sound( "correct.wav", Sound.MAIN_BUNDLE, error => {
             if ( error ) {
@@ -51,10 +58,16 @@ class CompeteQuestion extends Component {
     }
 
     componentDidUpdate( prevProps ) {
-        if ( prevProps.newAnswer !== this.props.newAnswer ) {
+        if ( JSON.stringify( prevProps.newAnswer ) !== JSON.stringify( this.props.newAnswer ) ) {
             const correctAnswerIndex = this.props.questions[this.state.currentQuestionIndex][ this.props.questions[this.state.currentQuestionIndex].length - 1 ] - 1;
 
             this.onAnswerPressed( this.props.newAnswer.answerIndex, correctAnswerIndex, false );
+        }
+
+        if ( this.props.turn !== prevProps.turn ) {
+            this.props.navigator.setTitle( {
+                title: this.props.turn === "mine"? "Your Turn": this.props.oponentName + "'s Turn"
+            } );
         }
     }
 
@@ -105,25 +118,29 @@ class CompeteQuestion extends Component {
     };
 
     onAnswerPressed = ( key, correctAnswerIndex, push = true ) => {
-        if ( push ) {
-            this.props.onPushAnswer( {
-                questionIndex: this.state.currentQuestionIndex,
-                answerIndex: key
+        if ( push === true && this.props.turn !== "mine" ) {
+            this.dropDownAlert.alertWithType( "info", "Wait", "It is " + this.props.oponentName + "'s Turn" );
+        } else {
+            if ( push ) {
+                this.props.onPushAnswer( {
+                    questionIndex: this.state.currentQuestionIndex,
+                    answerIndex: key
+                } );
+            }
+    
+            this.setState( {
+                pressedAnswerIndex: key
             } );
-        }
-
-        this.setState( {
-            pressedAnswerIndex: key
-        } );
-
-        if ( this.correctSound && this.wrongSound ) {
-            const sound = key === correctAnswerIndex? this.correctSound: this.wrongSound;
-
-            sound.play( success => {    
-                if ( this.state.currentQuestionIndex !== this.questionsCount - 1 ) {
-                    setTimeout( this.nextHandler, 2000 );
-                }
-            } );
+    
+            if ( this.correctSound && this.wrongSound ) {
+                const sound = key === correctAnswerIndex? this.correctSound: this.wrongSound;
+    
+                sound.play( success => {    
+                    if ( this.state.currentQuestionIndex !== this.questionsCount - 1 ) {
+                        setTimeout( this.nextHandler, 2000 );
+                    }
+                } );
+            }
         }
     }
 
@@ -173,16 +190,22 @@ class CompeteQuestion extends Component {
         } );
 
         return(
-            <QuestionBody 
-                head = { cQHead }
-                answersComponents = { cQAnswersComponents }
-                nextHandler = { this.nextHandler }
-                previousHandler = { this.previousHandler }
-                currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
-                totalQuestionsCount = { this.questionsCount }
-                previousEnabled = { this.state.previousEnabled }
-                nextEnabled = { this.state.nextEnabled }
-            />
+            <View style = { {flex: 1} }>
+                <QuestionBody 
+                    head = { cQHead }
+                    answersComponents = { cQAnswersComponents }
+                    nextHandler = { this.nextHandler }
+                    previousHandler = { this.previousHandler }
+                    currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
+                    totalQuestionsCount = { this.questionsCount }
+                    previousEnabled = { this.state.previousEnabled }
+                    nextEnabled = { this.state.nextEnabled }
+                />
+
+                <DropdownAlert 
+                  ref = { ref => this.dropDownAlert = ref }
+                />
+            </View>
         );
     }
 }
@@ -190,7 +213,8 @@ class CompeteQuestion extends Component {
 const mapStateToProps = state => {
     return {
         newAnswer: state.compete.newAnswer,
-        turn: state.compete.turn
+        turn: state.compete.turn,
+        oponentName: state.compete.notification.name
     };
 };
 

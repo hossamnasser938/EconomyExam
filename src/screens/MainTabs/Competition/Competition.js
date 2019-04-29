@@ -161,7 +161,6 @@ class Competition extends Component {
 
         if ( this.props.questionsIndices && JSON.stringify( this.props.questionsIndices ) !== JSON.stringify( prevProps.questionsIndices ) ) {
             const competeQuestions = convertIndicesToQuestions( this.props.questionsIndices, this.props.questions );
-            console.log( "competeQuestions =", competeQuestions );
             this.navigateToQuestions( competeQuestions );
         }
     }

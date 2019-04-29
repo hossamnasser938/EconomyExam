@@ -61,7 +61,7 @@ class Competition extends Component {
                     .then( result => {
                         if ( result && result !== "" ) {
                             if ( firebase.auth().currentUser ) {
-                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated", null, 2000 );
+                                this.iAmReadyHandler();
                             } 
                             else {
                                 this.dropDownAlert.alertWithType( "warn", "Warning", "You did not sign in/up", 2000 );

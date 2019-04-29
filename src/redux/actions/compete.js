@@ -8,7 +8,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     NOTIFY_NEW_ANSWER,
     UPDATE_TURN,
     SET_QUESTIONS_INDICES,
-    SET_MARK } from './ActionTypes';
+    SET_MARK,
+    END_COMPETITION } from './ActionTypes';
 import getRandomNumbers from '../../data/getRandomNumbers';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -250,6 +251,11 @@ export const handleAnswer = dataSnapshot => {
 
             dispatch( notifyNewAnswer( answer ) );
             dispatch( updateTurn() );
+
+            if ( answer.questionIndex == 49 ) {
+                console.log( "dispatch end competition from handle answer" );
+                dispatch( endCompetition() );
+            }
         }
     };
 };
@@ -297,8 +303,19 @@ export const pushAnswer = answer => {
                 dispatch( competeSetError( error ) );
             } );
 
+        if ( answer.questionIndex == 49 ) {
+            console.log( "dispatch end competition from push answer" );
+            dispatch( endCompetition() );
+        }
+
     };
 };
+
+export const endCompetition = () => {
+    return {
+        type: END_COMPETITION
+    };
+}; 
 
 export const updateTurn = () => {
     return {

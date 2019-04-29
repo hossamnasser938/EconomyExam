@@ -72,6 +72,11 @@ class CompeteQuestion extends Component {
                 title: this.props.turn === "mine"? "Your Turn": this.props.oponentName + "'s Turn"
             } );
         }
+
+        console.log( "competitionEnded =", this.props.competitionEnded );
+        if ( this.props.competitionEnded && !prevProps.competitionEnded ) {
+            this.showResult();
+        }
     }
 
     nextHandler = () => {
@@ -112,6 +117,17 @@ class CompeteQuestion extends Component {
             }
         }
     }
+
+    showResult = () => {
+        this.props.navigator.showModal( {
+            screen: "EconomyExam.CompetitionResult",
+            passProps: {
+                myMark: this.props.myMark,
+                oponentMark: this.props.oponentMark,
+                oponentName: this.props.oponentName
+            }
+        } );
+    };
 
     render() {
         const cQuestion = this.props.questions[this.state.currentQuestionIndex]; 
@@ -185,7 +201,8 @@ const mapStateToProps = state => {
         turn: state.compete.turn,
         oponentName: state.compete.notification.name,
         myMark: state.compete.myMark,
-        oponentMark: state.compete.oponentMark
+        oponentMark: state.compete.oponentMark,
+        competitionEnded: state.compete.competitionEnded
     };
 };
 

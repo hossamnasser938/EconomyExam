@@ -8,7 +8,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     NOTIFY_NEW_ANSWER,
     UPDATE_TURN,
     SET_QUESTIONS_INDICES,
-    SET_MARK } from '../actions/ActionTypes';
+    SET_MARK,
+    END_COMPETITION } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
@@ -24,7 +25,8 @@ const initialState = {
     turn: "his",
     questionsIndices: null,
     myMark: 0,
-    oponentMark: 0
+    oponentMark: 0,
+    competitionEnded: false
 };
 
 const competeReducer = ( state = initialState, action ) => {
@@ -87,7 +89,11 @@ const competeReducer = ( state = initialState, action ) => {
             } else {
                 coppiedState.oponentMark = action.payload.mark;
             }
-            break;  
+            break;
+        case END_COMPETITION:
+            console.log( "reduce end competition" );            
+            coppiedState.competitionEnded = true;
+            break;
     }
 
     return coppiedState;

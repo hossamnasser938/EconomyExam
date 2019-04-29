@@ -24,6 +24,7 @@ export const NOTIFY_NEW_ANSWER = "NOTIFY_NEW_ANSWER";
 export const UPDATE_TURN = "UPDATE_TURN";
 export const SET_QUESTIONS_INDICES = "SET_QUESTIONS_INDICES";
 export const SET_MARK = "SET_MARK";
+export const END_COMPETITION = "END_COMPETITION";
 
 
 // questions

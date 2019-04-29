@@ -4,8 +4,8 @@ import WrapperText from '../WrapperText/WrapperText';
 import styles from './styles';
 
 const HeadingText = props => (
-    <WrapperText>
-        <Text style = { styles.headingText }>
+    <WrapperText style = { styles.headingText }>
+        <Text>
             { props.children }
         </Text>
     </WrapperText>

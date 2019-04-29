@@ -7,6 +7,7 @@ import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../../utils/colors';
 import DefaultScreenContainer from '../../../components/UI/DefaultScreenContainer/DefaultScreenContainer';
 import styles from './style';
 import WrapperText from '../../../components/UI/WrapperText/WrapperText';
+import shuffle from '../../../data/shuffleArray';
 import { getQuestionsReady } from '../../../redux/actions/index';
 import { connect } from 'react-redux';
 
@@ -88,7 +89,7 @@ class TrainingScreen extends Component {
             screen: "EconomyExam.TrainQuestionScreen",
             title: "Question",
             passProps: {
-                questions: this.props.questions,
+                questions: shuffle( this.props.questions ),
                 questionsCount
             }
         } );

@@ -1,13 +1,11 @@
 import { QUESTIONS_READY, QUESTIONS_ERROR } from './ActionTypes';
 import getAllQuestions from '../../data/getAllQuestions';
 import preprocessQuestions from '../../data/preprocessQuestions';
-import shuffle from '../../data/shuffleArray';
 import Papa from 'papaparse';
 import RNFS from 'react-native-fs';
 
 export const getQuestionsReady = () => {
     return dispatch => {
-
         getAllQuestions()
             .then(results => {
                 const files = results.map( result => result.name );
@@ -24,10 +22,8 @@ export const getQuestionsReady = () => {
                 const combinedQuestions = filteredChaptersQuestions.
                     reduce( ( accumulator, singleChapterQuestions ) => 
                         accumulator.concat( singleChapterQuestions ), [] );
-
-                const shuffledQuestions = shuffle( combinedQuestions );
-                    
-                dispatch( questionsReady( shuffledQuestions ) );
+                
+                dispatch( questionsReady( combinedQuestions ) );                
             })
             .catch( reason => {
                 dispatch( questionsError() );

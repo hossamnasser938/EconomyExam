@@ -9,6 +9,14 @@ import startAuthScreen from '../Authentication/startAuthScreen';
 import styles from './styles';
 
 class SideDrawer extends Component {
+    whyLoginHandler = () => {
+      this.dropDownAlert.alertWithType( 
+        "info",
+        "Why Login?",
+        "You should be authenticated if you want to compete with others" 
+      );
+    };
+
     componentDidUpdate() {
       if ( this.props.success ) {
         this.dropDownAlert.alertWithType( "success", "Success", "Signed out successfully", null, 2000 );
@@ -60,7 +68,7 @@ class SideDrawer extends Component {
                 <SideDrawerButton 
                   iconName = "account-question"
                   title = "Why Login"
-                  onPress = { () => alert("not yet") }
+                  onPress = { this.whyLoginHandler }
                 />
 
                 <DropdownAlert 

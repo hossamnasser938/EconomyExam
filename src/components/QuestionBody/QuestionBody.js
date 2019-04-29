@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, Dimensions } from 'react-native';
 import DefaultButton from '../UI/DefaultButton/DefaultButton';
 import DefaultScreenContainer from '../UI/DefaultScreenContainer/DefaultScreenContainer';
+import WrapperText from '../UI/WrapperText/WrapperText';
 import styles from './styles';
 
 
@@ -38,7 +39,13 @@ class QuestionBody extends Component {
         );
 
         const buttonsContainer = this.props.competition
-            ? <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer, styles.competeButtonsContainer]: [styles.buttonsContainer, styles.competeButtonsContainer] }>
+            ? <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer]: [styles.buttonsContainer] }>
+                <WrapperText>
+                    <Text>
+                        You: {this.props.myMark}, Oponent: {this.props.oponentMark}
+                    </Text>
+                </WrapperText>
+                
                 <Text style = { styles.questionNumberText } >
                         { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
                 </Text>

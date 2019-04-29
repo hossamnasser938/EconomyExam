@@ -6,7 +6,10 @@ import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropdownAlert from 'react-native-dropdownalert';
 import { connect } from 'react-redux';
-import { listenOnAnswers, stopListeningOnAnswers, pushAnswer } from '../../redux/actions/index';
+import { listenOnAnswers, stopListeningOnAnswers, 
+        pushAnswer,
+        listenOnMarks,
+        stopListeningOnMarks } from '../../redux/actions/index';
 import styles from '../../components/QuestionBody/styles';
 
 import Sound from 'react-native-sound';
@@ -48,11 +51,13 @@ class CompeteQuestion extends Component {
     };
 
     componentDidMount() {
-        this.props.onListenOnAnswers();        
+        this.props.onListenOnAnswers();
+        this.props.onListenOnMarks();        
     }
 
     componentWillUnmount() {
         this.props.onStopListeningOnAnswers();
+        this.props.onStopListeningOnMarks();
     }
 
     componentDidUpdate( prevProps ) {
@@ -161,6 +166,8 @@ class CompeteQuestion extends Component {
                     currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
                     totalQuestionsCount = { this.questionsCount }
                     competition = { true }
+                    myMark = { this.props.myMark }
+                    oponentMark = { this.props.oponentMark }
                 />
 
                 <DropdownAlert 
@@ -175,7 +182,9 @@ const mapStateToProps = state => {
     return {
         newAnswer: state.compete.newAnswer,
         turn: state.compete.turn,
-        oponentName: state.compete.notification.name
+        oponentName: state.compete.notification.name,
+        myMark: state.compete.myMark,
+        oponentMark: state.compete.oponentMark
     };
 };
 
@@ -183,7 +192,9 @@ const mapDispatchToProps = dispatch => {
     return {
         onListenOnAnswers: () => dispatch( listenOnAnswers() ),
         onStopListeningOnAnswers: () => dispatch( stopListeningOnAnswers() ),
-        onPushAnswer: answer => dispatch( pushAnswer( answer ) )
+        onPushAnswer: answer => dispatch( pushAnswer( answer ) ),
+        onListenOnMarks: () => dispatch( listenOnMarks() ),
+        onStopListeningOnMarks: () => dispatch( stopListeningOnMarks() )
     };
 };
 

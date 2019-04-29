@@ -7,7 +7,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     NEW_NOTIFICATION,
     NOTIFY_NEW_ANSWER,
     UPDATE_TURN,
-    SET_QUESTIONS_INDICES } from '../actions/ActionTypes';
+    SET_QUESTIONS_INDICES,
+    SET_MARK } from '../actions/ActionTypes';
 
 const initialState = {
     loading: false,
@@ -21,7 +22,9 @@ const initialState = {
     notificationRequest: null,
     newAnswer: null,
     turn: "his",
-    questionsIndices: null
+    questionsIndices: null,
+    myMark: 0,
+    oponentMark: 0
 };
 
 const competeReducer = ( state = initialState, action ) => {
@@ -77,6 +80,13 @@ const competeReducer = ( state = initialState, action ) => {
             break;
         case SET_QUESTIONS_INDICES:
             coppiedState.questionsIndices = action.payload.questionsIndices;
+            break;
+        case SET_MARK:
+            if ( action.payload.who == "mine" ) {
+                coppiedState.myMark = action.payload.mark;
+            } else {
+                coppiedState.oponentMark = action.payload.mark;
+            }
             break;  
     }
 

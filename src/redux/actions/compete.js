@@ -7,7 +7,8 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
     NOTIFY_NEW_ANSWER,
     UPDATE_TURN,
-    SET_QUESTIONS_INDICES } from './ActionTypes';
+    SET_QUESTIONS_INDICES,
+    SET_MARK } from './ActionTypes';
 import getRandomNumbers from '../../data/getRandomNumbers';
 import { READY_STATE_KEY } from '../../utils/constants';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -302,6 +303,45 @@ export const pushAnswer = answer => {
 export const updateTurn = () => {
     return {
         type: UPDATE_TURN
+    };
+};
+
+export const listenOnMarks = () => {
+    return ( dispatch, getState ) => {
+        const currentUserID = firebase.auth().currentUser.uid;
+        const oponentUserID = getState().compete.notification.id;
+        const sessionID = getState().compete.notification.sessionID;        
+
+        firebase.database().ref( "sessions" ).child( sessionID ).child( currentUserID )
+            .on( "value", dataSnapshot => {
+                dispatch( setMark( "mine", dataSnapshot._value ) );
+            } );
+
+        firebase.database().ref( "sessions" ).child( sessionID ).child( oponentUserID )
+            .on( "value", dataSnapshot => {
+                dispatch( setMark( "his", dataSnapshot._value ) );
+            } );
+    };
+};
+
+export const setMark = ( who, mark ) => {
+    return {
+        type: SET_MARK,
+        payload: { who, mark }
+    };
+};
+
+export const stopListeningOnMarks = () => {
+    return ( dispatch, getState ) => {
+        const currentUserID = firebase.auth().currentUser.uid;
+        const oponentUserID = getState().compete.notification.id;
+        const sessionID = getState().compete.notification.sessionID;        
+
+        firebase.database().ref( "sessions" ).child( sessionID ).child( currentUserID )
+            .off( "value" );
+
+        firebase.database().ref( "sessions" ).child( sessionID ).child( oponentUserID )
+            .off( "value" );
     };
 };
 

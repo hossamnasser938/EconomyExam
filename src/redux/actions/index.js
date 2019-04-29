@@ -18,6 +18,8 @@ export { updateReadyState,
     listenOnAnswers,
     stopListeningOnAnswers,
     pushAnswer,
-    getQuestionsIndices } from './compete';
+    getQuestionsIndices,
+    listenOnMarks,
+    stopListeningOnMarks } from './compete';
 
 export { getQuestionsReady } from './questions';

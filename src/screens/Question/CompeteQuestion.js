@@ -87,7 +87,8 @@ class CompeteQuestion extends Component {
             if ( push ) {
                 this.props.onPushAnswer( {
                     questionIndex: this.state.currentQuestionIndex,
-                    answerIndex: key
+                    answerIndex: key,
+                    correctAnswerIndex
                 } );
             }
     

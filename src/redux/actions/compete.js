@@ -167,12 +167,15 @@ export const pushNotification = notification => {
 
                         return Promise.all( 
                             [ firebase.database().ref( "sessions" ).child( uniqueSessionID ).child( "questions" ).set( randomQuestionsIndicesStr ),
+                              firebase.database().ref( "sessions" ).child( uniqueSessionID ).child( currentUserID ).set( 0 ),
                               notificationReference.child( "sessionID" ).set( uniqueSessionID ) ]
                         );
                     }
                 }
     
-                return notificationReference.child( "sessionID" ).set( uniqueSessionID );
+                return Promise.all( 
+                    [notificationReference.child( "sessionID" ).set( uniqueSessionID ), 
+                    firebase.database().ref( "sessions" ).child( uniqueSessionID ).child( currentUserID ).set( 0 )] );
             } )
             .then( response => {
                 dispatch( competeStopLoading() );
@@ -204,14 +207,10 @@ export const getQuestionsIndices = () => {
 
         const sessionID = getState().compete.notification.sessionID;
 
-        firebase.database().ref( "sessions" ).child( sessionID ).once( "child_added" )
+        firebase.database().ref( "sessions" ).child( sessionID ).child( "questions" ).once( "value" )
             .then( dataSnapshot => {
                 dispatch( competeStopLoading() );
-                if ( dataSnapshot.key === "questions" ) {
-                    dispatch( setQuestionsIndices( dataSnapshot._value ) );
-                } else {
-                    dispatch( competeSetError( new Error( "Unexpected error ocurred. Please try again" ) ) );
-                }
+                dispatch( setQuestionsIndices( dataSnapshot._value ) );
             } )
             .catch( error => {
                 dispatch( competeStopLoading() );
@@ -280,6 +279,15 @@ export const pushAnswer = answer => {
             .child( uniqueID ).set( { 
                 id: currentUserID,
                 ...answer 
+            } )
+            .then( response => {
+                return firebase.database().ref( "sessions" ).child( sessionID )
+                    .child( currentUserID ).once( "value" );
+            } )
+            .then( dataSnapshot => {
+                const mark = answer.answerIndex === answer.correctAnswerIndex? dataSnapshot._value + 1: dataSnapshot._value;
+                return firebase.database().ref( "sessions" ).child( sessionID )
+                    .child( currentUserID ).set( mark );
             } )
             .then( response => {
                 dispatch( updateTurn() )

@@ -9,6 +9,7 @@ import CompeteQuestionScreen from './src/screens/Question/CompeteQuestion';
 import CompetitionScreen from './src/screens/MainTabs/Competition/Competition';
 import LoadingModalScreen from './src/screens/LoadingModal/LoadingModal';
 import SideDrawerScreen from './src/screens/SideDrawer/SideDrawer';
+import CompetitionResult from './src/screens/CompetitionResult/CompetitionResult';
 
 import startMainTabs from './src/screens/MainTabs/startMainTabs';
 
@@ -29,6 +30,7 @@ Navigation.registerComponent( "EconomyExam.ContentScreen", () => ContentScreen )
 Navigation.registerComponent( "EconomyExam.ContentQuestionScreen", () => ContentQuestionScreen );
 Navigation.registerComponent( "EconomyExam.TrainQuestionScreen", () => TrainQuestionScreen );
 Navigation.registerComponent( "EconomyExam.LoadingModalScreen", () => LoadingModalScreen );
+Navigation.registerComponent( "EconomyExam.CompetitionResult", () => CompetitionResult );
 
 // start a tab-based app
 startMainTabs();

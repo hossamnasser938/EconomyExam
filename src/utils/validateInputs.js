@@ -1,4 +1,3 @@
-
 const validateInputs = ( input, rules, connectedValues ) => {
     let valid = true;
     

@@ -3,7 +3,6 @@ import preprocessQuestions from '../../../data/preprocessQuestions';
 import Papa from 'papaparse';
 
 function chapterPressHandler ( chapter, toggleTouchables, dropDownAlert ) {
-    console.log( "from chapter press handler with modal" );
     toggleTouchables();
 
     const chapterQuestionsPromise = getChapterQuestions( chapter );
@@ -21,7 +20,6 @@ function chapterPressHandler ( chapter, toggleTouchables, dropDownAlert ) {
             }
         } );
     }).catch( reason => {
-        console.log( "Error ocurred due to:", reason );
         toggleTouchables();
         dropDownAlert.alertWithType( "error", "Error", "Cannot find " + chapter );
     });

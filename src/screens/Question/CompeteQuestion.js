@@ -52,7 +52,6 @@ class CompeteQuestion extends Component {
 
     componentDidUpdate( prevProps ) {
         if ( prevProps.newAnswer !== this.props.newAnswer ) {
-            console.log( "new answer from screen:", this.props.newAnswer );
             const correctAnswerIndex = this.props.questions[this.state.currentQuestionIndex][ this.props.questions[this.state.currentQuestionIndex].length - 1 ] - 1;
 
             this.onAnswerPressed( this.props.newAnswer.answerIndex, correctAnswerIndex, false );
@@ -61,9 +60,7 @@ class CompeteQuestion extends Component {
 
     nextHandler = () => {
         this.setState( prevState => {
-            console.log( "current question index =", prevState.currentQuestionIndex );
             const newQuestionIndex = prevState.currentQuestionIndex + 1;
-            console.log( "new question index =", newQuestionIndex );
 
             let newPreviousEnabled = prevState.previousEnabled;
             if (  newQuestionIndex === 1 ) {
@@ -108,7 +105,6 @@ class CompeteQuestion extends Component {
     };
 
     onAnswerPressed = ( key, correctAnswerIndex, push = true ) => {
-        console.log( "Item pressed " + key + " coorect answer " + correctAnswerIndex );
         if ( push ) {
             this.props.onPushAnswer( {
                 questionIndex: this.state.currentQuestionIndex,
@@ -125,7 +121,6 @@ class CompeteQuestion extends Component {
 
             sound.play( success => {    
                 if ( this.state.currentQuestionIndex !== this.questionsCount - 1 ) {
-                    console.log( "invoke next handler" );
                     setTimeout( this.nextHandler, 2000 );
                 }
             } );

@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 
 class TrainingScreen extends Component {
     componentWillMount() {
-        console.log( "component will mount" );
         this.props.onGetQuestionsReady();
     }
 
@@ -53,7 +52,6 @@ class TrainingScreen extends Component {
     };
 
     onChangeInput = newInput => {
-        console.log( "input changed: ", newInput );
         this.setState( {
             input: newInput
         } );

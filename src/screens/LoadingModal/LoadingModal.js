@@ -14,7 +14,6 @@ class LoadingModal extends Component {
         };
         interval = setInterval(
             () => {
-                console.log("inside interval");
                 this.setState( prevState => {
                     return {
                         currentPattern: (prevState.currentPattern + 1) % 3
@@ -27,12 +26,10 @@ class LoadingModal extends Component {
     }
 
     componentWillUnmount() {
-        console.log( "componentWillUnmount" );
         clearInterval( interval );
     }
 
     render() {
-        console.log( "render loading modal" )
         return (
             <View style = { styles.container }>
                 <Text style = { styles.loadingText }>Loading { loadingPatterns[this.state.currentPattern] }</Text>

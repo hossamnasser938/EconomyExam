@@ -44,9 +44,7 @@ class Competition extends Component {
                 } );
             } 
             else if ( event.id === "didAppear" ) {
-                console.log( "did appear" );
                 if ( this.props.isReady && !this.state.listening ) {
-                    console.log( "listen" );
                     this.setState( { listening: true } );
                     this.props.onListenOnActiveUsers();
                     this.props.onListenOnNotifications();
@@ -71,9 +69,7 @@ class Competition extends Component {
                     } );
             }
             else if ( event.id === "didDisappear" ) {
-                console.log( "did disappear" );
                 if ( this.props.isReady && this.state.listening ) {
-                    console.log( "stop listening" );
                     this.setState( { listening: false } );
                     this.props.onStopListeningOnActiveUsers();
                     this.props.onStopListeningOnNotifications();
@@ -126,7 +122,6 @@ class Competition extends Component {
         }
 
         if ( this.props.notificationPushed ) {
-            console.log( "received notification pushed in screen:", this.props.notificationPushed )
             switch ( this.props.notificationRequest ) {
                 case "start":
                     this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm", null, 2000 );
@@ -145,21 +140,15 @@ class Competition extends Component {
         }
 
         if ( this.props.notification && this.props.notification !== prevProps.notification ) {
-            console.log( "received notification in screen:", this.props.notification );
             switch ( this.props.notification.request ) {
                 case "start":
-                    console.log( "request start" );
                     this.setState( { recepientDialogVisible: true } );
                     break;
                 case "confirm":
-                    console.log( "request confirm" );
                     this.setState( { waiting: false } );
-                    // TODO: start competing
-                    // alert( "You're ready to go" );
                     this.navigateToQuestions();
                     break;
                 case "cancel":
-                    console.log( "request cancel" );
                     this.dropDownAlert.alertWithType( "warn", "Warning", this.props.activeUsersList[this.state.clickedUserIndex].name + " canceled the request" );
                     this.setState( { waiting: false } );
                     break;
@@ -175,7 +164,6 @@ class Competition extends Component {
 
     iAmReadyHandler = () => {
         if ( firebase.auth().currentUser ) {
-            console.log( "ready handler: start listening" );
             this.props.onUpdateReadyState( true );
             this.setState( { listening: true } );
             this.props.onListenOnActiveUsers();
@@ -189,7 +177,6 @@ class Competition extends Component {
     };
 
     iAmNotReadyHandler = () => {
-        console.log( "not ready handler: stop listening" );
         this.setState( { listening: false } );
         this.props.onStopListeningOnActiveUsers();
         this.props.onStopListeningOnNotifications();

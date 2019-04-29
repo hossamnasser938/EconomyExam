@@ -61,7 +61,6 @@ const competeReducer = ( state = initialState, action ) => {
             coppiedState.notification = action.payload.notification;
             break;
         case SET_NOTIFICATION_PUSHED:
-            console.log( "reduced set notification pushed" );
             coppiedState.notificationPushed = true;
             coppiedState.notificationRequest = action.payload.request;
             break;
@@ -69,11 +68,9 @@ const competeReducer = ( state = initialState, action ) => {
             coppiedState.notificationPushed = false;
             break;
         case NOTIFY_NEW_ANSWER:
-        console.log( "reduce notify answer" );
             coppiedState.newAnswer = action.payload.answer;
             break;
         case UPDATE_TURN:
-        console.log( "reduce update turn" );
             coppiedState.turn = (state.turn === "mine")? "his": "mine";  
             break;  
     }

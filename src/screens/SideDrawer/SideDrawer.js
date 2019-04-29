@@ -11,7 +11,6 @@ import styles from './styles';
 class SideDrawer extends Component {
     componentDidUpdate() {
       if ( this.props.success ) {
-        console.log( "success from drawer" );
         this.dropDownAlert.alertWithType( "success", "Success", "Signed out successfully", null, 2000 );
 
         setTimeout( () => {

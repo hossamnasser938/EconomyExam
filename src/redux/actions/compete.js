@@ -32,7 +32,6 @@ export const updateReadyState = isReady => {
                 dispatch( isReady? setReady(): clearReady() );
             } )
             .catch( error => {
-                console.log( "Error ocurred:", error );
                 dispatch( competeStopLoading() );
                 dispatch( competeSetError( error ) );
             } );
@@ -56,7 +55,6 @@ export const filterActiveUsers = dataSnapshot => {
     const currentUserID = firebase.auth().currentUser.uid;
 
     return dispatch => {
-        console.log( "dataSnapshot:", dataSnapshot );
         const usersObject = dataSnapshot._value;
 
         const usersArray = [];
@@ -68,7 +66,6 @@ export const filterActiveUsers = dataSnapshot => {
         }
         
         const activeUsers = usersArray.filter( user => user.key !== currentUserID && user.active );
-        console.log( "active users:", activeUsers );
 
         dispatch( competeStopLoading() );
         dispatch( notifyNewActiveUsers( activeUsers ) );
@@ -95,7 +92,6 @@ export const listenOnNotifications = () => {
 
         firebase.database().ref( "users" ).child( currentUserID ).child( "notifications" )
             .on( "child_changed", dataSnapshot => {
-                console.log( dataSnapshot );
                 dispatch( handleNotification( dataSnapshot ) );
             } );
     };
@@ -115,7 +111,6 @@ export const handleNotification = dataSnapshot => {
 };
 
 export const newNotification = notification => {
-    console.log( "notification:", notification );
     return {
         type: NEW_NOTIFICATION,
         payload: { notification }
@@ -133,7 +128,6 @@ export const stopListeningOnNotifications = () => {
 
 export const pushNotification = notification => {
     return dispatch => {
-        console.log( "push notification" );
         const currentUserID = firebase.auth().currentUser.uid;
 
         dispatch( competeStartLoading() );
@@ -145,14 +139,12 @@ export const pushNotification = notification => {
         firebase.database().ref( "users" ).child( currentUserID )
             .once( "value" )
             .then( response => {
-            console.log( "push name & request" );
                 const currentUserName = response._value.name;
                 return notificationReference.set( { 
                     name: currentUserName,
                     request: notification.request 
                 } )
             } ).then( response => {
-            console.log( "push session id" );
                 let uniqueSessionID;
 
                 if ( notification.request === "start" ) {
@@ -164,7 +156,6 @@ export const pushNotification = notification => {
                 return notificationReference.child( "sessionID" ).set( uniqueSessionID );
             } )
             .then( response => {
-                console.log( "dispatch set notification pushed" );
                 dispatch( competeStopLoading() );
                 dispatch( setNotificationPushed( notification.request ) );
             } )
@@ -194,14 +185,12 @@ export const listenOnAnswers = () => {
 
         firebase.database().ref( "sessions" ).child( sessionID )
             .on( "child_added", dataSnapshot => {
-                console.log( "datasnapshot:", dataSnapshot );
                 dispatch( handleAnswer( dataSnapshot ) );
             } );
     };
 };
 
 export const handleAnswer = dataSnapshot => {
-    console.log( "dispatch handle answer" );
     return dispatch => {
         const currentUserID = firebase.auth().currentUser.uid;
 
@@ -217,7 +206,6 @@ export const handleAnswer = dataSnapshot => {
 };
 
 export const notifyNewAnswer = answer => {
-    console.log( "dispatch notify answer" );
     return {
         type: NOTIFY_NEW_ANSWER,
         payload: { answer }

@@ -87,8 +87,6 @@ class TrainQuestion extends Component {
     };
 
     onAnswerPressed = ( key, correctAnswerIndex ) => {
-        console.log( "Item pressed " + key + " coorect answer " + correctAnswerIndex );
-
         this.setState( {
             pressedAnswerIndex: key
         } );
@@ -97,7 +95,6 @@ class TrainQuestion extends Component {
             const sound = key === correctAnswerIndex? this.correctSound: this.wrongSound;
 
             sound.play( success => {
-                console.log( "played: ", success );
                 if ( key === correctAnswerIndex && this.state.currentQuestionIndex !== this.questionsCount - 1 ) {
                     setTimeout( this.nextHandler, 2000 );
                 }

@@ -31,7 +31,6 @@ class ContentScreen extends Component {
             else if ( event.id === "didAppear" ) {
                 AsyncStorage.getItem( JUST_AUTHED_KEY )
                     .then( result => {
-                        console.log( "result from then block:", result );
                         if ( result && result !== "" ) {
                             if ( firebase.auth().currentUser ) {
                                 this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated", null, 2000 );

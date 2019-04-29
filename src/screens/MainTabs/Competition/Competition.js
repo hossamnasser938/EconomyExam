@@ -3,7 +3,8 @@ import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, Button } fr
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
-import { updateReadyState,
+import { setActive, clearActive,
+    updateReadyState,
     listenOnActiveUsers, 
     stopListeningOnActiveUsers,
     listenOnNotifications,
@@ -46,10 +47,14 @@ class Competition extends Component {
                 } );
             } 
             else if ( event.id === "didAppear" ) {
-                if ( this.props.isReady && !this.state.listening ) {
-                    this.setState( { listening: true } );
-                    this.props.onListenOnActiveUsers();
-                    this.props.onListenOnNotifications();
+                if ( this.props.isReady ) {
+                    this.props.onSetActive();
+                    
+                    if ( !this.state.listening ) {
+                        this.setState( { listening: true } );
+                        this.props.onListenOnActiveUsers();
+                        this.props.onListenOnNotifications();
+                    }
                 }
 
                 AsyncStorage.getItem( GO_AUTH_KEY )
@@ -71,10 +76,14 @@ class Competition extends Component {
                     } );
             }
             else if ( event.id === "didDisappear" ) {
-                if ( this.props.isReady && this.state.listening ) {
-                    this.setState( { listening: false } );
-                    this.props.onStopListeningOnActiveUsers();
-                    this.props.onStopListeningOnNotifications();
+                if ( this.props.isReady ) {
+                    this.props.onClearActive();
+
+                    if ( this.state.listening ) {
+                        this.setState( { listening: false } );
+                        this.props.onStopListeningOnActiveUsers();
+                        this.props.onStopListeningOnNotifications();
+                    }
                 }
             }
         } );
@@ -99,7 +108,7 @@ class Competition extends Component {
                     if ( result === "true" ) {
                         this.props.onSetReadyState();
                     } else if ( result === "false" ) {
-                        this.props.onClearReadyState()
+                        this.props.onClearReadyState();
                     } else {
                         console.log( "ready state is neither true not error" );
                     }
@@ -362,6 +371,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onSetActive: () => dispatch( setActive() ),
+        onClearActive: () => dispatch( clearActive() ),
         onUpdateReadyState: isReady => dispatch( updateReadyState( isReady ) ),
         onSetReadyState: () => dispatch( setReady() ),
         onClearReadyState: () => dispatch( clearReady() ),

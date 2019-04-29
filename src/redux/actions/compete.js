@@ -42,6 +42,26 @@ export const updateReadyState = isReady => {
     };
 };
 
+export const setActive = () => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.uid;
+
+        firebase.database().ref( "users" ).child( currentUserID ).child( "active" )
+            .set( true )
+            .catch( error => console.log( "Error ocurred while setting active" ) );
+    }
+};
+
+export const clearActive = () => {
+    return dispatch => {
+        const currentUserID = firebase.auth().currentUser.uid;
+
+        firebase.database().ref( "users" ).child( currentUserID ).child( "active" )
+            .set( false )
+            .catch( error => console.log( "Error ocurred while clearing active" ) );
+    }
+};
+
 export const listenOnActiveUsers = () => {
     return dispatch => {
         dispatch( competeStartLoading() );

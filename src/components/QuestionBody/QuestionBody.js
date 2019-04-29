@@ -37,25 +37,31 @@ class QuestionBody extends Component {
             </ScrollView>
         );
 
-        const buttonsContainer = (
-            <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer]: styles.buttonsContainer }>
-                <DefaultButton
-                    title = "previous"
-                    onPress = { this.props.previousHandler }
-                    disabled = { !this.props.previousEnabled }
-                />
-
+        const buttonsContainer = this.props.competition
+            ? <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer, styles.competeButtonsContainer]: [styles.buttonsContainer, styles.competeButtonsContainer] }>
                 <Text style = { styles.questionNumberText } >
-                    { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
+                        { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
                 </Text>
+              </View>
+            : (
+                <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer]: styles.buttonsContainer }>
+                    <DefaultButton
+                        title = "previous"
+                        onPress = { this.props.previousHandler }
+                        disabled = { !this.props.previousEnabled }
+                    />
 
-                <DefaultButton 
-                    title = "next"
-                    onPress = { this.props.nextHandler }
-                    disabled = { !this.props.nextEnabled }
-                />
-            </View>
-        );
+                    <Text style = { styles.questionNumberText } >
+                        { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
+                    </Text>
+
+                    <DefaultButton 
+                        title = "next"
+                        onPress = { this.props.nextHandler }
+                        disabled = { !this.props.nextEnabled }
+                    />
+                </View>
+              );
 
         let content;
         if ( this.state.portraitMode ) {

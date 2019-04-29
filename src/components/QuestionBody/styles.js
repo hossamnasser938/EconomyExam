@@ -63,6 +63,9 @@ const styles = StyleSheet.create( {
     portraitButtonsContainer: {
         flexDirection: "row",
     },
+    competeButtonsContainer: {
+        justifyContent: "center"
+    },
     questionNumberText: {
         fontSize: 18,
         color: DARK_TEXT_COLOR

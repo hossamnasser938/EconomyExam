@@ -21,8 +21,6 @@ class CompeteQuestion extends Component {
         this.state = {
             currentQuestionIndex: 0,
             pressedAnswerIndex: -1,
-            previousEnabled: false,
-            nextEnabled: true
         };
 
         this.props.navigator.setTitle( {
@@ -75,43 +73,8 @@ class CompeteQuestion extends Component {
         this.setState( prevState => {
             const newQuestionIndex = prevState.currentQuestionIndex + 1;
 
-            let newPreviousEnabled = prevState.previousEnabled;
-            if (  newQuestionIndex === 1 ) {
-                newPreviousEnabled = !newPreviousEnabled; 
-            }
-        
-            let newNextEnabled = prevState.nextEnabled;
-            if ( newQuestionIndex === this.questionsCount - 1 ) {
-                newNextEnabled = !newNextEnabled;
-            }
-
             return {
                 currentQuestionIndex: newQuestionIndex,
-                previousEnabled: newPreviousEnabled,
-                nextEnabled: newNextEnabled,
-                pressedAnswerIndex: -1
-            };
-        } );
-    };
-
-    previousHandler = () => {
-        this.setState( prevState => {
-            const newQuestionIndex = prevState.currentQuestionIndex - 1;
-            
-            let newPreviousEnabled = prevState.previousEnabled;
-            if (  newQuestionIndex === 0 ) {
-                newPreviousEnabled = !newPreviousEnabled; 
-            }
-        
-            let newNextEnabled = prevState.nextEnabled;
-            if ( newQuestionIndex === this.questionsCount - 2 ) {
-                newNextEnabled = !newNextEnabled;
-            }
-
-            return {
-                currentQuestionIndex: newQuestionIndex,
-                previousEnabled: newPreviousEnabled,
-                nextEnabled: newNextEnabled,
                 pressedAnswerIndex: -1
             };
         } );
@@ -194,12 +157,9 @@ class CompeteQuestion extends Component {
                 <QuestionBody 
                     head = { cQHead }
                     answersComponents = { cQAnswersComponents }
-                    nextHandler = { this.nextHandler }
-                    previousHandler = { this.previousHandler }
                     currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
                     totalQuestionsCount = { this.questionsCount }
-                    previousEnabled = { this.state.previousEnabled }
-                    nextEnabled = { this.state.nextEnabled }
+                    competition = { true }
                 />
 
                 <DropdownAlert 

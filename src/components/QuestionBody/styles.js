@@ -67,8 +67,7 @@ const styles = StyleSheet.create( {
         justifyContent: "center"
     },
     questionNumberText: {
-        fontSize: 18,
-        color: DARK_TEXT_COLOR
+        fontSize: 18
     }
 } );
 

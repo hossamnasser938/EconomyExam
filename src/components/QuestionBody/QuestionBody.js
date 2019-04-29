@@ -41,14 +41,16 @@ class QuestionBody extends Component {
         const buttonsContainer = this.props.competition
             ? <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer]: [styles.buttonsContainer] }>
                 <WrapperText>
-                    <Text>
-                        You: {this.props.myMark}, Oponent: {this.props.oponentMark}
+                    <Text style = { styles.questionNumberText }>
+                        You { this.props.myMark } - { this.props.oponentMark } { this.props.oponentName }
                     </Text>
                 </WrapperText>
                 
-                <Text style = { styles.questionNumberText } >
-                        { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
-                </Text>
+                <WrapperText>
+                    <Text style = { styles.questionNumberText } >
+                            { this.props.currentQuestionNumber } / { this.props.totalQuestionsCount }
+                    </Text>
+                </WrapperText>
               </View>
             : (
                 <View style = { this.state.portraitMode? [styles.buttonsContainer, styles.portraitButtonsContainer]: styles.buttonsContainer }>

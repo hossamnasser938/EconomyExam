@@ -166,6 +166,7 @@ class CompeteQuestion extends Component {
                     currentQuestionNumber = { this.state.currentQuestionIndex + 1 }
                     totalQuestionsCount = { this.questionsCount }
                     competition = { true }
+                    oponentName = { this.props.oponentName }
                     myMark = { this.props.myMark }
                     oponentMark = { this.props.oponentMark }
                 />

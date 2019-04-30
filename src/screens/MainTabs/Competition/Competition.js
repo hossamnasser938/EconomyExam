@@ -64,7 +64,7 @@ class Competition extends Component {
                                 this.iAmReadyHandler();
                             } 
                             else {
-                                this.dropDownAlert.alertWithType( "warn", "Warning", "You did not sign in/up", 2000 );
+                                this.dropDownAlert.alertWithType( "warn", "Warning", "You did not sign in/up" );
                             }
                             
                             AsyncStorage.setItem( GO_AUTH_KEY, "" );
@@ -128,24 +128,24 @@ class Competition extends Component {
         }
 
         if ( this.props.isSuccess ) {
-            this.dropDownAlert.alertWithType( "success", "Success", "You can compete now", null, 2000 );
+            this.dropDownAlert.alertWithType( "success", "Success", "You can compete now" );
             this.props.onClearSuccess();
         }
 
         if ( this.props.notificationPushed ) {
             switch ( this.props.notificationRequest ) {
                 case "start":
-                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm", null, 2000 );
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is sent to " + this.props.activeUsersList[this.state.clickedUserIndex].name + " . Please wait for him to confirm" );
                     this.setState( { waiting: true } );
                     this.props.onClearNotificationPushed();
                     break;
                 case "confirm":
-                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed. Redirecting you ...", null, 2000 );
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed. Redirecting you ..." );
                     this.props.onClearNotificationPushed();
                     this.props.onGetQuestionsIndices();
                     break;
                 case "cancel":
-                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is cancelled", null, 2000 );
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is cancelled" );
                     this.props.onClearNotificationPushed();
                     break;
             }
@@ -158,7 +158,7 @@ class Competition extends Component {
                     break;
                 case "confirm":
                     this.setState( { waiting: false } );
-                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed. Redirecting you ...", null, 2000 );                                        
+                    this.dropDownAlert.alertWithType( "info", "Sent", "Request is confirmed. Redirecting you ..." );                                        
                     this.props.onGetQuestionsIndices();
                     break;
                 case "cancel":
@@ -189,7 +189,7 @@ class Competition extends Component {
         }
         else {
             AsyncStorage.setItem( GO_AUTH_KEY, "just_went" );
-            this.dropDownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature", null, 2000 );
+            this.dropDownAlert.alertWithType( "info", "Authentication", "You need to sign in/up to use this feature" );
             setTimeout( startAuthScreen, 2500 );
         }
     };
@@ -307,6 +307,7 @@ class Competition extends Component {
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
+                  closeInterval = { 2000 }
                 />
             </DefaultScreenContainer>
         );

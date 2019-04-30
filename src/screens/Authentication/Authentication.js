@@ -219,6 +219,7 @@ class Authentication extends Component {
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
+                  closeInterval = { 2000 }
                 />
             </ScrollView>
         );

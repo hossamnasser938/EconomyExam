@@ -33,7 +33,7 @@ class ContentScreen extends Component {
                     .then( result => {
                         if ( result && result !== "" ) {
                             if ( firebase.auth().currentUser ) {
-                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated", null, 2000 );
+                                this.dropDownAlert.alertWithType( "success", "Success", "Now you're authenticated" );
                             }
 
                             AsyncStorage.setItem( JUST_AUTHED_KEY, "" );
@@ -106,6 +106,7 @@ class ContentScreen extends Component {
 
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
+                  closeInterval = { 2000 }
                 />
             </DefalautScreenContainer>
         );

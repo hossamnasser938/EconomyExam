@@ -172,6 +172,7 @@ class TrainingScreen extends Component {
                 </View>
                 <DropdownAlert 
                   ref = { ref => this.dropDownAlert = ref }
+                  closeInterval = { 2000 }
                 />
             </DefaultScreenContainer>
         );

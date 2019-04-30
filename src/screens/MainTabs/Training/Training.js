@@ -13,7 +13,9 @@ import { connect } from 'react-redux';
 
 class TrainingScreen extends Component {
     componentWillMount() {
-        this.props.onGetQuestionsReady();
+        if ( !this.props.questions ) {
+            this.props.onGetQuestionsReady();
+        }
     }
 
     constructor( props ) {

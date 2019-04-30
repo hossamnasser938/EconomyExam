@@ -23,7 +23,8 @@ class SideDrawer extends Component {
 
         setTimeout( () => {
           this.props.navigator.toggleDrawer( {
-            side: "left"
+            side: "left",
+            to: "closed"
           } );
         }, 2500 );
 

@@ -65,7 +65,10 @@ class TrainingScreen extends Component {
             this.props.navigator.dismissModal( {    
                 animationType: "none"
             } );
-            this.navigateToQuestions();
+
+            const questionsCount = this.validateInput();
+
+            this.navigateToQuestions( questionsCount );
         }
         else if ( this.props.error ) {
             this.props.navigator.dismissModal( {    

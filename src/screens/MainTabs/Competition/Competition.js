@@ -214,14 +214,14 @@ class Competition extends Component {
         }
 
         const inputAsFloat = parseFloat( this.state.input );
-        if ( !Number.isNaN( inputAsFloat ) && Number.isInteger( inputAsFloat ) && inputAsFloat > 0 ) {
+        if ( !Number.isNaN( inputAsFloat ) && Number.isInteger( inputAsFloat ) && inputAsFloat > 0 && inputAsFloat % 2 == 0 ) {
             this.setState( {
                 input: inputAsFloat
             } );
             return inputAsFloat;
         }
         else {
-            this.dropDownAlert.alertWithType( "error", "Error", "Enter a Positive Integer, Please" );
+            this.dropDownAlert.alertWithType( "error", "Error", "Enter a Positive even Integer, Please" );
             return -1;
         }
     }

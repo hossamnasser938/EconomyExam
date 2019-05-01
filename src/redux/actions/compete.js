@@ -128,6 +128,7 @@ export const handleNotification = dataSnapshot => {
                 id: dataSnapshot.key,
                 name: dataSnapshot._value.name,
                 request: dataSnapshot._value.request,
+                questionsCount: dataSnapshot._value.questionsCount,
                 sessionID: dataSnapshot._value.sessionID
             };
     
@@ -172,7 +173,8 @@ export const pushNotification = notification => {
                 const currentUserName = response._value.name;
                 return notificationReference.set( { 
                     name: currentUserName,
-                    request: notification.request 
+                    request: notification.request,
+                    questionsCount: notification.questionsCount 
                 } )
             } ).then( response => {
                 let uniqueSessionID;
@@ -182,9 +184,9 @@ export const pushNotification = notification => {
                 } else {
                     uniqueSessionID = notification.sessionID;
                     if ( notification.request === "confirm" ) {
-                        const questionsCount = getState().questions.questions.length;
+                        const allQuestionsCount = getState().questions.questions.length;
                         
-                        const randomQuestionsIndices = getRandomNumbers( questionsCount, 0, 50 );
+                        const randomQuestionsIndices = getRandomNumbers( allQuestionsCount, 0, notification.questionsCount? notification.questionsCount: allQuestionsCount );
                         const randomQuestionsIndicesStr = "[" + randomQuestionsIndices.toString() + "]";
 
                         return Promise.all( 
@@ -260,7 +262,7 @@ export const listenOnAnswers = () => {
 };
 
 export const handleAnswer = dataSnapshot => {
-    return dispatch => {
+    return ( dispatch, getState ) => {
         const currentUserID = firebase.auth().currentUser.uid;
 
         if ( dataSnapshot._value.id && dataSnapshot._value.id !== currentUserID ) {
@@ -272,7 +274,9 @@ export const handleAnswer = dataSnapshot => {
             dispatch( notifyNewAnswer( answer ) );
             dispatch( updateTurn() );
 
-            if ( answer.questionIndex == 49 ) {
+            const questionsCount = getState().compete.notification.questionsCount;
+
+            if ( answer.questionIndex == questionsCount - 1 ) {
                 console.log( "dispatch end competition from handle answer" );
                 dispatch( endCompetition() );
             }
@@ -323,7 +327,8 @@ export const pushAnswer = answer => {
                 dispatch( competeSetError( error ) );
             } );
 
-        if ( answer.questionIndex == 49 ) {
+        const questionsCount = getState().compete.notification.questionsCount;
+        if ( answer.questionIndex == questionsCount - 1 ) {
             console.log( "dispatch end competition from push answer" );
             dispatch( endCompetition() );
         }

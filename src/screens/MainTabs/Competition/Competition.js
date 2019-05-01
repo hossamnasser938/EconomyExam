@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, Button } from 'react-native';
+import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import { connect } from 'react-redux';
@@ -32,6 +33,8 @@ class Competition extends Component {
         super( props );
 
         this.state = {
+            input: null,
+            checked: false,
             portrait: Dimensions.get( "window" ).height > 500? true: false,
             listening: false,
             senderDialogVisible: false,
@@ -170,7 +173,7 @@ class Competition extends Component {
 
         if ( this.props.questionsIndices && JSON.stringify( this.props.questionsIndices ) !== JSON.stringify( prevProps.questionsIndices ) ) {
             const competeQuestions = convertIndicesToQuestions( this.props.questionsIndices, this.props.questions );
-            this.navigateToQuestions( competeQuestions );
+            this.navigateToQuestions( competeQuestions, this.props.notification.questionsCount? this.props.notification.questionsCount: this.props.questions.length );
         }
     }
 
@@ -205,12 +208,37 @@ class Competition extends Component {
         this.setState( { senderDialogVisible: true, clickedUserIndex } );
     };
 
+    validateInput () {
+        if ( this.state.input == null || this.state.input == "" ) {
+            return 0;
+        }
+
+        const inputAsFloat = parseFloat( this.state.input );
+        if ( !Number.isNaN( inputAsFloat ) && Number.isInteger( inputAsFloat ) && inputAsFloat > 0 ) {
+            this.setState( {
+                input: inputAsFloat
+            } );
+            return inputAsFloat;
+        }
+        else {
+            this.dropDownAlert.alertWithType( "error", "Error", "Enter a Positive Integer, Please" );
+            return -1;
+        }
+    }
+
     senderOkHandler = () => {
+        questionsCount = this.validateInput();
+
+        if ( questionsCount == -1 ) {
+            return;
+        }
+
         this.setState( { senderDialogVisible: false } );
 
         const notification = {
             recepientID: this.props.activeUsersList[this.state.clickedUserIndex].key,
-            request: "start"
+            request: "start",
+            questionsCount: this.state.input 
         };
         
         this.props.onPushNotification( notification );
@@ -222,6 +250,7 @@ class Competition extends Component {
         const notification = {
             recepientID: this.props.notification.id,
             request: "confirm",
+            questionsCount: this.props.notification.questionsCount,
             sessionID: this.props.notification.sessionID
         };
         
@@ -239,7 +268,7 @@ class Competition extends Component {
         this.props.onPushNotification( notification );
     };    
 
-    navigateToQuestions = ( questions, questionsCount = 50 ) => {
+    navigateToQuestions = ( questions, questionsCount ) => {
         this.props.navigator.push( {
             screen: "EconomyExam.CompeteQuestionScreen",
             title: "Question",
@@ -247,6 +276,12 @@ class Competition extends Component {
                 questions,
                 questionsCount
             }
+        } );
+    }
+
+    onChangeInput = newInput => {
+        this.setState( {
+            input: newInput
         } );
     }
 
@@ -259,9 +294,18 @@ class Competition extends Component {
                   onOk = { this.senderOkHandler }
                   onCancel = { () => this.setState( { senderDialogVisible: false } ) }
                 >
-                    <WrapperText style = { { color: "black" } }>
-                        <Text>Are you sure you want to compete with {this.state.clickedUserIndex !== -1? this.props.activeUsersList[this.state.clickedUserIndex].name: "test"} ?</Text>
-                    </WrapperText>
+                    <View>
+                        <WrapperText style = { { color: "black" } }>
+                            <Text>Specify the number of questions or simply hit OK to compete on all available questions</Text>
+                        </WrapperText>
+
+                        <DefaultInput 
+                          iconName = "information-circle-outline"
+                          placeholder = "Number of Questions"
+                          keyboardType = "numeric"
+                          onChangeText = { this.onChangeInput }
+                        />
+                    </View>
                 </MaterialDialog>
 
                 <MaterialDialog

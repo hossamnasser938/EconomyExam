@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, Button } from 'react-native';
+import { View, Image, Text, ActivityIndicator, FlatList, Dimensions, BackHandler } from 'react-native';
 import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
@@ -91,6 +91,14 @@ class Competition extends Component {
             }
         } );
 
+        BackHandler.addEventListener( 
+            "hardwareBackPress", 
+            () => {
+                BackHandler.exitApp();
+                return true;
+            }
+        );
+
         Dimensions.addEventListener( "change", this.onDimensionsChange );
     }
 
@@ -101,6 +109,8 @@ class Competition extends Component {
     };
 
     componentWillUnmount() {
+        BackHandler.removeEventListener( "hardwareBackPress" );
+
         Dimensions.removeEventListener( "change", this.onDimensionsChange );
     }
 

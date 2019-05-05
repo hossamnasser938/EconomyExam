@@ -53,7 +53,10 @@ class Authentication extends Component {
 
         BackHandler.addEventListener( 
             "hardwareBackPress", 
-            () => startMainTabs( this.state.fromCompetition? 2: 0 ) 
+            () => {
+                startMainTabs( this.state.fromCompetition? 2: 0 );
+                return true;
+            } 
         );
 
         Dimensions.addEventListener( "change", this.onDimensionsChange );

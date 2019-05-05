@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Image, Dimensions } from 'react-native';
+import { View, ScrollView, Text, Image, Dimensions, BackHandler } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import DefaultButton from '../../../components/UI/DefaultButton/DefaultButton';
 import DefaultInput from '../../../components/UI/DefaultInput/DefaultInput';
@@ -35,6 +35,14 @@ class TrainingScreen extends Component {
             }
         } );
 
+        BackHandler.addEventListener( 
+            "hardwareBackPress", 
+            () => {
+                BackHandler.exitApp();
+                return true;
+            }
+        );
+
         Dimensions.addEventListener( "change", this.onDimensionsChange ); 
     }
 
@@ -46,6 +54,8 @@ class TrainingScreen extends Component {
 
     componentWillUnmount() {
         Dimensions.removeEventListener( "change", this.onDimensionsChange );
+
+        BackHandler.removeEventListener( "hardwareBackPress" );
     }
 
     static navigatorStyle = {

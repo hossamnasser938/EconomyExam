@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, Button } from 'react-native';
+import { View, ScrollView, Dimensions, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -45,6 +45,14 @@ class ContentScreen extends Component {
             }
         } );
 
+        BackHandler.addEventListener( 
+            "hardwareBackPress", 
+            () => {
+                BackHandler.exitApp();
+                return true;
+            }
+        );
+        
         Dimensions.addEventListener( "change", this.onDimensionsChange ); 
     }
 
@@ -56,6 +64,8 @@ class ContentScreen extends Component {
 
     componentWillUnmount() {
         Dimensions.removeEventListener( "change", this.onDimensionsChange );
+
+        BackHandler.removeEventListener( "hardwareBackPress" );
     }
 
     static navigatorStyle = {

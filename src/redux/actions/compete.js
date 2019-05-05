@@ -307,21 +307,21 @@ export const pushAnswer = answer => {
         const uniqueID = uuidv4();
 
         firebase.database().ref( "sessions" ).child( sessionID )
-            .child( uniqueID ).set( { 
-                id: currentUserID,
-                ...answer 
-            } )
-            .then( response => {
-                return firebase.database().ref( "sessions" ).child( sessionID )
-                    .child( currentUserID ).once( "value" );
-            } )
+            .child( currentUserID ).once( "value" )
             .then( dataSnapshot => {
                 const mark = answer.answerIndex === answer.correctAnswerIndex? dataSnapshot._value + 1: dataSnapshot._value;
                 return firebase.database().ref( "sessions" ).child( sessionID )
                     .child( currentUserID ).set( mark );
             } )
             .then( response => {
-                dispatch( updateTurn() )
+                return firebase.database().ref( "sessions" ).child( sessionID )
+                    .child( uniqueID ).set( { 
+                        id: currentUserID,
+                        ...answer 
+                    } );
+            } )
+            .then( response => {
+                dispatch( updateTurn() );
             } )
             .catch( error => {
                 dispatch( competeSetError( error ) );

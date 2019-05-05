@@ -6,7 +6,7 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     NEW_NOTIFICATION,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
     NOTIFY_NEW_ANSWER,
-    UPDATE_TURN,
+    UPDATE_TURN, SET_MINE_TURN, SET_HIS_TURN,
     SET_QUESTIONS_INDICES,
     SET_MARK,
     END_COMPETITION } from './ActionTypes';
@@ -134,8 +134,11 @@ export const handleNotification = dataSnapshot => {
     
             dispatch( newNotification( notification ) );
 
-            if ( notification.request === "confirm" ) {
-                dispatch( updateTurn() );
+            if ( notification.request === "start" ) {
+                dispatch( setHisTurn() );
+            }
+            else if ( notification.request === "confirm" ) {
+                dispatch( setMineTurn() );
             }
         }
     };
@@ -345,6 +348,18 @@ export const endCompetition = () => {
 export const updateTurn = () => {
     return {
         type: UPDATE_TURN
+    };
+};
+
+export const setMineTurn = () => {
+    return {
+        type: SET_MINE_TURN
+    };
+};
+
+export const setHisTurn = () => {
+    return {
+        type: SET_HIS_TURN
     };
 };
 

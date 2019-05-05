@@ -6,7 +6,7 @@ import { COMPETE_START_LOADING, COMPETE_STOP_LOADING,
     SET_NOTIFICATION_PUSHED, CLEAR_NOTIFICATION_PUSHED,
     NEW_NOTIFICATION,
     NOTIFY_NEW_ANSWER,
-    UPDATE_TURN,
+    UPDATE_TURN, SET_MINE_TURN,SET_HIS_TURN,
     SET_QUESTIONS_INDICES,
     SET_MARK,
     END_COMPETITION } from '../actions/ActionTypes';
@@ -79,6 +79,12 @@ const competeReducer = ( state = initialState, action ) => {
             break;
         case UPDATE_TURN:
             coppiedState.turn = (state.turn === "mine")? "his": "mine";  
+            break;
+        case SET_MINE_TURN:
+            coppiedState.turn = "mine";
+            break;
+        case SET_HIS_TURN:
+            coppiedState.turn = "his";
             break;
         case SET_QUESTIONS_INDICES:
             coppiedState.questionsIndices = action.payload.questionsIndices;

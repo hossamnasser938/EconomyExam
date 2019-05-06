@@ -2,12 +2,12 @@
 
 ## Table of Contents
 * [Overview](#Overview)
-* [V1 Challenges](#V1_Challenge)
+* [V1 Challenges](#V1_Challenges)
 * [V1 Features](#V1_Features)
 * [V1 Tools](#V1_Tools)
-* [V2 Challenges](#V1_Challenge)
-* [V2 Features](#V1_Features)
-* [V2 Tools](#V1_Tools)
+* [V2 Challenges](#V2_Challenges)
+* [V2 Features](#V2_Features)
+* [V2 Tools](#V2_Tools)
 * [Release](#Release)
 * [Screenshots](#Screenshots)
 

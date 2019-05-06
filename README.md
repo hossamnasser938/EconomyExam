@@ -192,20 +192,20 @@ The application has been released to the Google App Store and can be found [here
 
 ## ScreenShots
 * Content Tab<br />
-![Content Tab](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/1.png)
+![Content Tab](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/1.png)
 * Training Tab Responsive Design<br />
-![Training Tab Responsive Design](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/2.gif)
+![Training Tab Responsive Design](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/2.gif)
 * Competetion Tab Responsive Design<br />
-![Competetion Tab Responsive Design](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/3.gif)
+![Competetion Tab Responsive Design](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/3.gif)
 * Question Responsive Design<br />
-![Question Responsive Design](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/4.gif)
+![Question Responsive Design](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/4.gif)
 * Question Correct Answer<br />
-![Question Correct Answer](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/5.gif)
+![Question Correct Answer](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/5.gif)
 * Question Incorrect Answer<br />
-![Question Incorrect Answer](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/6.gif)
+![Question Incorrect Answer](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/6.gif)
 * Authentication Login Design<br />
-![Authentication Login Design](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/7.png)
+![Authentication Login Design](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/7.png)
 * Authentication SignUp Responsive Design<br />
-![Authentication SignUp Responsive Design](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/8.gif)
+![Authentication SignUp Responsive Design](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/8.gif)
 * Splash Screen<br />
-![Splash Screen](https://github.com/hossamnasser938/EconomyExam/blob/master/screenshots/9.png)
+![Splash Screen](https://github.com/hossamnasser938/EconomyExam/tree/v2/screenshots/9.png)

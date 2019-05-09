@@ -11,7 +11,7 @@ export default class CompetitionResult extends Component {
         props.navigator.setOnNavigatorEvent( event => { 
             if ( event.id === "backPress" ) {
                 props.navigator.dismissModal();
-                props.onCompetitionEnded();
+                props.popToRoot();
                 return true;
             } 
         } );

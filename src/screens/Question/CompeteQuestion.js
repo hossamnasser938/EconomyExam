@@ -126,12 +126,12 @@ class CompeteQuestion extends Component {
                 myMark: this.props.myMark,
                 oponentMark: this.props.oponentMark,
                 oponentName: this.props.oponentName,
-                onCompetitionEnded: this.onCompetitionEnded
+                popToRoot: this.popToRoot
             }
         } );
     };
 
-    onCompetitionEnded = () => {
+    popToRoot = () => {
         this.props.navigator.popToRoot();
     };
 

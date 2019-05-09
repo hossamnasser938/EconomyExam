@@ -120,13 +120,19 @@ class CompeteQuestion extends Component {
 
     showResult = () => {
         this.props.navigator.showModal( {
+            overrideBackPress: true,
             screen: "EconomyExam.CompetitionResult",
             passProps: {
                 myMark: this.props.myMark,
                 oponentMark: this.props.oponentMark,
-                oponentName: this.props.oponentName
+                oponentName: this.props.oponentName,
+                onCompetitionEnded: this.onCompetitionEnded
             }
         } );
+    };
+
+    onCompetitionEnded = () => {
+        this.props.navigator.popToRoot();
     };
 
     render() {

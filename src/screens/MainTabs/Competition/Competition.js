@@ -282,9 +282,11 @@ class Competition extends Component {
         this.props.navigator.push( {
             screen: "EconomyExam.CompeteQuestionScreen",
             title: "Question",
+            overrideBackPress: true,
             passProps: {
                 questions,
-                questionsCount
+                questionsCount,
+                recepientID: (this.state.clickedUserIndex != -1)? this.props.activeUsersList[this.state.clickedUserIndex].key: this.props.notification.id
             }
         } );
     }

@@ -123,7 +123,7 @@ export const listenOnNotifications = () => {
 
 export const handleNotification = dataSnapshot => {
     return dispatch => {
-        if ( dataSnapshot._value.sessionID ) {
+        if ( dataSnapshot._value.sessionID || dataSnapshot._value.request === "terminate" ) {
             const notification = {
                 id: dataSnapshot.key,
                 name: dataSnapshot._value.name,
@@ -280,7 +280,6 @@ export const handleAnswer = dataSnapshot => {
             const questionsCount = getState().compete.notification.questionsCount;
 
             if ( answer.questionIndex == questionsCount - 1 ) {
-                console.log( "dispatch end competition from handle answer" );
                 dispatch( endCompetition() );
             }
         }
@@ -332,7 +331,6 @@ export const pushAnswer = answer => {
 
         const questionsCount = getState().compete.notification.questionsCount;
         if ( answer.questionIndex == questionsCount - 1 ) {
-            console.log( "dispatch end competition from push answer" );
             dispatch( endCompetition() );
         }
 

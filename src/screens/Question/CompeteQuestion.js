@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, BackHandler } from 'react-native';
 import QuestionBody from '../../components/QuestionBody/QuestionBody';
 import WrapperText from '../../components/UI/WrapperText/WrapperText';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropdownAlert from 'react-native-dropdownalert';
+import { MaterialDialog } from 'react-native-material-dialog';
 import { connect } from 'react-redux';
 import { listenOnAnswers, stopListeningOnAnswers, 
         pushAnswer,
         listenOnMarks,
-        stopListeningOnMarks } from '../../redux/actions/index';
+        stopListeningOnMarks,
+        listenOnNotifications, stopListeningOnNotifications,
+        pushNotification } from '../../redux/actions/index';
 import styles from '../../components/QuestionBody/styles';
 
 import Sound from 'react-native-sound';
@@ -18,13 +21,35 @@ Sound.setCategory( "Playback" );
 class CompeteQuestion extends Component {
     constructor( props ) {
         super( props );
-        
+    
         this.questionsCount = (props.questionsCount === 0 || props.questionsCount > this.props.questions.length)? this.props.questions.length : props.questionsCount;
         
         this.state = {
             currentQuestionIndex: 0,
             pressedAnswerIndex: -1,
+            terminateDialogVisible: false
         };
+
+        props.navigator.setOnNavigatorEvent( event => {
+            if ( event.id === "backPress" ) {
+                this.onBackPressed();
+            }
+            else if ( event.id === "didAppear" ) {
+                this.props.onListenOnAnswers();
+                this.props.onListenOnMarks();
+                setTimeout( this.props.onListenOnNotifications, 100 );
+            }
+            else if ( event.id === "didDisappear" ) {
+                this.props.onStopListeningOnAnswers();
+                this.props.onStopListeningOnMarks();
+                this.props.onStopListeningOnNotifications();
+            }
+        } );
+
+        BackHandler.addEventListener( 
+            "hardwareBackPress", 
+            this.onBackPressed
+        );
 
         this.props.navigator.setTitle( {
             title: this.props.turn === "mine"? "Your Turn": this.props.oponentName + "'s Turn"            
@@ -50,14 +75,9 @@ class CompeteQuestion extends Component {
         statusBarColor: DARK_BACKGROUND
     };
 
-    componentDidMount() {
-        this.props.onListenOnAnswers();
-        this.props.onListenOnMarks();        
-    }
-
     componentWillUnmount() {
-        this.props.onStopListeningOnAnswers();
-        this.props.onStopListeningOnMarks();
+        // TODO: notify the other user about termination when app is killed
+        BackHandler.removeEventListener( "hardwareBackPress" );
     }
 
     componentDidUpdate( prevProps ) {
@@ -73,11 +93,22 @@ class CompeteQuestion extends Component {
             } );
         }
 
-        console.log( "competitionEnded =", this.props.competitionEnded );
         if ( this.props.competitionEnded && !prevProps.competitionEnded ) {
             this.showResult();
         }
+
+        if ( this.props.notification && JSON.stringify( this.props.notification ) !== JSON.stringify( prevProps.notification ) ) {
+            if ( this.props.notification.request === "terminate" ) {
+                this.dropDownAlert.alertWithType( "warn", "Warning", this.props.oponentName + " terminated the competition", null, 1500 );
+                setTimeout( this.popToRoot, 2000 );
+            }
+        }
     }
+
+    onBackPressed = () => {
+        this.setState( { terminateDialogVisible: true } );
+        return true;
+    };
 
     nextHandler = () => {
         this.setState( prevState => {
@@ -135,6 +166,15 @@ class CompeteQuestion extends Component {
         this.props.navigator.popToRoot();
     };
 
+    sendTerminateNotification = () => {
+        const notification = {
+            recepientID: this.props.recepientID,
+            request: "terminate"
+        };
+
+        this.props.onPushNotification( notification );
+    };
+
     render() {
         const cQuestion = this.props.questions[this.state.currentQuestionIndex]; 
         
@@ -182,6 +222,23 @@ class CompeteQuestion extends Component {
 
         return(
             <View style = { {flex: 1} }>
+                <MaterialDialog
+                  visible = { this.state.terminateDialogVisible }
+                  title = "Warning"
+                  onOk = { () => {
+                      this.setState( { terminateDialogVisible: false } );
+                      this.sendTerminateNotification();
+                      this.props.navigator.pop(); 
+                    } 
+                  }
+                  onCancel = { () => { 
+                      this.setState( { terminateDialogVisible: false } );
+                    } 
+                  }
+                >
+                    <Text>You're about to terminate competition</Text>
+                </MaterialDialog>
+
                 <QuestionBody 
                     head = { cQHead }
                     answersComponents = { cQAnswersComponents }
@@ -206,6 +263,7 @@ const mapStateToProps = state => {
     return {
         newAnswer: state.compete.newAnswer,
         turn: state.compete.turn,
+        notification: state.compete.notification,
         oponentName: state.compete.notification.name,
         myMark: state.compete.myMark,
         oponentMark: state.compete.oponentMark,
@@ -219,7 +277,10 @@ const mapDispatchToProps = dispatch => {
         onStopListeningOnAnswers: () => dispatch( stopListeningOnAnswers() ),
         onPushAnswer: answer => dispatch( pushAnswer( answer ) ),
         onListenOnMarks: () => dispatch( listenOnMarks() ),
-        onStopListeningOnMarks: () => dispatch( stopListeningOnMarks() )
+        onStopListeningOnMarks: () => dispatch( stopListeningOnMarks() ),
+        onListenOnNotifications: () => dispatch( listenOnNotifications() ),
+        onStopListeningOnNotifications: () => dispatch( stopListeningOnNotifications() ),
+        onPushNotification: notification => dispatch( pushNotification( notification ) )
     };
 };
 

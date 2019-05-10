@@ -97,7 +97,6 @@ const competeReducer = ( state = initialState, action ) => {
             }
             break;
         case END_COMPETITION:
-            console.log( "reduce end competition" );            
             coppiedState.competitionEnded = true;
             break;
     }

@@ -2,7 +2,6 @@ import { Navigation } from 'react-native-navigation';
 import { DARK_BACKGROUND, DARK_TEXT_COLOR } from '../../utils/colors';
 
 const startMainTabs = ( initialTabIndex = 0 ) => {
-    console.log( "initial tab = " + initialTabIndex );
     Navigation.startTabBasedApp( {
         tabs: [
             {

@@ -123,7 +123,7 @@ export const listenOnNotifications = () => {
 
 export const handleNotification = dataSnapshot => {
     return dispatch => {
-        if ( dataSnapshot._value.sessionID || dataSnapshot._value.request === "terminate" ) {
+        if ( !(dataSnapshot._value.request === "start" && !dataSnapshot._value.sessionID) ) {
             const notification = {
                 id: dataSnapshot.key,
                 name: dataSnapshot._value.name,

@@ -324,15 +324,15 @@ export const pushAnswer = answer => {
             } )
             .then( response => {
                 dispatch( updateTurn() );
+
+                const questionsCount = getState().compete.notification.questionsCount;
+                if ( answer.questionIndex == questionsCount - 1 ) {
+                    dispatch( endCompetition() );
+                }
             } )
             .catch( error => {
                 dispatch( competeSetError( error ) );
             } );
-
-        const questionsCount = getState().compete.notification.questionsCount;
-        if ( answer.questionIndex == questionsCount - 1 ) {
-            dispatch( endCompetition() );
-        }
 
     };
 };

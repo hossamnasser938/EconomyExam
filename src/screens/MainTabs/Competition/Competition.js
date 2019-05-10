@@ -56,7 +56,7 @@ class Competition extends Component {
                     if ( !this.state.listening ) {
                         this.setState( { listening: true } );
                         this.props.onListenOnActiveUsers();
-                        this.props.onListenOnNotifications();
+                        setTimeout( this.props.onListenOnNotifications, 100 ); 
                     }
                 }
 

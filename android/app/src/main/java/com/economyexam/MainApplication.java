@@ -1,15 +1,15 @@
 package com.economyexam;
 
 import android.app.Application;
-
+import android.content.Context;
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.reactnativenavigation.NavigationApplication;
@@ -34,17 +34,19 @@ public class MainApplication extends NavigationApplication {
 	}
 
 	protected List<ReactPackage> getPackages() {
-		// Add additional packages you require here
-		// No need to add RnnPackage and MainReactPackage
-		return Arrays.<ReactPackage>asList(
-			new VectorIconsPackage(),
-			new RNFSPackage(),
-			new RNSoundPackage(),
-			new RNFirebasePackage(),
-			new RNFirebaseAuthPackage(),
-			new RNFirebaseDatabasePackage(),
-			new AsyncStoragePackage()
-		);
+		@SuppressWarnings("UnnecessaryLocalVariable")
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
+					packages.add(new VectorIconsPackage());
+					packages.add(new RNFSPackage());
+					packages.add(new RNSoundPackage());
+					packages.add(new RNFirebasePackage());
+					packages.add(new RNFirebaseAuthPackage());
+					packages.add(new RNFirebaseDatabasePackage());
+					packages.add(new AsyncStoragePackage());
+
+          return packages;
 	}
 
 	@Override
@@ -56,5 +58,31 @@ public class MainApplication extends NavigationApplication {
   public String getJSMainModuleName() {
 	  return "index";
   }
+
+	/**
+   * Loads Flipper in React Native templates.
+   *
+   * @param context
+   */
+  private static void initializeFlipper(Context context) {
+    if (BuildConfig.DEBUG) {
+      try {
+        /*
+         We use reflection here to pick up the class that initializes Flipper,
+        since Flipper library is not available in release mode
+        */
+        Class<?> aClass = Class.forName("com.facebook.flipper.ReactNativeFlipper");
+        aClass.getMethod("initializeFlipper", Context.class).invoke(null, context);
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      } catch (InvocationTargetException e) {
+        e.printStackTrace();
+      }
+    }
+	}
 
 }

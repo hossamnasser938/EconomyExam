@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -14,16 +13,12 @@ import java.util.List;
 
 import com.reactnativenavigation.NavigationApplication;
 
-import com.oblador.vectoricons.VectorIconsPackage;
 
-import com.rnfs.RNFSPackage;
-
-import com.zmxv.RNSound.RNSoundPackage; 
+ 
 
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 
 public class MainApplication extends NavigationApplication {
 
@@ -38,13 +33,9 @@ public class MainApplication extends NavigationApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-					packages.add(new VectorIconsPackage());
-					packages.add(new RNFSPackage());
-					packages.add(new RNSoundPackage());
 					packages.add(new RNFirebasePackage());
 					packages.add(new RNFirebaseAuthPackage());
 					packages.add(new RNFirebaseDatabasePackage());
-					packages.add(new AsyncStoragePackage());
 
           return packages;
 	}

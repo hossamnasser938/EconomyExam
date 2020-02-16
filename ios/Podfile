@@ -1,5 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'EconomyExam' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -38,11 +39,12 @@ target 'EconomyExam' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'Firebase/Core', '~> 6.13.0'
-  pod 'Firebase/Auth', '~> 6.13.0'
-  pod 'Firebase/Database', '~> 6.13.0'
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  target 'EconomyExamTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
 
+  use_native_modules!
 end
 
 target 'EconomyExam-tvOS' do
